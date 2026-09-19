@@ -14,6 +14,10 @@ REM RW_ECON_ENABLED=1 turns it on; set 0 for free spawning (byte-identical to be
 REM Balance/income are read live from <game>\econ_live.txt (written by the injected EconBridge).
 set RW_ECON_ENABLED=1
 
+REM Pusher gear (symmetric top-up, lively but no steamroll): 1=lightest 2=mid(default) 3=high 4=max
+REM Per-knob override still possible: RW_PUSH_INTERVAL_MS / RW_PUSH_UNITS / RW_PUSH_MAX_PER_SIDE
+set RW_PUSH_LEVEL=4
+
 echo Starting danmaku-relay...
 node index.js --auto-start
 echo.
