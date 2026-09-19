@@ -1,0 +1,22 @@
+# live-waifu 顶层仓库：只备份顶层文件（文档 / 启动脚本）。
+# 三个子项目各有独立 git 仓库、各自推送；父仓库不跟踪其内容，避免变成 gitlink。
+danmaku-relay/
+waifu-agent/
+war-danmaku/
+
+# 工具 / 运行时目录
+.hermes-cc/
+.hermes-rv/
+.rivet/
+
+# 大体积分析资产（反编译树 / 工具 jar / 抓帧存证），按需单独纳管
+_archive/
+war-vote/
+_reports/
+
+# 备份文件
+*.bak-*
+
+# 运行时碎片
+*.pid
+*.log
