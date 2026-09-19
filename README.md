@@ -36,6 +36,10 @@ waifu-agent                            │
   :1420 Vite 开发服务器（仅开发时）
 ```
 
+> ⚠️ 上图为**历史（war-danmaku 时代）**示意。当前实际直播链路是：`danmaku-relay/battle` 直接驱动
+> **真实 Rusted Warfare**（`war-danmaku` 已不在链路里）；waifu-agent 作为桌宠，由中继经 **:9191**
+> 驱动播报游戏事件 / 观众对话。详见 [`docs/项目工作流.md`](docs/项目工作流.md) §10 与 [`HANDOVER.md`](HANDOVER.md)。
+
 ## 快速开始
 
 ```powershell
