@@ -200,22 +200,24 @@ public class LabelPatcher {
             + "  try {\n"
             + "    java.lang.Long id = this.createUnit(type, x, y, team, false);\n"
             + "    if (id != null && key != null) { com.corrodinggames.librocket.scripts.Debug.REPIDS.put(key, id); }\n"
-            + "  } catch (Throwable t) { }\n"
+            + "    com.corrodinggames.rts.gameFramework.l.e(\"[REP] spawn key=\" + key + \" id=\" + id + \" team=\" + team);\n"
+            + "  } catch (Throwable t) { com.corrodinggames.rts.gameFramework.l.e(\"[REP] spawn EX \" + t); }\n"
             + "}\n";
         cDbg.addMethod(CtNewMethod.make(spawnRepSrc, cDbg));
         String removeRepSrc =
               "public void removeRep(java.lang.String key) {\n"
             + "  try {\n"
             + "    java.lang.Object o = com.corrodinggames.librocket.scripts.Debug.REPIDS.get(key);\n"
-            + "    if (o == null) return;\n"
+            + "    if (o == null) { com.corrodinggames.rts.gameFramework.l.e(\"[REP] remove key=\" + key + \" -> NO RECORD\"); return; }\n"
             + "    long id = ((java.lang.Long)o).longValue();\n"
             + "    com.corrodinggames.rts.game.units.y u = com.corrodinggames.rts.gameFramework.w.b(id, true);\n"
             + "    if (u != null) { u.cu = -1.0f; }\n"
+            + "    com.corrodinggames.rts.gameFramework.l.e(\"[REP] remove key=\" + key + \" id=\" + id + \" found=\" + (u != null));\n"
             + "    com.corrodinggames.librocket.scripts.Debug.REPIDS.remove(key);\n"
-            + "  } catch (Throwable t) { }\n"
+            + "  } catch (Throwable t) { com.corrodinggames.rts.gameFramework.l.e(\"[REP] remove EX \" + t); }\n"
             + "}\n";
         cDbg.addMethod(CtNewMethod.make(removeRepSrc, cDbg));
-        log("OK  added Debug.spawnRep / Debug.removeRep (keyed by viewer key)");
+        log("OK  added Debug.spawnRep / Debug.removeRep (keyed by viewer key, with logging)");
 
         // ---- 3. hook the per-frame tail ----
         mJ.insertBefore("com.corrodinggames.librocket.scripts.Debug.drawLabels();");
