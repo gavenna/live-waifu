@@ -39,28 +39,3 @@
 
 <!-- Project owner: extend below. Keep discipline above intact. -->
 
-### 重任务外包给公司机（省本地 token）
-
-本项目接了一条「任务外包」链路：**消耗 token 的重活，交给公司那台机器上的 GitHub Copilot 干，本地只做协调与审计。**目的是省本地的 token。
-
-**判据——什么算"重任务"（应外包）：**
-
-- 需要读/改大量文件、或跨多模块的批量改动
-- 长分析、多轮迭代才能收敛的调试
-- 单次要生成或重写较多代码的任务
-
-**轻任务本地做**：读代码问答、改几行、查文件、跑单条命令、协调——不值得为此走一趟外部链路。
-
-**怎么外包：**
-
-1. 写任务单 `tasks/inbox/<名字>.md`，**正文就是交给公司 Copilot 的完整 prompt**——写清目标、约束、验收标准（它看不到本会话上下文）。
-2. 提交并推送：`git add tasks/inbox/<名字>.md && git commit -m "task: <名字>" && git push origin master`
-3. 告诉用户一句：**"请让公司 agent 拉取并跑 watcher"**（用户负责转述；若公司机已挂定时轮询则会自动认领）。
-4. 公司机执行完，把结果推到 `agents/<名字>` 分支。
-5. 本地审计：`git fetch` → 看 `agents/<名字>` 的 diff → **独立跑测试**（不采信对面写的"成功"）→ 无误再合入 `master`。
-
-**约束**：任务单里不写任何密钥/token；公司机是外部环境，任务内容会经公网 GitHub 流转。
-
-> 机制细节见 `tasks/inbox/README.md`；watcher 源码在 `gavenna/sharedPRJ` 仓库的 `watcher/`。
-> 你（天枢）负责在第 1、2、5 步动手；第 3 步只是提示用户去转述。
-
