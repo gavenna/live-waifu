@@ -125,21 +125,21 @@ public class LabelPatcher {
             + cGin.getMethod("a", "(Lcom/corrodinggames/rts/gameFramework/m/e;FFLandroid/graphics/Paint;)V").getSignature());
 
         String addSrc =
-              "public void addLabel(java.lang.String s, float wx, float wy) {\n"
+              "public void addLabel(java.lang.String s, float wx, float wy, java.lang.String key) {\n"
             + "  if (s == null) return;\n"
-            + "  com.corrodinggames.librocket.scripts.Debug.LABELS.add(new java.lang.Object[]{ s, new java.lang.Float(wx), new java.lang.Float(wy) });\n"
+            + "  com.corrodinggames.librocket.scripts.Debug.LABELS.add(new java.lang.Object[]{ s, new java.lang.Float(wx), new java.lang.Float(wy), key });\n"
             + "}\n";
         cDbg.addMethod(CtNewMethod.make(addSrc, cDbg));
-        log("OK  added Debug.addLabel(String,float,float)");
+        log("OK  added Debug.addLabel(String,float,float,String ownerKey)");
 
         // per-viewer avatar: place a PNG (by absolute path) at a world coord; drawn each frame.
         String avSrc =
-              "public void addAvatar(java.lang.String path, float wx, float wy) {\n"
+              "public void addAvatar(java.lang.String path, float wx, float wy, java.lang.String key) {\n"
             + "  if (path == null) return;\n"
-            + "  com.corrodinggames.librocket.scripts.Debug.PLACED.add(new java.lang.Object[]{ path, new java.lang.Float(wx), new java.lang.Float(wy) });\n"
+            + "  com.corrodinggames.librocket.scripts.Debug.PLACED.add(new java.lang.Object[]{ path, new java.lang.Float(wx), new java.lang.Float(wy), key });\n"
             + "}\n";
         cDbg.addMethod(CtNewMethod.make(avSrc, cDbg));
-        log("OK  added Debug.addAvatar(String,float,float)");
+        log("OK  added Debug.addAvatar(String,float,float,String ownerKey)");
 
         String clearSrc =
               "public void clearLabels() {\n"
@@ -207,17 +207,32 @@ public class LabelPatcher {
         String removeRepSrc =
               "public void removeRep(java.lang.String key) {\n"
             + "  try {\n"
+            + "    int n = 0;\n"
+            + "    java.util.ArrayList ls = com.corrodinggames.librocket.scripts.Debug.LABELS;\n"
+            + "    int i = ls.size() - 1;\n"
+            + "    while (i >= 0) {\n"
+            + "      java.lang.Object[] a = (java.lang.Object[]) ls.get(i);\n"
+            + "      if (key != null && a.length > 3 && key.equals(a[3])) { ls.remove(i); n = n + 1; }\n"
+            + "      i = i - 1;\n"
+            + "    }\n"
+            + "    java.util.ArrayList pl = com.corrodinggames.librocket.scripts.Debug.PLACED;\n"
+            + "    int j = pl.size() - 1;\n"
+            + "    while (j >= 0) {\n"
+            + "      java.lang.Object[] a2 = (java.lang.Object[]) pl.get(j);\n"
+            + "      if (key != null && a2.length > 3 && key.equals(a2[3])) { pl.remove(j); n = n + 1; }\n"
+            + "      j = j - 1;\n"
+            + "    }\n"
             + "    java.lang.Object o = com.corrodinggames.librocket.scripts.Debug.REPIDS.get(key);\n"
-            + "    if (o == null) { com.corrodinggames.rts.gameFramework.l.e(\"[REP] remove key=\" + key + \" -> NO RECORD\"); return; }\n"
+            + "    if (o == null) { com.corrodinggames.rts.gameFramework.l.e(\"[REP] remove key=\" + key + \" -> NO UNIT (labelsRemoved=\" + n + \")\"); return; }\n"
             + "    long id = ((java.lang.Long)o).longValue();\n"
             + "    com.corrodinggames.rts.game.units.y u = com.corrodinggames.rts.gameFramework.w.b(id, true);\n"
             + "    if (u != null) { u.cu = -1.0f; }\n"
-            + "    com.corrodinggames.rts.gameFramework.l.e(\"[REP] remove key=\" + key + \" id=\" + id + \" found=\" + (u != null));\n"
             + "    com.corrodinggames.librocket.scripts.Debug.REPIDS.remove(key);\n"
+            + "    com.corrodinggames.rts.gameFramework.l.e(\"[REP] remove key=\" + key + \" id=\" + id + \" found=\" + (u != null) + \" labelsRemoved=\" + n);\n"
             + "  } catch (Throwable t) { com.corrodinggames.rts.gameFramework.l.e(\"[REP] remove EX \" + t); }\n"
             + "}\n";
         cDbg.addMethod(CtNewMethod.make(removeRepSrc, cDbg));
-        log("OK  added Debug.spawnRep / Debug.removeRep (keyed by viewer key, with logging)");
+        log("OK  added Debug.spawnRep / Debug.removeRep (also removes that key's labels)");
 
         // ---- 3. hook the per-frame tail ----
         mJ.insertBefore("com.corrodinggames.librocket.scripts.Debug.drawLabels();");
