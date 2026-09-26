@@ -116,6 +116,8 @@ public class LabelPatcher {
         cDbg.addField(labels);
         cDbg.addField(CtField.make("public static java.util.ArrayList PLACED = new java.util.ArrayList();", cDbg));
         cDbg.addField(CtField.make("public static java.util.HashMap AVATARS = new java.util.HashMap();", cDbg));
+        // 观众墙 HUD：屏幕坐标固定网格罗列所有观众头像（不占战场视野）
+        cDbg.addField(CtField.make("public static java.util.ArrayList WALL = new java.util.ArrayList();", cDbg));
         log("OK  added Debug.LABELS / PLACED / AVATARS");
 
         // verify the image-draw APIs we rely on for per-viewer avatars
@@ -140,6 +142,20 @@ public class LabelPatcher {
             + "}\n";
         cDbg.addMethod(CtNewMethod.make(avSrc, cDbg));
         log("OK  added Debug.addAvatar(String,float,float,String ownerKey)");
+
+        // 观众墙：把头像加进屏幕角落的 HUD 列表（与战场坐标无关，固定屏幕网格）
+        String wallSrc =
+              "public void addWall(java.lang.String path) {\n"
+            + "  if (path == null) return;\n"
+            + "  com.corrodinggames.librocket.scripts.Debug.WALL.add(path);\n"
+            + "}\n";
+        cDbg.addMethod(CtNewMethod.make(wallSrc, cDbg));
+        String wallClearSrc =
+              "public void clearWall() {\n"
+            + "  com.corrodinggames.librocket.scripts.Debug.WALL.clear();\n"
+            + "}\n";
+        cDbg.addMethod(CtNewMethod.make(wallClearSrc, cDbg));
+        log("OK  added Debug.addWall / Debug.clearWall (HUD viewer wall)");
 
         String clearSrc =
               "public void clearLabels() {\n"
@@ -188,10 +204,26 @@ public class LabelPatcher {
             + "      }\n"
             + "      k = k + 1;\n"
             + "    }\n"
+            + "    java.util.ArrayList wl = com.corrodinggames.librocket.scripts.Debug.WALL;\n"
+            + "    int wi = 0;\n"
+            + "    while (wi < wl.size()) {\n"
+            + "      java.lang.String wp = (java.lang.String) wl.get(wi);\n"
+            + "      com.corrodinggames.rts.gameFramework.m.e wtex = (com.corrodinggames.rts.gameFramework.m.e) cache.get(wp);\n"
+            + "      if (wtex == null) {\n"
+            + "        try { wtex = L.bO.a(new java.io.FileInputStream(wp), true); cache.put(wp, wtex); }\n"
+            + "        catch (Throwable t3) { wtex = null; cache.put(wp, null); }\n"
+            + "      }\n"
+            + "      if (wtex != null) {\n"
+            + "        float wsx = 16.0f + (wi % 10) * 44.0f;\n"
+            + "        float wsy = 16.0f + (wi / 10) * 44.0f;\n"
+            + "        L.bO.a(wtex, wsx, wsy, new android.graphics.Paint());\n"
+            + "      }\n"
+            + "      wi = wi + 1;\n"
+            + "    }\n"
             + "  } catch (Throwable t) { }\n"
             + "}\n";
         cDbg.addMethod(CtNewMethod.make(drawSrc, cDbg));
-        log("OK  added Debug.drawLabels() (text + avatar)");
+        log("OK  added Debug.drawLabels() (world labels + avatars + HUD wall)");
 
         // ---- T5: 按 key 记录代表单位 id，并可按 key 删（换阵营删旧单位）----
         cDbg.addField(CtField.make("public static java.util.HashMap REPIDS = new java.util.HashMap();", cDbg));
