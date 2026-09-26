@@ -114,7 +114,15 @@ public class LabelPatcher {
         // ---- 2. add static storage + methods to Debug ----
         CtField labels = CtField.make("public static java.util.ArrayList LABELS = new java.util.ArrayList();", cDbg);
         cDbg.addField(labels);
-        log("OK  added Debug.LABELS");
+        cDbg.addField(CtField.make("public static java.util.ArrayList PLACED = new java.util.ArrayList();", cDbg));
+        cDbg.addField(CtField.make("public static java.util.HashMap AVATARS = new java.util.HashMap();", cDbg));
+        log("OK  added Debug.LABELS / PLACED / AVATARS");
+
+        // verify the image-draw APIs we rely on for per-viewer avatars
+        log("OK  m.y texture-load a(InputStream,boolean) = "
+            + cGin.getMethod("a", "(Ljava/io/InputStream;Z)Lcom/corrodinggames/rts/gameFramework/m/e;").getSignature());
+        log("OK  m.y texture-draw  a(m.e,float,float,Paint) = "
+            + cGin.getMethod("a", "(Lcom/corrodinggames/rts/gameFramework/m/e;FFLandroid/graphics/Paint;)V").getSignature());
 
         String addSrc =
               "public void addLabel(java.lang.String s, float wx, float wy) {\n"
@@ -124,14 +132,24 @@ public class LabelPatcher {
         cDbg.addMethod(CtNewMethod.make(addSrc, cDbg));
         log("OK  added Debug.addLabel(String,float,float)");
 
+        // per-viewer avatar: place a PNG (by absolute path) at a world coord; drawn each frame.
+        String avSrc =
+              "public void addAvatar(java.lang.String path, float wx, float wy) {\n"
+            + "  if (path == null) return;\n"
+            + "  com.corrodinggames.librocket.scripts.Debug.PLACED.add(new java.lang.Object[]{ path, new java.lang.Float(wx), new java.lang.Float(wy) });\n"
+            + "}\n";
+        cDbg.addMethod(CtNewMethod.make(avSrc, cDbg));
+        log("OK  added Debug.addAvatar(String,float,float)");
+
         String clearSrc =
               "public void clearLabels() {\n"
             + "  com.corrodinggames.librocket.scripts.Debug.LABELS.clear();\n"
+            + "  com.corrodinggames.librocket.scripts.Debug.PLACED.clear();\n"
             + "}\n";
         cDbg.addMethod(CtNewMethod.make(clearSrc, cDbg));
         log("OK  added Debug.clearLabels()");
 
-        // draw: project each stored world coord, draw white text there. Never throws.
+        // draw: project each stored world coord; draw text and (cached) avatar textures there. Never throws.
         String drawSrc =
               "public static void drawLabels() {\n"
             + "  try {\n"
@@ -150,10 +168,30 @@ public class LabelPatcher {
             + "      L.bO.a(s, sx, sy, p);\n"
             + "      i = i + 1;\n"
             + "    }\n"
+            + "    java.util.ArrayList pl = com.corrodinggames.librocket.scripts.Debug.PLACED;\n"
+            + "    java.util.HashMap cache = com.corrodinggames.librocket.scripts.Debug.AVATARS;\n"
+            + "    int k = 0;\n"
+            + "    while (k < pl.size()) {\n"
+            + "      java.lang.Object[] o = (java.lang.Object[]) pl.get(k);\n"
+            + "      java.lang.String path = (java.lang.String) o[0];\n"
+            + "      float wx = ((java.lang.Float) o[1]).floatValue();\n"
+            + "      float wy = ((java.lang.Float) o[2]).floatValue();\n"
+            + "      com.corrodinggames.rts.gameFramework.m.e tex = (com.corrodinggames.rts.gameFramework.m.e) cache.get(path);\n"
+            + "      if (tex == null) {\n"
+            + "        try { tex = L.bO.a(new java.io.FileInputStream(path), true); cache.put(path, tex); }\n"
+            + "        catch (Throwable t2) { tex = null; cache.put(path, null); }\n"
+            + "      }\n"
+            + "      if (tex != null) {\n"
+            + "        float sx = (wx - L.cw) * L.cX;\n"
+            + "        float sy = (wy - L.cx) * L.cX;\n"
+            + "        L.bO.a(tex, sx, sy, new android.graphics.Paint());\n"
+            + "      }\n"
+            + "      k = k + 1;\n"
+            + "    }\n"
             + "  } catch (Throwable t) { }\n"
             + "}\n";
         cDbg.addMethod(CtNewMethod.make(drawSrc, cDbg));
-        log("OK  added Debug.drawLabels()");
+        log("OK  added Debug.drawLabels() (text + avatar)");
 
         // ---- 3. hook the per-frame tail ----
         mJ.insertBefore("com.corrodinggames.librocket.scripts.Debug.drawLabels();");
