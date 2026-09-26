@@ -193,6 +193,30 @@ public class LabelPatcher {
         cDbg.addMethod(CtNewMethod.make(drawSrc, cDbg));
         log("OK  added Debug.drawLabels() (text + avatar)");
 
+        // ---- T5: 按 key 记录代表单位 id，并可按 key 删（换阵营删旧单位）----
+        cDbg.addField(CtField.make("public static java.util.HashMap REPIDS = new java.util.HashMap();", cDbg));
+        String spawnRepSrc =
+              "public void spawnRep(java.lang.String type, float x, float y, int team, java.lang.String key) {\n"
+            + "  try {\n"
+            + "    java.lang.Long id = this.createUnit(type, x, y, team, false);\n"
+            + "    if (id != null && key != null) { com.corrodinggames.librocket.scripts.Debug.REPIDS.put(key, id); }\n"
+            + "  } catch (Throwable t) { }\n"
+            + "}\n";
+        cDbg.addMethod(CtNewMethod.make(spawnRepSrc, cDbg));
+        String removeRepSrc =
+              "public void removeRep(java.lang.String key) {\n"
+            + "  try {\n"
+            + "    java.lang.Object o = com.corrodinggames.librocket.scripts.Debug.REPIDS.get(key);\n"
+            + "    if (o == null) return;\n"
+            + "    long id = ((java.lang.Long)o).longValue();\n"
+            + "    com.corrodinggames.rts.game.units.y u = com.corrodinggames.rts.gameFramework.w.b(id, true);\n"
+            + "    if (u != null) { u.cu = -1.0f; }\n"
+            + "    com.corrodinggames.librocket.scripts.Debug.REPIDS.remove(key);\n"
+            + "  } catch (Throwable t) { }\n"
+            + "}\n";
+        cDbg.addMethod(CtNewMethod.make(removeRepSrc, cDbg));
+        log("OK  added Debug.spawnRep / Debug.removeRep (keyed by viewer key)");
+
         // ---- 3. hook the per-frame tail ----
         mJ.insertBefore("com.corrodinggames.librocket.scripts.Debug.drawLabels();");
         log("OK  hooked " + CLS_G + ".j()V -> Debug.drawLabels()");
