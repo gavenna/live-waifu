@@ -272,14 +272,17 @@ function Start-Relay {
 
   Write-Host '  control panel : http://localhost:8767' -ForegroundColor Green
   Write-Host '  battle panel  : http://localhost:8767/battle.html' -ForegroundColor Green
+  Write-Host '  leaderboard   : http://localhost:8767/leaderboard.html  (OBS browser source)' -ForegroundColor Green
   Write-Host '  game launches when you click [start new round]' -ForegroundColor Yellow
   Write-Host '  window title  : [DANMAKU-RELAY] running - do not close' -ForegroundColor Gray
 
-  # open both panels in the browser
+  # open all panels in the browser (control + battle + leaderboard/OBS overlay)
   Start-Process 'http://localhost:8767/battle.html'
-  Start-Sleep -Milliseconds 800
+  Start-Sleep -Milliseconds 600
+  Start-Process 'http://localhost:8767/leaderboard.html'
+  Start-Sleep -Milliseconds 600
   Start-Process 'http://localhost:8767'
-  Write-Host '  [OK] opened control + battle panels' -ForegroundColor Green
+  Write-Host '  [OK] opened control + battle + leaderboard panels' -ForegroundColor Green
 }
 
 # ---------------------------------------------------------------- waifu
