@@ -1,8 +1,7 @@
-# live-waifu 顶层仓库：只手动纳管顶层文件（文档 / 启动脚本）。
-# 三个子项目各有独立 git 仓库、各自推送（danmaku-relay / waifu-agent / war-danmaku）。
-# ⚠️ 切勿 `git add .`——那会把子仓库加成 gitlink；一律按文件名显式 add。
+# live-waifu 单仓库：4 个子项目（waifu-agent / danmaku-relay / war-danmaku / war-vote）
+# 已并入本仓库统一版本管理（各自的独立 .git 已移除；GitHub 上原仓库保留作历史备份）。
 # ⚠️ 刻意不忽略任何目录：一旦某目录被 ignore，工作区工具链会屏蔽该目录下文件的正常读写。
-#    大目录（_archive/ war-vote/ _reports/ .hermes-cc/）保持 untracked 即可，不要 add。
+#    大目录（_archive/ .hermes-cc/ node_modules/）保持 untracked 即可，不要 add。
 
 # 备份文件
 *.bak-*
