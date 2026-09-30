@@ -3,32 +3,13 @@ chcp 65001 >nul
 cd /d "%~dp0"
 echo ============================================================
 echo  Clone the 4 sibling repos into this folder
-echo  (they are SEPARATE git repos, not part of live-waifu)
+echo  (they are SEPARATE git repos, NOT part of live-waifu)
 echo ============================================================
 echo.
-
-call :pull "waifu-agent"  "https://github.com/gavenna/waifu-agent.git"
-call :pull "danmaku-relay" "https://github.com/gavenna/live_tool.git"
-call :pull "war-danmaku"  "https://github.com/gavenna/livegame.git"
-call :pull "war-vote"     "https://github.com/gavenna/war-vote.git"
-
+if not exist "waifu-agent\.git"   git clone https://github.com/gavenna/waifu-agent.git waifu-agent
+if not exist "danmaku-relay\.git" git clone https://github.com/gavenna/live_tool.git   danmaku-relay
+if not exist "war-danmaku\.git"   git clone https://github.com/gavenna/livegame.git    war-danmaku
+if not exist "war-vote\.git"      git clone https://github.com/gavenna/war-vote.git    war-vote
 echo.
-echo ============================================================
-echo  All done.
-echo ============================================================
+echo All done. (folders that already exist were skipped)
 pause
-exit /b 0
-
-:pull
-setlocal
-set NAME=%~1
-set URL=%~2
-if exist "%~1\.git" (
-    echo [update] %NAME%
-    git -C "%NAME%" pull --ff-only
-) else (
-    echo [clone]  %NAME%  ^<- %URL%
-    git clone "%URL%" "%NAME%"
-)
-endlocal
-exit /b 0
