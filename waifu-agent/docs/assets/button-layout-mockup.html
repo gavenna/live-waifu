@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>waifu-agent 按钮布局 Mockup (真实参数)</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#1a1a2e; display:flex; justify-content:center; align-items:flex-start; min-height:100vh; font-family:sans-serif; padding-top:20px; }
+  .main { display:flex; gap:20px; align-items:flex-start; }
+
+  .win {
+    width:600px; height:800px; position:relative;
+    background:rgba(60,60,80,0.25);
+    border:1px dashed rgba(255,255,255,0.2);
+    flex-shrink:0; user-select:none;
+  }
+
+  /* Canvas 区域 */
+  .canvas-zone {
+    position:absolute; background:rgba(255,255,255,0.03);
+    border:1px solid rgba(255,255,255,0.12);
+    pointer-events:none;
+  }
+  .canvas-zone .label {
+    position:absolute; left:3px; top:3px; font-size:8px; color:rgba(255,255,255,0.2);
+  }
+
+  /* 模型位置十字 */
+  .model-cross {
+    position:absolute; pointer-events:none; z-index:5;
+  }
+  .model-cross::before, .model-cross::after {
+    content:''; position:absolute; background:rgba(139,92,246,0.4);
+  }
+  .model-cross::before { width:40px; height:1px; top:0; left:-20px; }
+  .model-cross::after { width:1px; height:40px; top:-20px; left:0; }
+
+  .btn {
+    position:absolute; display:flex; align-items:center; justify-content:center;
+    cursor:grab; z-index:20; transition: box-shadow 0.1s;
+  }
+  .btn:active { cursor:grabbing; }
+  .btn.selected { box-shadow: 0 0 0 2px #06b6d4 !important; }
+
+  .coords-label {
+    position:absolute; font-size:8px; color:rgba(255,255,255,0.25); pointer-events:none;
+    white-space:nowrap; z-index:15;
+  }
+
+  .panel {
+    background:rgba(0,0,0,0.85); color:#ccc; padding:16px;
+    border-radius:8px; font-size:12px; display:flex; flex-direction:column; gap:10px;
+    min-width:280px; position:sticky; top:20px;
+  }
+  .panel h3 { font-size:13px; color:#06b6d4; margin:0; }
+  .panel .info { font-size:10px; color:#888; line-height:1.5; }
+  .btn-cfg {
+    background:rgba(255,255,255,0.04); border-radius:6px; padding:8px 10px;
+    display:flex; flex-direction:column; gap:4px;
+  }
+  .btn-cfg .name { font-size:12px; font-weight:bold; }
+  .btn-cfg .row { display:flex; align-items:center; gap:6px; }
+  .btn-cfg .row label { font-size:10px; color:#888; width:12px; text-align:center; }
+  .btn-cfg .row input[type=number] {
+    width:56px; background:#222; color:#fff; border:1px solid #444;
+    border-radius:3px; padding:2px 4px; font-size:11px; text-align:center;
+  }
+  .btn-cfg .row input[type=range] { flex:1; height:4px; }
+  .panel .copy-btn {
+    padding:6px 12px; border-radius:4px; border:1px solid #06b6d4;
+    background:rgba(6,182,212,0.15); color:#06b6d4; cursor:pointer; font-size:12px;
+  }
+  .panel .copy-btn:hover { background:rgba(6,182,212,0.25); }
+  .panel .hint { font-size:10px; color:#666; line-height:1.4; }
+</style>
+</head>
+<body>
+
+<div class="main">
+  <div class="win" id="win">
+    <!-- Canvas zone -->
+    <div class="canvas-zone" id="cvZone"><span class="label">Canvas 600x638</span></div>
+    <!-- Model crosshair -->
+    <div class="model-cross" id="modelX"></div>
+    <!-- buttons inserted by JS -->
+  </div>
+
+  <div class="panel" id="panel">
+    <h3>Button Layout</h3>
+    <div class="info" id="infoBox">
+      窗口: 600x800<br>
+      Canvas: 600x638 offset(0, 81)<br>
+      模型位置: (511, 255)
+    </div>
+    <label style="display:flex;align-items:center;gap:8px;font-size:11px;color:#888;">
+      <input type="checkbox" id="showCanvas" checked> 显示Canvas
+    </label>
+    <div class="hint">拖拽按钮或输入坐标调整位置<br>选中后方向键微调(±1px / Shift ±10px)</div>
+    <div id="btnConfigs"></div>
+    <button class="copy-btn" onclick="copyPositions()">复制坐标到剪贴板</button>
+  </div>
+</div>
+
+<script>
+// ── 用户实际参数 ──
+const WIN_W = 600, WIN_H = 800;
+const CANVAS_W = 600, CANVAS_H = 638;
+const CANVAS_X = 0, CANVAS_Y = 81;
+const MODEL_X = 300, MODEL_Y = 319; // centerModel=true: canvas中心
+
+// Canvas zone
+const cv = document.getElementById('cvZone');
+cv.style.cssText = `left:${CANVAS_X}px; top:${CANVAS_Y}px; width:${CANVAS_W}px; height:${CANVAS_H}px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.12); position:absolute; pointer-events:none;`;
+
+// Model crosshair
+const mx = document.getElementById('modelX');
+mx.style.cssText = `left:${CANVAS_X + MODEL_X}px; top:${CANVAS_Y + MODEL_Y}px; position:absolute; pointer-events:none; z-index:5;`;
+mx.innerHTML = '<span style="position:absolute;left:3px;top:3px;font-size:8px;color:rgba(139,92,246,0.5);white-space:nowrap;">model (511,255)</span>';
+
+// Show/hide canvas
+document.getElementById('showCanvas').addEventListener('change', (e) => {
+  cv.style.display = e.target.checked ? '' : 'none';
+  mx.style.display = e.target.checked ? '' : 'none';
+});
+
+// ── 按钮定义 ──
+const buttons = [
+  { id:'close',    label:'✕',  w:16, h:16, x:435, y:440, color:'#666', bg:'rgba(30,30,40,0.5)', border:'1px solid rgba(255,255,255,0.12)', radius:'50%' },
+  { id:'settings', label:'⚙', w:28, h:28, x:430, y:470, color:'#ccc', bg:'rgba(30,30,40,0.7)', border:'1px solid rgba(255,255,255,0.2)',  radius:'50%' },
+  { id:'chat',     label:'💬',w:28, h:28, x:430, y:520, color:'#ccc', bg:'rgba(30,30,40,0.7)', border:'1px solid rgba(255,255,255,0.2)',  radius:'50%' },
+  { id:'lab',      label:'🧪',w:22, h:18, x:430, y:570, color:'#a855f7', bg:'rgba(30,30,40,0.7)', border:'1px solid rgba(168,85,247,0.3)', radius:'4px' },
+];
+
+let selectedId = null;
+
+// Build controls
+const panel = document.getElementById('btnConfigs');
+buttons.forEach(b => {
+  const div = document.createElement('div');
+  div.className = 'btn-cfg';
+  div.innerHTML = `
+    <div class="name" style="color:${b.color}">${b.label} ${b.id} (${b.w}x${b.h})</div>
+    <div class="row">
+      <label>X</label>
+      <input type="range" id="${b.id}-xr" min="0" max="${WIN_W}" value="${b.x}" step="1">
+      <input type="number" id="${b.id}-xn" min="0" max="${WIN_W}" value="${b.x}">
+    </div>
+    <div class="row">
+      <label>Y</label>
+      <input type="range" id="${b.id}-yr" min="0" max="${WIN_H}" value="${b.y}" step="1">
+      <input type="number" id="${b.id}-yn" min="0" max="${WIN_H}" value="${b.y}">
+    </div>
+  `;
+  panel.appendChild(div);
+});
+
+// Create button elements
+const win = document.getElementById('win');
+const btnEls = {}, coordLabels = {};
+buttons.forEach(b => {
+  const el = document.createElement('div');
+  el.className = 'btn';
+  el.id = 'btn-' + b.id;
+  el.textContent = b.label;
+  el.style.cssText = `
+    left:${b.x}px; top:${b.y}px; width:${b.w}px; height:${b.h}px;
+    border-radius:${b.radius}; border:${b.border}; background:${b.bg}; color:${b.color};
+    font-size:${b.id==='close'?'9px':b.id==='lab'?'8px':'13px'};
+  `;
+  el.title = b.id + ' (drag me)';
+  el.addEventListener('mousedown', (e) => onBtnMouseDown(e, b.id));
+  win.appendChild(el);
+  btnEls[b.id] = el;
+
+  const lbl = document.createElement('div');
+  lbl.className = 'coords-label';
+  lbl.id = 'lbl-' + b.id;
+  win.appendChild(lbl);
+  coordLabels[b.id] = lbl;
+});
+
+function updateCoordLabel(id) {
+  const b = buttons.find(x => x.id === id);
+  const lbl = coordLabels[id];
+  lbl.textContent = `${b.x},${b.y}`;
+  lbl.style.left = (b.x + b.w + 4) + 'px';
+  lbl.style.top = (b.y + b.h/2 - 6) + 'px';
+}
+
+function syncControlsToButtons(id) {
+  const b = buttons.find(x => x.id === id);
+  document.getElementById(id + '-xr').value = b.x;
+  document.getElementById(id + '-xn').value = b.x;
+  document.getElementById(id + '-yr').value = b.y;
+  document.getElementById(id + '-yn').value = b.y;
+}
+
+function applyPosition(id) {
+  const b = buttons.find(x => x.id === id);
+  b.x = Math.max(0, Math.min(WIN_W - b.w, b.x));
+  b.y = Math.max(0, Math.min(WIN_H - b.h, b.y));
+  btnEls[id].style.left = b.x + 'px';
+  btnEls[id].style.top = b.y + 'px';
+  updateCoordLabel(id);
+}
+
+// ── Dragging ──
+let dragId = null, dragStartX, dragStartY, dragOrigX, dragOrigY;
+function onBtnMouseDown(e, id) {
+  e.stopPropagation(); e.preventDefault();
+  dragId = id; selectedId = id;
+  dragStartX = e.clientX; dragStartY = e.clientY;
+  const b = buttons.find(x => x.id === id);
+  dragOrigX = b.x; dragOrigY = b.y;
+  Object.values(btnEls).forEach(el => el.classList.remove('selected'));
+  btnEls[id].classList.add('selected');
+  document.addEventListener('mousemove', onDrag);
+  document.addEventListener('mouseup', onDragEnd);
+}
+function onDrag(e) {
+  if (!dragId) return;
+  const dx = e.clientX - dragStartX;
+  const dy = e.clientY - dragStartY;
+  const b = buttons.find(x => x.id === dragId);
+  b.x = dragOrigX + dx;
+  b.y = dragOrigY + dy;
+  applyPosition(dragId);
+  syncControlsToButtons(dragId);
+}
+function onDragEnd() {
+  dragId = null;
+  document.removeEventListener('mousemove', onDrag);
+  document.removeEventListener('mouseup', onDragEnd);
+}
+
+// ── Control inputs ──
+buttons.forEach(b => {
+  ['xr','xn','yr','yn'].forEach(suffix => {
+    document.getElementById(b.id + '-' + suffix).addEventListener('input', () => {
+      const isRange = suffix.endsWith('r');
+      const isX = suffix.startsWith('x');
+      const val = parseInt(document.getElementById(b.id + '-' + suffix).value) || 0;
+      if (isRange) document.getElementById(b.id + '-' + suffix.replace('r','n')).value = val;
+      else document.getElementById(b.id + '-' + suffix.replace('n','r')).value = val;
+      if (isX) b.x = val; else b.y = val;
+      applyPosition(b.id);
+      selectedId = b.id;
+      Object.values(btnEls).forEach(el => el.classList.remove('selected'));
+      btnEls[b.id].classList.add('selected');
+    });
+  });
+});
+
+// ── Keyboard ──
+document.addEventListener('keydown', (e) => {
+  if (!selectedId) return;
+  const b = buttons.find(x => x.id === selectedId);
+  if (!b) return;
+  const step = e.shiftKey ? 10 : 1;
+  let moved = false;
+  switch(e.key) {
+    case 'ArrowLeft':  b.x -= step; moved = true; break;
+    case 'ArrowRight': b.x += step; moved = true; break;
+    case 'ArrowUp':    b.y -= step; moved = true; break;
+    case 'ArrowDown':  b.y += step; moved = true; break;
+  }
+  if (moved) { e.preventDefault(); applyPosition(b.id); syncControlsToButtons(b.id); }
+});
+win.addEventListener('mousedown', (e) => {
+  if (e.target === win) {
+    selectedId = null;
+    Object.values(btnEls).forEach(el => el.classList.remove('selected'));
+  }
+});
+
+function copyPositions() {
+  const lines = buttons.map(b =>
+    `${b.id}: { x: ${b.x}, y: ${b.y} }  // ${b.label} ${b.w}x${b.h}`
+  );
+  navigator.clipboard.writeText(lines.join('\n')).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    btn.textContent = '已复制!';
+    setTimeout(() => btn.textContent = '复制坐标到剪贴板', 1500);
+  });
+}
+
+// Init
+buttons.forEach(b => { applyPosition(b.id); syncControlsToButtons(b.id); });
+</script>
+</body>
+</html>

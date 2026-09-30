@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>danmaku-relay 控制面板</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="app">
+  <header id="titlebar">
+    <div class="tb-left">🔁 danmaku-relay</div>
+    <div class="tb-center"><span id="header-status" class="hdr-off">● 未启动</span></div>
+    <div class="tb-right">
+      <button class="hdr-btn" onclick="openLogsFolder()" title="查看日志">📋</button>
+      <button class="hdr-btn hdr-close" onclick="closeWindow()">✕</button>
+    </div>
+  </header>
+
+  <div id="body">
+    <nav id="nav">
+      <button class="nav-item active" data-panel="dashboard">
+        <span class="nav-icon">◈</span><span>控制台</span>
+      </button>
+      <button class="nav-item" data-panel="settings">
+        <span class="nav-icon">⚙</span><span>设置</span>
+      </button>
+    </nav>
+
+    <main id="panels">
+      <!-- ====== 控制台 ====== -->
+      <section id="panel-dashboard" class="panel active">
+        <div class="row top-row">
+          <div class="card ctrl-card">
+            <div class="card-inner">
+              <div id="status-area">
+                <div id="status-ring" class="ring-off"></div>
+                <div id="status-main-text">中继未启动</div>
+                <div id="status-sub-text">点击下方按钮启动</div>
+              </div>
+              <div class="ctrl-buttons">
+                <button id="btn-start" class="btn-primary" onclick="startAll()">▶ 启动全部</button>
+                <button id="btn-douyin" class="btn-douyin" onclick="toggleDouyin()">📡 启动抖音</button>
+                <button id="btn-bilibili" class="btn-bilibili" onclick="toggleBilibili()">📺 启动B站</button>
+                <button id="btn-stop" class="btn-danger" onclick="stopAll()">■ 全部停止</button>
+                <button id="btn-diag" class="btn-diag" onclick="runDiagnose()">🔍 一键体检</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card stats-card">
+            <div class="card-title">运行状态</div>
+            <div class="stat-grid">
+              <div class="stat"><span class="stat-v" id="st-douyinlive">—</span><span class="stat-l">douyinLive 进程</span></div>
+              <div class="stat"><span class="stat-v" id="st-douyin">—</span><span class="stat-l">抖音适配器</span></div>
+              <div class="stat"><span class="stat-v" id="st-bilibili">—</span><span class="stat-l">B站适配器</span></div>
+              <div class="stat"><span class="stat-v" id="st-subs">0</span><span class="stat-l">订阅方</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card log-card">
+          <div class="card-title" style="display:flex;justify-content:space-between;align-items:center">
+            <span>事件日志</span>
+            <span class="log-filter">
+              <button class="flt-btn active" data-flt="all">全部</button>
+              <button class="flt-btn" data-flt="douyin">抖音</button>
+              <button class="flt-btn" data-flt="bilibili">B站</button>
+            </span>
+          </div>
+          <div id="event-log"><div class="log-empty">等待操作…</div></div>
+        </div>
+
+        <div class="card diag-card" id="diag-card" style="display:none">
+          <div class="card-title" style="display:flex;justify-content:space-between;align-items:center">
+            <span>🔍 链路体检结果</span>
+            <span>
+              <span id="diag-summary" class="diag-summary"></span>
+              <button class="flt-btn" onclick="document.getElementById('diag-card').style.display='none'">✕ 关闭</button>
+            </span>
+          </div>
+          <div id="diag-list"></div>
+        </div>
+      </section>
+
+      <!-- ====== 设置 ====== -->
+      <section id="panel-settings" class="panel">
+        <div class="card">
+          <div class="card-title">抖音直播</div>
+          <div class="form">
+            <label><span>启用</span><input type="checkbox" id="cfg-dy-en"></label>
+            <label><span>直播间号</span><input type="text" id="cfg-dy-room" placeholder="642238215421"></label>
+            <label><span>Cookie</span><textarea id="cfg-dy-ck" rows="3" placeholder="F12→Network→复制Cookie头"></textarea></label>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">B站直播</div>
+          <div class="form">
+            <label><span>直播间号</span><input type="text" id="cfg-bl-room" placeholder="26111140"></label>
+            <label><span>Cookie</span><textarea id="cfg-bl-ck" rows="3" placeholder="F12→Network→复制Cookie头"></textarea></label>
+          </div>
+        </div>
+        <div class="card-actions">
+          <button class="btn-primary" onclick="saveConfig()">保存设置</button>
+          <span id="cfg-save-msg"></span>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Python (for hook scripts)
+__pycache__/
+*.pyc
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env
+.env
+.env.local
+
+# Game data (runtime)
+server/logs/
+data/
+
+# Claude Code
+.claude/*
+# 项目基础设施例外 — skills/rules/agents/hooks/workflows 是团队资产
+!.claude/skills/
+!.claude/rules/
+!.claude/agents/
+!.claude/hooks/
+!.claude/workflows/
+# 但仍排除会话临时文件
+.claude/transcripts/
+.claude/worktrees/
+.claude/scheduled_tasks.json
+.claude/settings.local.json
+
+# Assets (large binary files, keep out of git)
+# 2026-09-02: 精灵图改为纳入版本管理 — clone 即可运行（frontend/assets/sprites/ 是前端运行时加载路径）
+
+# External tools (compiled binaries)
+tools/
+vendor/
+
+# Audio (user-managed, large binary files)
+*.mp3
+*.wav
+*.ogg
+!frontend/assets/audio/.gitkeep
+
+# Secrets (API keys)
+server/secrets.json
+
+# Build output
+dist/
+war-danmaku.exe
+*.jsc
+
+# Announcer test output
+server/announcer/test-output/

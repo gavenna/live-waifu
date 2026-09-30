@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>搜索链路诊断 — waifu-agent</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: 'Segoe UI', system-ui, sans-serif; background:#0d0d12; color:#ccc; padding:24px; }
+h1 { color:#fff; font-size:18px; margin-bottom:4px; }
+.sub { color:#666; font-size:12px; margin-bottom:24px; }
+
+.pipeline { display:flex; gap:8px; margin-bottom:32px; overflow-x:auto; padding-bottom:12px; }
+.stage { min-width:150px; flex:1; border-radius:8px; padding:16px 14px; position:relative; }
+.stage .num { font-size:11px; color:#666; margin-bottom:4px; }
+.stage .name { font-size:14px; font-weight:600; margin-bottom:8px; color:#fff; }
+.stage .desc { font-size:11px; color:#888; line-height:1.5; margin-bottom:8px; }
+.stage .badge { display:inline-block; padding:2px 8px; border-radius:4px; font-size:10px; font-weight:600; }
+.badge.ok { background:#166534; color:#4ade80; }
+.badge.warn { background:#713f12; color:#fbbf24; }
+.badge.bad { background:#7f1d1d; color:#f87171; }
+
+.ok { border:1px solid #166534; background:#0a1a0f; }
+.warn { border:1px solid #713f12; background:#1a1408; }
+.bad { border:1px solid #7f1d1d; background:#1a0a0a; }
+
+.arrow { display:flex; align-items:center; color:#444; font-size:18px; min-width:24px; }
+
+.trace { margin-bottom:32px; }
+.trace h2 { font-size:15px; color:#fff; margin-bottom:12px; }
+.trace-row { display:flex; gap:8px; margin-bottom:4px; font-size:12px; }
+.trace-label { min-width:140px; color:#888; text-align:right; padding:4px 8px; }
+.trace-cell { flex:1; padding:4px 8px; border-radius:4px; min-width:100px; text-align:center; }
+.tc-ok { background:#0a3015; color:#4ade80; }
+.tc-warn { background:#301e0a; color:#fbbf24; }
+.tc-bad { background:#300a0a; color:#f87171; }
+.tc-skip { background:#111; color:#444; }
+
+.issues { display:grid; grid-template-columns:repeat(auto-fill, minmax(320px,1fr)); gap:12px; }
+.issue { border-radius:8px; padding:14px; }
+.issue .tag { font-size:10px; font-weight:700; padding:1px 6px; border-radius:3px; margin-right:6px; }
+.tag.block { background:#7f1d1d; color:#fca5a5; }
+.tag.quality { background:#713f12; color:#fde68a; }
+.tag.gap { background:#1e3a5f; color:#93c5fd; }
+.tag.fixed { background:#166534; color:#86efac; }
+.issue h3 { font-size:13px; color:#fff; margin:8px 0 4px; }
+.issue p { font-size:11px; color:#999; line-height:1.5; }
+</style>
+</head>
+<body>
+
+<h1>waifu-agent 搜索链路诊断</h1>
+<p class="sub">数据来源: 2026-07-01 日志 + 对话记录</p>
+
+<!-- Pipeline -->
+<div class="pipeline">
+  <div class="stage ok">
+    <div class="num">①</div><div class="name">输入</div>
+    <div class="desc">ChatUI/ChatWindow<br>emit chat-send</div>
+    <div class="badge ok">OK</div>
+  </div>
+  <div class="arrow">→</div>
+  <div class="stage ok">
+    <div class="num">②</div><div class="name">路由</div>
+    <div class="desc">App.tsx handler<br>读 settings, 选模式</div>
+    <div class="badge ok">OK</div>
+  </div>
+  <div class="arrow">→</div>
+  <div class="stage bad">
+    <div class="num">③</div><div class="name">预搜索</div>
+    <div class="desc">webSearchEnabled?<br>→ invoke web_search<br>→ 注入结果到消息</div>
+    <div class="badge bad">2/3 崩溃</div>
+  </div>
+  <div class="arrow">→</div>
+  <div class="stage warn">
+    <div class="num">④</div><div class="name">Agent Loop</div>
+    <div class="desc">LLM + tool defs<br>可调 web_search<br>可调 fetch_page</div>
+    <div class="badge warn">放弃深挖</div>
+  </div>
+  <div class="arrow">→</div>
+  <div class="stage ok">
+    <div class="num">⑤</div><div class="name">Rust 调度</div>
+    <div class="desc">execute_builtin_tool<br>→ Python subprocess</div>
+    <div class="badge ok">OK</div>
+  </div>
+  <div class="arrow">→</div>
+  <div class="stage bad">
+    <div class="num">⑥</div><div class="name">Python</div>
+    <div class="desc">web_search.py<br>Bing→Tavily→DDG<br>print JSON to stdout</div>
+    <div class="badge bad">GBK 崩溃</div>
+  </div>
+  <div class="arrow">→</div>
+  <div class="stage warn">
+    <div class="num">⑦</div><div class="name">展示</div>
+    <div class="desc">last_search.txt ✅<br>last_fetch.txt ❌<br>TTS + 口型 + 模型</div>
+    <div class="badge warn">缺落盘</div>
+  </div>
+</div>
+
+<!-- 3 traces -->
+<div class="trace">
+<h2>📋 今天 3 次查询走查</h2>
+
+<div class="trace-row">
+  <div class="trace-label"></div>
+  <div class="trace-cell" style="background:#1a1a2e;color:#fff">"泡面怎么煮最好吃"</div>
+  <div class="trace-cell" style="background:#1a1a2e;color:#fff">"最流行的中文歌曲"</div>
+  <div class="trace-cell" style="background:#1a1a2e;color:#fff">"最近比较火的游戏"</div>
+</div>
+<div class="trace-row">
+  <div class="trace-label">① 输入</div><div class="trace-cell tc-ok">OK</div><div class="trace-cell tc-ok">OK</div><div class="trace-cell tc-ok">OK</div>
+</div>
+<div class="trace-row">
+  <div class="trace-label">② 路由</div><div class="trace-cell tc-ok">builtin</div><div class="trace-cell tc-ok">builtin</div><div class="trace-cell tc-ok">builtin</div>
+</div>
+<div class="trace-row">
+  <div class="trace-label">③ 预搜索</div>
+  <div class="trace-cell tc-bad">GBK 崩溃</div>
+  <div class="trace-cell tc-bad">GBK 崩溃</div>
+  <div class="trace-cell tc-warn">成功但垃圾结果</div>
+</div>
+<div class="trace-row">
+  <div class="trace-label">④ LLM 行为</div>
+  <div class="trace-cell tc-warn">凭记忆编</div>
+  <div class="trace-cell tc-warn">凭记忆编</div>
+  <div class="trace-cell tc-warn">看到垃圾，不深挖</div>
+</div>
+<div class="trace-row">
+  <div class="trace-label">⑤ Rust 调度</div><div class="trace-cell tc-skip">—</div><div class="trace-cell tc-skip">—</div><div class="trace-cell tc-ok">OK</div>
+</div>
+<div class="trace-row">
+  <div class="trace-label">⑥ Python</div>
+  <div class="trace-cell tc-bad">print(\xa0) → GBK</div>
+  <div class="trace-cell tc-bad">print(\xa0) → GBK</div>
+  <div class="trace-cell tc-warn">Bing 拆词错误</div>
+</div>
+<div class="trace-row">
+  <div class="trace-label">⑦ 结果</div>
+  <div class="trace-cell tc-warn">可能虚构</div>
+  <div class="trace-cell tc-warn">可能虚构</div>
+  <div class="trace-cell tc-warn">部分编造</div>
+</div>
+</div>
+
+<!-- Issues -->
+<h2 style="font-size:15px;color:#fff;margin-bottom:12px;">🔍 断点定位</h2>
+<div class="issues">
+  <div class="issue bad">
+    <span class="tag block">阻塞</span><span style="font-size:10px;color:#666">第⑥层</span>
+    <h3>A. Python GBK 编码崩溃</h3>
+    <p>Windows stdout 默认 GBK，Bing 爬回的 HTML 含 \xa0 字符（non-breaking space），print() 时 UnicodeEncodeError 导致整个脚本退出。今天 3 次搜索中 2 次因此失败。</p>
+    <p style="margin-top:8px;color:#fca5a5;">影响：阻断整个搜索链路 → 模型收不到搜索结果 → fetch_page 没机会被调用</p>
+  </div>
+  <div class="issue warn">
+    <span class="tag quality">质量</span><span style="font-size:10px;color:#666">第⑥层</span>
+    <h3>B. Bing 中文多关键词拆词错误</h3>
+    <p>"最近比较火的游戏" → Bing 把"最近"当作独立词条，返回百度百科释义和 2006 年李圣杰的歌。5 条结果没有一条关于游戏。</p>
+    <p style="margin-top:8px;color:#fde68a;">影响：即使不崩溃，搜索结果也没有价值</p>
+  </div>
+  <div class="issue warn">
+    <span class="tag gap">缺口</span><span style="font-size:10px;color:#666">第④层</span>
+    <h3>C. 搜索失败后模型不补救</h3>
+    <p>模型看到垃圾结果后说"不太对劲，又搜了一下"，但日志显示 has_tool_calls=false，它并没有真的再次调用 web_search 或 fetch_page。最终答案部分内容来自训练数据而非实时搜索。</p>
+    <p style="margin-top:8px;color:#93c5fd;">影响：模型知道自己信息不足，但没有使用工具去弥补</p>
+  </div>
+  <div class="issue" style="border:1px solid #166534;background:#0a1a0f;">
+    <span class="tag fixed">已修未编</span><span style="font-size:10px;color:#666">第⑦层</span>
+    <h3>D. fetch_page 结果不可见</h3>
+    <p>web_search 写 last_search.txt，但 fetch_page 没有对应的落盘文件。补了一行 std::fs::write → last_fetch.txt，但还没重新编译跑过。</p>
+  </div>
+</div>
+
+</body>
+</html>

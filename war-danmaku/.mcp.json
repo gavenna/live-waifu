@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "mevoric": {
+      "type": "stdio",
+      "command": "node",
+      "args": [
+        "D:/Apps/Scoop/persist/nodejs-lts/bin/node_modules/mevoric/server.mjs"
+      ],
+      "env": {
+        "AGENT_BRIDGE_NAME": "danmaku"
+      }
+    }
+  }
+}

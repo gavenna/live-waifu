@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>War Danmaku — 炎龙 vs 霜狼</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #111;
+    font-family: 'Microsoft YaHei', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    overflow-y: auto;
+  }
+  #wrapper {
+    display: flex;
+    gap: 0;
+  }
+  #game-container {
+    position: relative;
+    transform-origin: top left;
+  }
+  canvas {
+    position: absolute;
+    top: 0; left: 0;
+  }
+  #battle-layer { z-index: 1; }
+  #ui-layer { z-index: 2; }
+  #danmaku-layer { z-index: 3; pointer-events: none; }
+  #status {
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #888;
+    font-size: 20px;
+    z-index: 10;
+    pointer-events: none;
+  }
+
+  /* === 控制面板 === */
+  #panel {
+    width: 260px;
+    min-width: 260px;
+    background: rgba(20, 20, 35, 0.95);
+    border-left: 1px solid rgba(255,255,255,0.1);
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    overflow-y: auto;
+    max-height: 100vh;
+  }
+  #panel.hidden { display: none; }
+
+  #panel h3 {
+    color: #aaa;
+    font-size: 13px;
+    font-weight: normal;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 2px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    padding-bottom: 4px;
+  }
+  #panel .row {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+  #panel button {
+    font-family: inherit;
+    font-size: 12px;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 4px;
+    padding: 6px 10px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  #panel button:hover { border-color: rgba(255,255,255,0.4); }
+  #panel button:active { transform: scale(0.96); }
+
+  /* 阵营按钮 */
+  .btn-red { background: rgba(220,60,60,0.4); color: #f88; }
+  .btn-red:hover { background: rgba(220,60,60,0.6); }
+  .btn-blue { background: rgba(60,80,200,0.4); color: #8af; }
+  .btn-blue:hover { background: rgba(60,80,200,0.6); }
+
+  /* 免费指令 */
+  .btn-free { background: rgba(255,255,255,0.06); color: #ccc; }
+  .btn-free:hover { background: rgba(255,255,255,0.15); }
+
+  /* 付费兵种 */
+  .btn-gift { background: rgba(180,140,60,0.3); color: #da5; }
+  .btn-gift:hover { background: rgba(180,140,60,0.5); }
+
+  /* 高级兵种 */
+  .btn-elite { background: rgba(200,100,200,0.3); color: #d8a; }
+  .btn-elite:hover { background: rgba(200,100,200,0.5); }
+
+  /* 技能 */
+  .btn-skill { background: rgba(200,80,20,0.35); color: #f84; }
+  .btn-skill:hover { background: rgba(200,80,20,0.55); }
+
+  /* 盲盒 */
+  .btn-chest { background: rgba(60,180,120,0.3); color: #5c5; }
+  .btn-chest:hover { background: rgba(60,180,120,0.5); }
+
+  /* 功能按钮 */
+  .btn-util { background: transparent; color: #777; font-size: 11px; border-color: rgba(255,255,255,0.06); }
+  .btn-util:hover { color: #aaa; }
+
+  #panel .state-line {
+    color: #666;
+    font-size: 11px;
+    text-align: center;
+  }
+  #panel .state-line span { color: #aaa; }
+</style>
+</head>
+<body>
+<div id="wrapper">
+  <div id="game-container">
+    <canvas id="battle-layer"></canvas>
+    <canvas id="ui-layer"></canvas>
+    <canvas id="danmaku-layer"></canvas>
+    <div id="status">⚔ 等待连接...</div>
+  </div>
+
+  <div id="panel">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <span style="color:#aaa;font-size:14px;font-weight:bold">⚔ 控制台</span>
+      <button class="btn-util" onclick="togglePanel()" title="隐藏面板">✕</button>
+    </div>
+    <div class="state-line">状态: <span id="panel-state">-</span> | R<span id="panel-round">-</span> | <span id="panel-players">0v0</span></div>
+    <div id="phase-timer" style="text-align:center;font-size:18px;color:#ddd;padding:4px 0;
+      background:rgba(255,255,255,0.03);border-radius:4px;font-variant-numeric:tabular-nums">--</div>
+
+    <h3>流程控制</h3>
+    <div class="row">
+      <button class="btn-util" onclick="admin('skip_countdown')" id="btn-skip" style="border-color:rgba(255,200,50,0.3);color:#fc5">⏭ 跳过倒计时</button>
+      <button class="btn-util" onclick="admin('end_round')" id="btn-end" style="border-color:rgba(255,80,80,0.3);color:#f66">⏹ 结束本局</button>
+      <button class="btn-util" onclick="admin('reset')" style="border-color:rgba(255,255,255,0.1);color:#888">↻ 重置</button>
+    </div>
+
+    <h3>🔊 音效</h3>
+    <div class="row">
+      <button class="btn-util" id="btn-mute" onclick="toggleMute()" style="border-color:rgba(255,200,50,0.3);color:#fc5">🔊 音效 ON</button>
+    </div>
+    <div class="row" style="flex-direction:column;gap:3px;margin-top:2px">
+      <label style="color:#888;font-size:10px;display:flex;justify-content:space-between">主音量 <span id="vol-master-label">70%</span></label>
+      <input type="range" min="0" max="100" value="70" oninput="setMasterVol(this.value/100)" style="width:100%;accent-color:#fc5">
+      <label style="color:#888;font-size:10px;display:flex;justify-content:space-between">BGM <span id="vol-bgm-label">50%</span></label>
+      <input type="range" min="0" max="100" value="50" oninput="setBGMVol(this.value/100)" style="width:100%;accent-color:#fc5">
+      <label style="color:#888;font-size:10px;display:flex;justify-content:space-between">SFX <span id="vol-sfx-label">80%</span></label>
+      <input type="range" min="0" max="100" value="80" oninput="setSFXVol(this.value/100)" style="width:100%;accent-color:#fc5">
+    </div>
+
+    <h3>调试 & 微调</h3>
+    <div class="row">
+      <button class="btn-util" id="btn-debug" onclick="toggleDebug()" style="border-color:rgba(100,255,100,0.3);color:#5f5">🔍 调试网格</button>
+      <button class="btn-util" id="btn-lb" onclick="toggleLB()" style="border-color:rgba(255,215,0,0.3);color:#da5">👁 排行榜</button>
+      <button class="btn-util" onclick="admin('reset_rankings')" style="border-color:rgba(255,100,100,0.25);color:#f66;font-size:10px">🔄 重置排行</button>
+    </div>
+    <div class="row" style="margin-top:2px">
+      <button class="btn-util" onclick="copyPOS()" style="font-size:10px;border-color:rgba(255,255,255,0.15);color:#aaa">📋 复制POS</button>
+      <button class="btn-util" onclick="applyPOS()" style="font-size:10px;border-color:rgba(100,200,255,0.25);color:#8cf">✅ 应用JSON</button>
+    </div>
+    <textarea id="pos-json" placeholder="粘贴 POS JSON 覆盖值...&#10;例: {&quot;castleBar&quot;:{&quot;y&quot;:70}}"
+      style="width:100%;height:60px;font:9px monospace;background:rgba(0,0,0,0.5);color:#aaa;border:1px solid rgba(255,255,255,0.1);border-radius:3px;resize:vertical;margin-top:2px"></textarea>
+    <div style="color:#555;font-size:9px;margin-top:-2px;line-height:1.3">
+      💡 <b>拖拽调参</b>（推荐）：<br>
+      开启🔍→画面出现<span style="color:#fff">白色方块手柄</span>→拖动手柄即改位置<br>
+      拖完后值输出到Console→记下来贴到 ui.js 固化<br>
+      📋 调好后点"复制POS"→粘贴到 ui.js → 固化
+    </div>
+    <input id="panel-name" type="text" placeholder="你的名字（可选）" maxlength="12"
+      style="width:100%;padding:4px 8px;font-size:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:4px;color:#ccc;font-family:inherit;">
+
+    <h3>阵营</h3>
+    <div class="row">
+      <button class="btn-red" onclick="join('red')">🔴 加入炎龙</button>
+      <button class="btn-blue" onclick="join('blue')">🔵 加入霜狼</button>
+    </div>
+
+    <h3>免费指令（克：民兵→突袭→弓→矛→民兵）</h3>
+    <div class="row">
+      <button class="btn-free" onclick="dm('杀')" title="克突袭兵">杀 → ×3民兵</button>
+      <button class="btn-free" onclick="dm('枪')" title="克民兵">枪 → ×2矛兵</button>
+      <button class="btn-free" onclick="dm('射')" title="克矛兵">射 → ×2弓兵</button>
+    </div>
+    <div class="row">
+      <button class="btn-free" onclick="dm('袭')" title="克弓兵">袭 → ×2突袭兵</button>
+      <button class="btn-free" onclick="dm('冲')" title="克弓兵">冲 → ×2突袭兵</button>
+      <button class="btn-free" onclick="dm('666')">666 → ×3民兵</button>
+    </div>
+
+    <h3>入门兵种 1~5¥</h3>
+    <div class="row">
+      <button class="btn-gift" onclick="gift('swordsman')">剑士 1¥</button>
+      <button class="btn-gift" onclick="gift('knight')">骑士 5¥</button>
+    </div>
+
+    <h3>进阶层 10~30¥</h3>
+    <div class="row">
+      <button class="btn-gift" onclick="gift('archer')">弓手 10¥</button>
+      <button class="btn-gift" onclick="gift('catapult')">投石车 30¥</button>
+    </div>
+
+    <h3>核心层 99~299¥ ★</h3>
+    <div class="row">
+      <button class="btn-elite" onclick="gift('royalGuard')">皇家卫队 99¥</button>
+      <button class="btn-elite" onclick="gift('batteringRam')">攻城锤 299¥</button>
+    </div>
+
+    <h3>顶级层 520~3000¥ ★★★</h3>
+    <div class="row">
+      <button class="btn-elite" onclick="gift('giant')">岩石巨人 520¥</button>
+      <button class="btn-elite" onclick="gift('dragonKnight')">龙骑士 1200¥</button>
+    </div>
+
+    <h3>技能 & 盲盒</h3>
+    <div class="row">
+      <button class="btn-skill" onclick="gift('fireArrow')">火矢齐射 199¥</button>
+      <button class="btn-skill" onclick="gift('wrathOfGod')">天神之怒 3000¥</button>
+      <button class="btn-chest" onclick="gift('warChest')">🎲 战争宝箱 99¥</button>
+    </div>
+  </div>
+</div>
+
+<script src="audio.js"></script>
+<script src="wsClient.js"></script>
+<script src="sprites.js"></script>
+<script src="ui.js"></script>
+<script src="renderer.js"></script>
+
+
+<script>
+  // === 控制面板逻辑 ===
+
+  const PLAYER_ID = 'panel_' + Math.random().toString(36).slice(2, 8);
+
+  function getName() {
+    const input = document.getElementById('panel-name');
+    return input.value.trim() || PLAYER_ID;
+  }
+
+  function join(team) {
+    window.sendToServer({ type: 'join', team, playerId: PLAYER_ID, playerName: getName() });
+    console.log('[Panel] join', team, 'as', getName());
+  }
+
+  function gift(troopKey) {
+    window.sendToServer({ type: 'gift', troopKey, playerId: PLAYER_ID, playerName: getName() });
+    console.log('[Panel] gift', troopKey);
+  }
+
+  function dm(text) {
+    window.sendToServer({ type: 'danmaku', text, playerId: PLAYER_ID, playerName: getName() });
+    console.log('[Panel] danmaku:', text);
+  }
+
+  function admin(action) {
+    window.sendToServer({ type: 'admin', action, playerId: PLAYER_ID });
+    console.log('[Panel] admin:', action);
+  }
+
+  function togglePanel() {
+    document.getElementById('panel').classList.toggle('hidden');
+  }
+
+  // 监听游戏状态更新面板信息
+  const origOnState = window.onStateUpdate;
+  window.onStateUpdate = function(state) {
+    if (origOnState) origOnState(state);
+    const el = document.getElementById('panel-state');
+    const elR = document.getElementById('panel-round');
+    const elP = document.getElementById('panel-players');
+    const elT = document.getElementById('phase-timer');
+    const elSkip = document.getElementById('btn-skip');
+    const elEnd = document.getElementById('btn-end');
+
+    if (el) el.textContent = state.state || '-';
+    if (elR) elR.textContent = state.round || '-';
+    if (elP) {
+      const r = (state.red && state.red.playerCount) || 0;
+      const b = (state.blue && state.blue.playerCount) || 0;
+      elP.textContent = r + 'v' + b;
+    }
+
+    // 阶段倒计时
+    if (elT && state.phaseTotal > 0) {
+      const elapsed = state.phaseElapsed || 0;
+      const remain = Math.max(0, state.phaseTotal - elapsed);
+      const s = Math.ceil(remain / 1000);
+      const m = Math.floor(s / 60);
+      const sec = s % 60;
+      const label = state.state === 'COUNTDOWN' ? '准备' :
+                    state.state === 'PLAYING' ? '战斗' :
+                    state.state === 'ROUND_END' ? '结算' : '';
+      elT.textContent = label + ' ' + m + ':' + String(sec).padStart(2, '0');
+      // 颜色
+      if (state.state === 'COUNTDOWN') elT.style.color = '#fc5';
+      else if (state.state === 'PLAYING') elT.style.color = '#cf6';
+      else elT.style.color = '#aaa';
+    } else if (elT) {
+      elT.textContent = '--';
+    }
+
+    // 隐藏不适用的按钮
+    if (elSkip) elSkip.style.display = state.state === 'COUNTDOWN' ? '' : 'none';
+    if (elEnd) elEnd.style.display = state.state === 'PLAYING' ? '' : 'none';
+  };
+
+    // HTML status div 始终隐藏（Canvas 状态徽章已提供相同信息）
+    document.getElementById('status').style.display = 'none';
+
+  // === 调试工具 ===
+  var _posSnapshot = null; // 开启调试时的 POS 快照，用于 diff
+
+  function toggleDebug() {
+    const on = window.toggleDebugMode();
+    const btn = document.getElementById('btn-debug');
+    if (btn) {
+      btn.style.background = on ? 'rgba(100,255,100,0.25)' : '';
+      btn.style.color = on ? '#0f0' : '#5f5';
+      btn.textContent = on ? '🔍 网格 ON' : '🔍 调试网格';
+    }
+    // 开启时保存 POS 快照
+    if (on && window.UI_POS) _posSnapshot = JSON.parse(JSON.stringify(window.UI_POS));
+    if (!on) _posSnapshot = null;
+    console.log('[Debug] 调试网格:', on ? 'ON' : 'OFF');
+  }
+
+  function toggleLB() {
+    const on = window.toggleLeaderboard();
+    const btn = document.getElementById('btn-lb');
+    if (btn) {
+      btn.style.background = !on ? 'rgba(255,80,80,0.2)' : '';
+      btn.style.color = on ? '#da5' : '#f66';
+      btn.textContent = on ? '👁 排行 ON' : '👁 排行 OFF';
+    }
+    console.log('[Debug] 排行榜:', on ? '显示' : '隐藏');
+  }
+
+  // 📋 复制变更的 POS 字段（diff 快照）
+  function copyPOS() {
+    var cur = window.UI_POS;
+    if (!cur) return;
+    // 深比较，只取变更的叶子字段
+    function diff(snap, curr, path) {
+      var result = {};
+      for (var k in curr) {
+        var cp = path ? path + '.' + k : k;
+        if (snap && typeof curr[k] === 'object' && !Array.isArray(curr[k]) && typeof snap[k] === 'object') {
+          var sub = diff(snap[k], curr[k], cp);
+          if (Object.keys(sub).length) result[k] = sub;
+        } else if (!snap || JSON.stringify(curr[k]) !== JSON.stringify(snap ? snap[k] : undefined)) {
+          result[k] = curr[k];
+        }
+      }
+      return result;
+    }
+    var changed = _posSnapshot ? diff(_posSnapshot, cur, '') : cur;
+    var json = JSON.stringify(changed, null, 2);
+    var full = JSON.stringify(cur, null, 2);
+    navigator.clipboard.writeText(json).then(function() {
+      console.log('📋 变更字段已复制 (' + json.length + ' bytes)');
+      if (json === '{}') console.log('   (无变更，所有值等于快照)');
+      console.log('   完整 POS:', full);
+    }).catch(function() {
+      console.log('📋 变更:', json);
+      console.log('📋 完整:', full);
+    });
+  }
+
+  // ✅ 从 JSON 合并覆盖 POS
+  function applyPOS() {
+    var ta = document.getElementById('pos-json');
+    if (!ta || !ta.value.trim()) return;
+    try {
+      var overrides = JSON.parse(ta.value);
+      var pos = window.UI_POS;
+      if (!pos) return;
+      // 浅合并顶层 key，深合并一层
+      for (var key in overrides) {
+        if (typeof overrides[key] === 'object' && typeof pos[key] === 'object') {
+          Object.assign(pos[key], overrides[key]);
+        } else {
+          pos[key] = overrides[key];
+        }
+      }
+      console.log('✅ POS 已更新。当前值:', JSON.stringify(pos, null, 2));
+      ta.style.borderColor = 'rgba(100,255,100,0.5)';
+      setTimeout(function() { ta.style.borderColor = 'rgba(255,255,255,0.1)'; }, 800);
+    } catch (e) {
+      console.error('❌ JSON 解析失败:', e.message);
+      var ta2 = document.getElementById('pos-json');
+      if (ta2) { ta2.style.borderColor = 'rgba(255,80,80,0.6)';
+      setTimeout(function() { ta2.style.borderColor = 'rgba(255,255,255,0.1)'; }, 800); }
+    }
+  }
+
+  console.log('[Panel] Ready. playerId:', PLAYER_ID);
+
+  // === 音效控制 ===
+  function toggleMute() {
+    if (!window.audioEngine) return;
+    window.audioEngine.toggleMute();
+    var btn = document.getElementById('btn-mute');
+    if (window.audioEngine.isMuted()) {
+      btn.textContent = '🔇 静音';
+      btn.style.color = '#f66';
+    } else {
+      btn.textContent = '🔊 音效 ON';
+      btn.style.color = '#fc5';
+    }
+  }
+  function setMasterVol(v) {
+    if (window.audioEngine) window.audioEngine.setMasterVolume(v);
+    var label = document.getElementById('vol-master-label');
+    if (label) label.textContent = Math.round(v * 100) + '%';
+    // 调音量时更新静音按钮
+    var btn = document.getElementById('btn-mute');
+    if (btn && !window.audioEngine.isMuted()) {
+      btn.textContent = '🔊 音效 ON';
+      btn.style.color = '#fc5';
+    }
+  }
+  function setBGMVol(v) {
+    if (window.audioEngine) window.audioEngine.setBGMVolume(v);
+    var label = document.getElementById('vol-bgm-label');
+    if (label) label.textContent = Math.round(v * 100) + '%';
+  }
+  function setSFXVol(v) {
+    if (window.audioEngine) window.audioEngine.setSFXVolume(v);
+    var label = document.getElementById('vol-sfx-label');
+    if (label) label.textContent = Math.round(v * 100) + '%';
+  }
+
+  // === Chrome 自动播放恢复 ===
+  document.addEventListener('click', function initAudio() {
+    if (window.audioEngine && window.audioEngine.resume) {
+      window.audioEngine.resume().then(function() {
+        console.log('[Audio] Context resumed by user click');
+      }).catch(function(e) {
+        console.warn('[Audio] Resume failed:', e.message);
+      });
+    }
+  }, { once: true });
+</script>
+</body>
+</html>

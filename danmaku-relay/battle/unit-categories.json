@@ -1,0 +1,3513 @@
+{
+  "note": "主播四分类（land/sea/air/building，+ experimental 横跨清单）；由 tools/gen_unit_categories.js 生成，可手改。",
+  "source": "battle/mod-units.json",
+  "map": "live_map_001.tmx",
+  "mapHasWater": true,
+  "mapping": {
+    "陆战": "land",
+    "悬浮/两栖": "land",
+    "空中": "air",
+    "海面": "sea",
+    "防御建筑": "building",
+    "建筑/设施": "building",
+    "实验级": "按 movement 落域，另入 experimental"
+  },
+  "counts": {
+    "land": 165,
+    "sea": 29,
+    "air": 87,
+    "building": 150,
+    "experimental": 30,
+    "total": 431
+  },
+  "buckets": {
+    "land": [
+      {
+        "type": "EkInfantryGrunt",
+        "zh": "步枪兵",
+        "price": 100,
+        "hp": 75,
+        "movement": "LAND",
+        "tier": "常备"
+      },
+      {
+        "type": "Ek_miniTank",
+        "zh": "迷你坦克",
+        "price": 150,
+        "hp": 100,
+        "movement": "LAND",
+        "tier": "常备"
+      },
+      {
+        "type": "Ek_miniTankOld",
+        "zh": "旧小型坦克",
+        "price": 150,
+        "hp": 100,
+        "movement": "LAND",
+        "tier": "常备"
+      },
+      {
+        "type": "EkInfantryGrenade",
+        "zh": "榴弹兵",
+        "price": 200,
+        "hp": 90,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkInfantryHmg",
+        "zh": "机枪手",
+        "price": 200,
+        "hp": 60,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkInfantryHmgDeployed",
+        "zh": "机枪手 [卧姿]",
+        "price": 200,
+        "hp": 120,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkInfantryShock",
+        "zh": "闪电突击兵",
+        "price": 200,
+        "hp": 200,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkInfantrySniper",
+        "zh": "狙击手",
+        "price": 200,
+        "hp": 50,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkInfantrySniperDeployed",
+        "zh": "狙击手[卧姿]",
+        "price": 200,
+        "hp": 50,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkPatriot",
+        "zh": "爱国者侦察兵",
+        "price": 250,
+        "hp": 70,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkFoxhole",
+        "zh": "散兵坑",
+        "price": 300,
+        "hp": 800,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkInfantryAt",
+        "zh": "导弹支援",
+        "price": 300,
+        "hp": 150,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkScabrewolfMelee",
+        "zh": "伤疤狼",
+        "price": 300,
+        "hp": 233,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkRib",
+        "zh": "运输肋骨",
+        "price": 300,
+        "hp": 200,
+        "movement": "HOVER",
+        "tier": "常备"
+      },
+      {
+        "type": "EkRibCarrying",
+        "zh": "肋式运输",
+        "price": 300,
+        "hp": 200,
+        "movement": "HOVER",
+        "tier": "常备"
+      },
+      {
+        "type": "EkInfantryAssault",
+        "zh": "海军陆战队",
+        "price": 350,
+        "hp": 80,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_spacemarine",
+        "zh": "太空海军陆战队员",
+        "price": 350,
+        "hp": 500,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_flak_drone",
+        "zh": "防空无人机",
+        "price": 350,
+        "hp": 800,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_mini_arty_drone",
+        "zh": "小型火炮无人机",
+        "price": 350,
+        "hp": 800,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_mini_arty_drone_fall",
+        "zh": "小型炮击无人机",
+        "price": 350,
+        "hp": 800,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkbugMelee",
+        "zh": "近战虫",
+        "price": 400,
+        "hp": 150,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkViper",
+        "zh": "蝰蛇侦察兵",
+        "price": 400,
+        "hp": 120,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkRhino",
+        "zh": "Rhino",
+        "price": 450,
+        "hp": 270,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkLogisticTransport",
+        "zh": "后勤卡车",
+        "price": 500,
+        "hp": 400,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkTroopTransport",
+        "zh": "部队运输车",
+        "price": 500,
+        "hp": 500,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkInfantryHeavyAt",
+        "zh": "重型反坦克武器",
+        "price": 500,
+        "hp": 200,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkInfantryMedic",
+        "zh": "战斗医疗兵",
+        "price": 500,
+        "hp": 80,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkStalker",
+        "zh": "追踪者",
+        "price": 500,
+        "hp": 500,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkDiamondback",
+        "zh": "菱背响尾蛇",
+        "price": 600,
+        "hp": 380,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkObskoy",
+        "zh": "Obskoy",
+        "price": 700,
+        "hp": 450,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkMedicalTransport",
+        "zh": "移动医务站",
+        "price": 750,
+        "hp": 400,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkInfantryBeam",
+        "zh": "光束兵",
+        "price": 800,
+        "hp": 160,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkInfantryDiver",
+        "zh": "战斗潜水员",
+        "price": 800,
+        "hp": 240,
+        "movement": "HOVER",
+        "tier": "常备"
+      },
+      {
+        "type": "EkInfantryAutosniper",
+        "zh": "精英神射手",
+        "price": 800,
+        "hp": 100,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkInfantryAutosniperDeployed",
+        "zh": "精锐狙击手[卧姿]",
+        "price": 800,
+        "hp": 100,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkFencer",
+        "zh": "剑士",
+        "price": 800,
+        "hp": 200,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkInfantryMortar",
+        "zh": "迫击炮",
+        "price": 900,
+        "hp": 100,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkInfantryEngineer",
+        "zh": "步兵工程师",
+        "price": 900,
+        "hp": 260,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkLancer",
+        "zh": "枪骑兵坦克",
+        "price": 900,
+        "hp": 700,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkScarab",
+        "zh": "圣甲虫",
+        "price": 900,
+        "hp": 500,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkMauzerMoving",
+        "zh": "Maüzer",
+        "price": 1000,
+        "hp": 200,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "Eksupplytruck",
+        "zh": "供应卡车",
+        "price": 1000,
+        "hp": 1000,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkSkirmisher",
+        "zh": "散兵",
+        "price": 1000,
+        "hp": 400,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkHoverAPC",
+        "zh": "HoverBird",
+        "price": 1100,
+        "hp": 450,
+        "movement": "HOVER",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkInfantryJetpack",
+        "zh": "天马",
+        "price": 1200,
+        "hp": 240,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkInfantryScoutmech",
+        "zh": "无畏",
+        "price": 1300,
+        "hp": 860,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkTyphoon",
+        "zh": "台风",
+        "price": 1300,
+        "hp": 500,
+        "movement": "HOVER",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkInfantryRailgun",
+        "zh": "电磁枪兵",
+        "price": 1400,
+        "hp": 160,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkInfantryRailgunDeployed",
+        "zh": "铁轨枪兵[卧姿]",
+        "price": 1400,
+        "hp": 320,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkBattlewagon",
+        "zh": "战车",
+        "price": 1400,
+        "hp": 1000,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkAteMoving",
+        "zh": "ATE-400",
+        "price": 1500,
+        "hp": 300,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkMinesweeper",
+        "zh": "扫雷专家",
+        "price": 1500,
+        "hp": 500,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkStalkerT2",
+        "zh": "跟踪者 T2",
+        "price": 1500,
+        "hp": 700,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkDingo",
+        "zh": "Dingo机甲",
+        "price": 1500,
+        "hp": 300,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_artilleryOld",
+        "zh": "老式火炮",
+        "price": 1600,
+        "hp": 300,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkMinelayer",
+        "zh": "布雷车",
+        "price": 1700,
+        "hp": 500,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkLemur",
+        "zh": "狐猴机甲",
+        "price": 1700,
+        "hp": 500,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkTunguska_AA",
+        "zh": "通古斯",
+        "price": 1800,
+        "hp": 750,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkbugMeleeLarge",
+        "zh": "大型近战虫",
+        "price": 2000,
+        "hp": 800,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkmegaBuilder",
+        "zh": "大型建造者",
+        "price": 2000,
+        "hp": 200,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkInfBunker",
+        "zh": "轻型 bunker",
+        "price": 2000,
+        "hp": 1000,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_flametank",
+        "zh": "喷火坦克",
+        "price": 2200,
+        "hp": 1600,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkKamikazeTruck",
+        "zh": "自杀式卡车",
+        "price": 2500,
+        "hp": 450,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkBruza",
+        "zh": "Bruza",
+        "price": 2500,
+        "hp": 1000,
+        "movement": "HOVER",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkHoundAPC",
+        "zh": "猎犬 T2",
+        "price": 2700,
+        "hp": 400,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkApwsMoving",
+        "zh": "APWS-450",
+        "price": 3000,
+        "hp": 300,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkFlakMoving",
+        "zh": "防空炮",
+        "price": 3000,
+        "hp": 600,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkDingoH",
+        "zh": "Dingo机甲 T2",
+        "price": 3000,
+        "hp": 600,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkPaladin",
+        "zh": "圣骑士机甲",
+        "price": 3000,
+        "hp": 800,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkBison",
+        "zh": "野牛",
+        "price": 3000,
+        "hp": 500,
+        "movement": "HOVER",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkScarabT2",
+        "zh": "圣甲虫 T2",
+        "price": 3100,
+        "hp": 1200,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkheavysniperDeployed",
+        "zh": "重狙击手[卧倒]",
+        "price": 3300,
+        "hp": 300,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkInfantryheavySniper",
+        "zh": "重型狙击手",
+        "price": 3300,
+        "hp": 300,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkPhantom",
+        "zh": "幻影",
+        "price": 3500,
+        "hp": 500,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkPhantomCloaked",
+        "zh": "幽灵",
+        "price": 3500,
+        "hp": 500,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkbugGeneratorN",
+        "zh": "虫群生成器",
+        "price": 4000,
+        "hp": 600,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkYukana",
+        "zh": "Yukana Tank",
+        "price": 4000,
+        "hp": 1600,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkInfantryStrike",
+        "zh": "突击发射器",
+        "price": 4200,
+        "hp": 250,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkSpook_Turbo_Hearse",
+        "zh": "涡轮灵车",
+        "price": 4500,
+        "hp": 1000,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_spear",
+        "zh": "长矛",
+        "price": 5000,
+        "hp": 400,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkBerdsk",
+        "zh": "Berdsk坦克",
+        "price": 5000,
+        "hp": 2000,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkBruza2",
+        "zh": "Bruza Type II",
+        "price": 5000,
+        "hp": 1200,
+        "movement": "HOVER",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkNebelwerferMoving",
+        "zh": "烟雾投射器",
+        "price": 5500,
+        "hp": 300,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_mammothTank_old",
+        "zh": "老旧巨象坦克",
+        "price": 5800,
+        "hp": 2900,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkRadarTruck",
+        "zh": "雷达卡车",
+        "price": 6000,
+        "hp": 2000,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkFirestorm",
+        "zh": "火焰风暴",
+        "price": 6000,
+        "hp": 700,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkGlaze",
+        "zh": "釉彩",
+        "price": 6000,
+        "hp": 2000,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkTardoba",
+        "zh": "Tardoba",
+        "price": 6000,
+        "hp": 2400,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkTardoba2",
+        "zh": "Tardon",
+        "price": 6000,
+        "hp": 1600,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_robotCrab",
+        "zh": "蟹式机甲",
+        "price": 6500,
+        "hp": 1500,
+        "movement": "OVER_CLIFF_WATER",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_robotCrabWater",
+        "zh": "蟹型机甲",
+        "price": 6500,
+        "hp": 1500,
+        "movement": "OVER_CLIFF_WATER",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkBarbaris",
+        "zh": "巴巴里斯坦克",
+        "price": 6500,
+        "hp": 1100,
+        "movement": "HOVER",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkbugRangedT2",
+        "zh": "大型远程虫",
+        "price": 7000,
+        "hp": 1200,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkFlamer",
+        "zh": "火焰兵",
+        "price": 7000,
+        "hp": 800,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkSjatie",
+        "zh": "夏提坦克",
+        "price": 7000,
+        "hp": 1500,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkVanguard",
+        "zh": "先锋",
+        "price": 7000,
+        "hp": 900,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkBattleWagonATE",
+        "zh": "火炮卡车",
+        "price": 7300,
+        "hp": 1000,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkRecruit",
+        "zh": "军士",
+        "price": 7500,
+        "hp": 1800,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkAlmaz",
+        "zh": "Almaz PZK",
+        "price": 7500,
+        "hp": 1000,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkLandshipSmall",
+        "zh": "陆战舰",
+        "price": 8000,
+        "hp": 4500,
+        "movement": "HOVER",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkLandshipSmallWater",
+        "zh": "陆战船",
+        "price": 8000,
+        "hp": 4500,
+        "movement": "HOVER",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkSaha",
+        "zh": "Saha",
+        "price": 8500,
+        "hp": 1200,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_Javelin",
+        "zh": "标枪",
+        "price": 9000,
+        "hp": 400,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_heavyTankLowe",
+        "zh": "Lowe",
+        "price": 9000,
+        "hp": 2000,
+        "movement": "OVER_CLIFF_WATER",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkChassis",
+        "zh": "坦克底盘",
+        "price": 10000,
+        "hp": 1000,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkDrill",
+        "zh": "钻探引擎",
+        "price": 10500,
+        "hp": 4000,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkZenit",
+        "zh": "刺针大黄蜂",
+        "price": 11000,
+        "hp": 600,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkScorcher",
+        "zh": "灼烧者",
+        "price": 11000,
+        "hp": 1200,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_Arrow_head",
+        "zh": "箭簇",
+        "price": 12000,
+        "hp": 800,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkLandshipMedium",
+        "zh": "陆战巡洋舰",
+        "price": 12000,
+        "hp": 5500,
+        "movement": "HOVER",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkEgret",
+        "zh": "白鹭机甲",
+        "price": 12000,
+        "hp": 800,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkKatyushaMoving",
+        "zh": "卡秋莎",
+        "price": 12500,
+        "hp": 300,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkRaptor",
+        "zh": "Raptor",
+        "price": 13000,
+        "hp": 2000,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkOverseer",
+        "zh": "监督者",
+        "price": 13000,
+        "hp": 1500,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkPPtank",
+        "zh": "Tiger-Tooth",
+        "price": 13000,
+        "hp": 1400,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EklemurX",
+        "zh": "狐猴机甲 T3",
+        "price": 13400,
+        "hp": 900,
+        "movement": "OVER_CLIFF",
+        "tier": "进阶"
+      },
+      {
+        "type": "EkArachnidMech",
+        "zh": "Arachnid",
+        "price": 13500,
+        "hp": 2000,
+        "movement": "OVER_CLIFF_WATER",
+        "tier": "进阶"
+      },
+      {
+        "type": "EkFlamingoLanded",
+        "zh": "Flamingo Mech",
+        "price": 13500,
+        "hp": 750,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkSnake",
+        "zh": "蛇",
+        "price": 14500,
+        "hp": 3000,
+        "movement": "HOVER",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkNowosibirsk",
+        "zh": "Nowosibirsk",
+        "price": 15000,
+        "hp": 6000,
+        "movement": "HOVER",
+        "tier": "进阶"
+      },
+      {
+        "type": "EkUnicornSmall",
+        "zh": "独角兽",
+        "price": 15500,
+        "hp": 3000,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkbugGeneratorNT2",
+        "zh": "漏洞生成器 T2",
+        "price": 16000,
+        "hp": 1200,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_juggernaut",
+        "zh": "主宰",
+        "price": 16000,
+        "hp": 2500,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ekheavycraft2",
+        "zh": "Razorback",
+        "price": 16000,
+        "hp": 1000,
+        "movement": "HOVER",
+        "tier": "进阶"
+      },
+      {
+        "type": "EkMarshallMech",
+        "zh": "Marshall",
+        "price": 16500,
+        "hp": 4000,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkHellfire",
+        "zh": "Hellfire机甲",
+        "price": 18000,
+        "hp": 3500,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_lionHeart",
+        "zh": "雄狮之心",
+        "price": 18000,
+        "hp": 3000,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkHoverMortar",
+        "zh": "投弹者",
+        "price": 19000,
+        "hp": 1000,
+        "movement": "HOVER",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkShieldTruck",
+        "zh": "护盾熊",
+        "price": 20000,
+        "hp": 1600,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkMechanizedArmor",
+        "zh": "生物套装",
+        "price": 20000,
+        "hp": 1200,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkEternityTank",
+        "zh": "永恒炮",
+        "price": 20000,
+        "hp": 3500,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkLandshipLarge",
+        "zh": "要塞舰",
+        "price": 21000,
+        "hp": 6500,
+        "movement": "HOVER",
+        "tier": "王牌"
+      },
+      {
+        "type": "EkLandshipLargeWater",
+        "zh": "堡垒舰",
+        "price": 21000,
+        "hp": 6500,
+        "movement": "HOVER",
+        "tier": "王牌"
+      },
+      {
+        "type": "EkDominion_fake",
+        "zh": "统治",
+        "price": 23000,
+        "hp": 1,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkHeavyDawnMoving",
+        "zh": "黎明",
+        "price": 24000,
+        "hp": 600,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_heavyTankDrake",
+        "zh": "Elephantine",
+        "price": 25000,
+        "hp": 4000,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_heavyTankHog",
+        "zh": "Smilodon",
+        "price": 25000,
+        "hp": 5000,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkStrangler",
+        "zh": "绞杀者",
+        "price": 27000,
+        "hp": 1000,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_Arrow_head_2",
+        "zh": "Arrowhead T2",
+        "price": 30000,
+        "hp": 1200,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkRaptorMk2",
+        "zh": "Raptor T2",
+        "price": 32000,
+        "hp": 3000,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkSamuraiMech",
+        "zh": "武士",
+        "price": 32000,
+        "hp": 4000,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkThetaMech",
+        "zh": "Theta",
+        "price": 35000,
+        "hp": 4000,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkbugGeneratorNT3",
+        "zh": "Bug 生成器 T3",
+        "price": 40000,
+        "hp": 1800,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkRavagerMech",
+        "zh": "破坏者",
+        "price": 40000,
+        "hp": 4000,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkVindicatorMech",
+        "zh": "惩罚者",
+        "price": 40000,
+        "hp": 4000,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkCommsTruck",
+        "zh": "通讯卡车",
+        "price": 46000,
+        "hp": 2000,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkNukeTruckDisarmed",
+        "zh": "核卡车 [已停用]",
+        "price": 46000,
+        "hp": 1500,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkNukeTruckDebug",
+        "zh": "变态核卡车",
+        "price": 46000,
+        "hp": 1500,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_ironStorm",
+        "zh": "铁风暴",
+        "price": 48000,
+        "hp": 600,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkWardenMech",
+        "zh": "Warden",
+        "price": 50000,
+        "hp": 3000,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkFenrirMech",
+        "zh": "Fenrir",
+        "price": 55000,
+        "hp": 5500,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkElectrostormMech",
+        "zh": "Electrostorm",
+        "price": 65000,
+        "hp": 6500,
+        "movement": "OVER_CLIFF_WATER",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_Kings_man",
+        "zh": "猎犬",
+        "price": 70000,
+        "hp": 6000,
+        "movement": "OVER_CLIFF_WATER",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkSamuraiMech_mk2",
+        "zh": "浪人",
+        "price": 72000,
+        "hp": 4000,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_Queen1_Re",
+        "zh": "Alpha Queen",
+        "price": 75000,
+        "hp": 10000,
+        "movement": "OVER_CLIFF_WATER",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkZetaMech",
+        "zh": "Zeta",
+        "price": 75000,
+        "hp": 4000,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkKrieg",
+        "zh": "Krieg",
+        "price": 75000,
+        "hp": 6000,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_Zero",
+        "zh": "Zero",
+        "price": 80000,
+        "hp": 8000,
+        "movement": "OVER_CLIFF_WATER",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkRavagerMech_mk2",
+        "zh": "蹂躏者 Mk.II",
+        "price": 80000,
+        "hp": 6000,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkWardenMech_mk2",
+        "zh": "Warden Mk.II",
+        "price": 100000,
+        "hp": 3000,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkWardenMech_sniper",
+        "zh": "Curator",
+        "price": 100000,
+        "hp": 4000,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_apocalypse",
+        "zh": "启示录",
+        "price": 140000,
+        "hp": 10000,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkWardenMechX",
+        "zh": "狂暴者",
+        "price": 160000,
+        "hp": 8000,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkPrototype01",
+        "zh": "原型",
+        "price": 200000,
+        "hp": 30000,
+        "movement": "OVER_CLIFF",
+        "tier": "王牌"
+      },
+      {
+        "type": "EkWardenMech_sniper_x",
+        "zh": "监管员",
+        "price": 200000,
+        "hp": 4000,
+        "movement": "OVER_CLIFF",
+        "tier": "王牌"
+      }
+    ],
+    "sea": [
+      {
+        "type": "EkStewart",
+        "zh": "Stewart",
+        "price": 900,
+        "hp": 550,
+        "movement": "WATER",
+        "tier": "常备"
+      },
+      {
+        "type": "EkConvergence",
+        "zh": "汇聚",
+        "price": 2000,
+        "hp": 1000,
+        "movement": "WATER",
+        "tier": "常备"
+      },
+      {
+        "type": "EkHermes",
+        "zh": "Hermes Torpedo Boat",
+        "price": 2000,
+        "hp": 1000,
+        "movement": "WATER",
+        "tier": "常备"
+      },
+      {
+        "type": "EkTabby",
+        "zh": "Tabby",
+        "price": 2000,
+        "hp": 1300,
+        "movement": "WATER",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkStarbuck",
+        "zh": "Starbuck",
+        "price": 2500,
+        "hp": 1600,
+        "movement": "WATER",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkFairchild",
+        "zh": "Fairchild",
+        "price": 3000,
+        "hp": 2000,
+        "movement": "WATER",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkMonitor",
+        "zh": "监测舰",
+        "price": 6000,
+        "hp": 2800,
+        "movement": "WATER",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkMonitor_",
+        "zh": "监视者",
+        "price": 6000,
+        "hp": 2800,
+        "movement": "WATER",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkHeliport",
+        "zh": "黄蜂",
+        "price": 7500,
+        "hp": 6000,
+        "movement": "WATER",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkThunderhead",
+        "zh": "雷云",
+        "price": 8000,
+        "hp": 4000,
+        "movement": "WATER",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkTargetSub",
+        "zh": "Sealion",
+        "price": 8000,
+        "hp": 1800,
+        "movement": "WATER",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkDestroyerSub",
+        "zh": "神风潜艇",
+        "price": 15000,
+        "hp": 1000,
+        "movement": "WATER",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkCarrierSmall",
+        "zh": "小型航母",
+        "price": 15000,
+        "hp": 12000,
+        "movement": "WATER",
+        "tier": "进阶"
+      },
+      {
+        "type": "EkSaber",
+        "zh": "Saber",
+        "price": 25000,
+        "hp": 6000,
+        "movement": "WATER",
+        "tier": "进阶"
+      },
+      {
+        "type": "EkSelenium",
+        "zh": "Selenium",
+        "price": 28000,
+        "hp": 5000,
+        "movement": "WATER",
+        "tier": "进阶"
+      },
+      {
+        "type": "Ek_Dreadnought",
+        "zh": "无畏舰",
+        "price": 30000,
+        "hp": 10000,
+        "movement": "WATER",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkCarrierMedium",
+        "zh": "中型航母",
+        "price": 31000,
+        "hp": 18000,
+        "movement": "WATER",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkHunterSub",
+        "zh": "猎手",
+        "price": 31000,
+        "hp": 4000,
+        "movement": "WATER",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_Overwatch",
+        "zh": "Overwatch",
+        "price": 40000,
+        "hp": 10000,
+        "movement": "WATER",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_iron_pearl",
+        "zh": "铁珍珠",
+        "price": 45000,
+        "hp": 10000,
+        "movement": "WATER",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkPolaris",
+        "zh": "极地星",
+        "price": 45000,
+        "hp": 10000,
+        "movement": "WATER",
+        "tier": "未入池"
+      },
+      {
+        "type": "NuclearSubmarine",
+        "zh": "Nuclear Submarine",
+        "price": 50000,
+        "hp": 1500,
+        "movement": "WATER",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkNowosibirsk2",
+        "zh": "新西伯利亚II型",
+        "price": 63000,
+        "hp": 24000,
+        "movement": "WATER",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkNavalMCV",
+        "zh": "大型航母",
+        "price": 70000,
+        "hp": 12000,
+        "movement": "WATER",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_Leviathan",
+        "zh": "利维坦",
+        "price": 90000,
+        "hp": 10000,
+        "movement": "WATER",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkSeadragon",
+        "zh": "Seadragon",
+        "price": 95000,
+        "hp": 20000,
+        "movement": "WATER",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkSeadragonDived",
+        "zh": "海龙",
+        "price": 95000,
+        "hp": 30000,
+        "movement": "WATER",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_Cordelia",
+        "zh": "Cordelia",
+        "price": 120000,
+        "hp": 8000,
+        "movement": "WATER",
+        "tier": "王牌"
+      },
+      {
+        "type": "Ek_derya",
+        "zh": "Derya",
+        "price": 135000,
+        "hp": 6000,
+        "movement": "WATER",
+        "tier": "王牌"
+      }
+    ],
+    "air": [
+      {
+        "type": "Ek_crazy_builder",
+        "zh": "疯狂建造者",
+        "price": 100,
+        "hp": 1000,
+        "movement": "AIR",
+        "tier": "常备"
+      },
+      {
+        "type": "EkBiplaneFighter1",
+        "zh": "雷霆侦察机",
+        "price": 300,
+        "hp": 140,
+        "movement": "AIR",
+        "tier": "常备"
+      },
+      {
+        "type": "EkbugWasp",
+        "zh": "飞行远程虫子",
+        "price": 800,
+        "hp": 200,
+        "movement": "AIR",
+        "tier": "常备"
+      },
+      {
+        "type": "EkBiplaneBomber",
+        "zh": "雷暴轰炸机",
+        "price": 1000,
+        "hp": 400,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkSmallFighter",
+        "zh": "罗宾战斗机",
+        "price": 1000,
+        "hp": 300,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkOrca",
+        "zh": "Orca",
+        "price": 1000,
+        "hp": 400,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkBiplaneFighter",
+        "zh": "雷霆战斗机",
+        "price": 1200,
+        "hp": 300,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkSmallDrone",
+        "zh": "烈焰刺针",
+        "price": 1500,
+        "hp": 400,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkFlycat",
+        "zh": "Flycat",
+        "price": 1500,
+        "hp": 400,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkDragonfly",
+        "zh": "蜻蜓战机",
+        "price": 1700,
+        "hp": 500,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkBasicFighter",
+        "zh": "鹰式战斗机",
+        "price": 2000,
+        "hp": 600,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkSnowcat",
+        "zh": "Snowcat",
+        "price": 3000,
+        "hp": 800,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkChaika",
+        "zh": "Chaika",
+        "price": 3000,
+        "hp": 400,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkLemurFlyingA",
+        "zh": "狐猴机甲 T2",
+        "price": 3700,
+        "hp": 870,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkLargeDrone",
+        "zh": "复仇者",
+        "price": 4000,
+        "hp": 1000,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_largeGunship",
+        "zh": "大型炮艇",
+        "price": 4000,
+        "hp": 200,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkSwallowtail",
+        "zh": "燕子尾 垂直起降/攻击机",
+        "price": 5000,
+        "hp": 400,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkScoutDrone",
+        "zh": "TEV-9A 弹簧刀",
+        "price": 5200,
+        "hp": 1500,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkInterceptor",
+        "zh": "Dreamcatcher",
+        "price": 6000,
+        "hp": 1500,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkSmallFighter_mk2",
+        "zh": "Robin Fighter T2",
+        "price": 6000,
+        "hp": 500,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkParaship2",
+        "zh": "雷暴运输舰",
+        "price": 6000,
+        "hp": 2000,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkHammer",
+        "zh": "铁锤",
+        "price": 7000,
+        "hp": 2000,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkLigFighter",
+        "zh": "Yralets",
+        "price": 7000,
+        "hp": 1200,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkSpy",
+        "zh": "Harbringer",
+        "price": 7000,
+        "hp": 900,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkInterceptor2",
+        "zh": "Starstrike",
+        "price": 8000,
+        "hp": 2000,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkBeamHelicopter",
+        "zh": "Zersoster 直升机",
+        "price": 8000,
+        "hp": 800,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkIzhmash",
+        "zh": "Izhmash Ka-50",
+        "price": 8000,
+        "hp": 2400,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkImpostor",
+        "zh": "冒牌者",
+        "price": 8500,
+        "hp": 3000,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkHunterDrone",
+        "zh": "自杀式无人机",
+        "price": 9000,
+        "hp": 550,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkKingfisher",
+        "zh": "翠鸟",
+        "price": 10000,
+        "hp": 1000,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkBasicFighter_mk2",
+        "zh": "鹰式战斗机 T2",
+        "price": 10000,
+        "hp": 1000,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ekheavytransportheli",
+        "zh": "袋熊",
+        "price": 10000,
+        "hp": 1600,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "experimentalWormHead",
+        "zh": "机械蠕虫",
+        "price": 10000,
+        "hp": 2000,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "experimentalWormSegment",
+        "zh": "实验蠕虫",
+        "price": 10000,
+        "hp": 2000,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "experimentalWormTail",
+        "zh": "实验蠕虫尾",
+        "price": 10000,
+        "hp": 2000,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_protos",
+        "zh": "Protos",
+        "price": 12000,
+        "hp": 200,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_protos_Smode",
+        "zh": "普罗托斯",
+        "price": 12000,
+        "hp": 200,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkFalconFighter",
+        "zh": "猎鹰战斗机",
+        "price": 13500,
+        "hp": 2400,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkFlamingoFlying",
+        "zh": "火烈鸟机甲",
+        "price": 13500,
+        "hp": 750,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkOlivia",
+        "zh": "Olivia",
+        "price": 15000,
+        "hp": 2500,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_beamGunshipReaper",
+        "zh": "收割者",
+        "price": 15000,
+        "hp": 1500,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkParaship",
+        "zh": "Omega",
+        "price": 15000,
+        "hp": 800,
+        "movement": "AIR",
+        "tier": "进阶"
+      },
+      {
+        "type": "EkChisel",
+        "zh": "凿子",
+        "price": 16000,
+        "hp": 4000,
+        "movement": "AIR",
+        "tier": "进阶"
+      },
+      {
+        "type": "EkEris",
+        "zh": "Eris轰炸机",
+        "price": 17000,
+        "hp": 4000,
+        "movement": "AIR",
+        "tier": "进阶"
+      },
+      {
+        "type": "Ek_expinterceptor",
+        "zh": "夜鹰",
+        "price": 17000,
+        "hp": 800,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkNightmare",
+        "zh": "噩梦",
+        "price": 17000,
+        "hp": 2000,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkMissileDrone",
+        "zh": "反叛者",
+        "price": 17500,
+        "hp": 1200,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkFreewing",
+        "zh": "Freewing",
+        "price": 18000,
+        "hp": 2500,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkBuzzard",
+        "zh": "秃鹰",
+        "price": 18000,
+        "hp": 1600,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_jackson",
+        "zh": "杰克逊",
+        "price": 19000,
+        "hp": 2500,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_Stallion",
+        "zh": "种马",
+        "price": 20000,
+        "hp": 400,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_Stallion_Smode",
+        "zh": "骏马",
+        "price": 20000,
+        "hp": 400,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkStrato",
+        "zh": "同温层轰炸机",
+        "price": 21000,
+        "hp": 6000,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkDolphin",
+        "zh": "Dolphin",
+        "price": 22200,
+        "hp": 3000,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_airBuilder",
+        "zh": "空中建造者",
+        "price": 24000,
+        "hp": 1200,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkManticore",
+        "zh": "蝎尾兽轰炸机",
+        "price": 25000,
+        "hp": 2500,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkTigermouth",
+        "zh": "Tigermoth",
+        "price": 26000,
+        "hp": 2000,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_BlackBear",
+        "zh": "Atreides",
+        "price": 30000,
+        "hp": 1000,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkNightmareT2",
+        "zh": "梦魇 T2",
+        "price": 31000,
+        "hp": 3000,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_hellCat",
+        "zh": "Harkonnen",
+        "price": 32000,
+        "hp": 1000,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_Valkyrie",
+        "zh": "女武神",
+        "price": 35000,
+        "hp": 4000,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_Airshiptransport",
+        "zh": "轨道运输",
+        "price": 40000,
+        "hp": 12000,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_twin_hanger",
+        "zh": "Horizon",
+        "price": 40000,
+        "hp": 3500,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "MordredEkranoplan",
+        "zh": "Mordred",
+        "price": 40000,
+        "hp": 3000,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_SSP",
+        "zh": "ODIN (Orbital Defense INitiative)",
+        "price": 40000,
+        "hp": 9000,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_experimental_bomber",
+        "zh": "夜翼",
+        "price": 42000,
+        "hp": 1600,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_mutli_laser_ship",
+        "zh": "凤凰",
+        "price": 48000,
+        "hp": 800,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkWedgetail_new",
+        "zh": "楔尾",
+        "price": 58000,
+        "hp": 2000,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkKadiak",
+        "zh": "重型飞行堡垒 \"Kodiak\"",
+        "price": 60000,
+        "hp": 8000,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkKestrel",
+        "zh": "茶隼",
+        "price": 85000,
+        "hp": 12000,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_Zeppelin",
+        "zh": "夜礼服",
+        "price": 90000,
+        "hp": 8000,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_Predator",
+        "zh": "捕食者",
+        "price": 96000,
+        "hp": 2500,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_experimentalartillery",
+        "zh": "黎明 [火炮]",
+        "price": 120000,
+        "hp": 8500,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_experimentalgun",
+        "zh": "黎明[米尼岗]",
+        "price": 120000,
+        "hp": 8500,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_experimentalmissile",
+        "zh": "破晓 [导弹]",
+        "price": 120000,
+        "hp": 8500,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_Brutus",
+        "zh": "LSS Brutus",
+        "price": 170000,
+        "hp": 24000,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_experimentalGunships",
+        "zh": "大天使",
+        "price": 200000,
+        "hp": 10000,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_Caesarius",
+        "zh": "凯撒里乌斯",
+        "price": 230000,
+        "hp": 36000,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_CarrierFlying",
+        "zh": "帝皇",
+        "price": 230000,
+        "hp": 24000,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_AirBastion",
+        "zh": "流星之翼",
+        "price": 240000,
+        "hp": 4000,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkPterosaur",
+        "zh": "翼龙",
+        "price": 285000,
+        "hp": 24000,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "ArsenalBird",
+        "zh": "埃塞克斯无人机航母",
+        "price": 300000,
+        "hp": 10000,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "ArsenalBird2",
+        "zh": "埃塞克斯无人机母舰 II型",
+        "price": 300000,
+        "hp": 10000,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_Hyperion",
+        "zh": "Hyperion",
+        "price": 300000,
+        "hp": 12000,
+        "movement": "AIR",
+        "tier": "王牌"
+      },
+      {
+        "type": "Ek_Gladiator",
+        "zh": "角斗士",
+        "price": 380000,
+        "hp": 20000,
+        "movement": "AIR",
+        "tier": "王牌"
+      },
+      {
+        "type": "Ek_spaceStation",
+        "zh": "宙斯",
+        "price": 400000,
+        "hp": 22000,
+        "movement": "AIR",
+        "tier": "王牌"
+      },
+      {
+        "type": "Ek星舰",
+        "zh": "执行者",
+        "price": 20000000,
+        "hp": 2147483647,
+        "movement": "AIR",
+        "tier": "王牌"
+      }
+    ],
+    "building": [
+      {
+        "type": "EkChemicalCloudSmall",
+        "zh": "化学云",
+        "price": 3,
+        "hp": 1,
+        "movement": "AIR",
+        "tier": "常备"
+      },
+      {
+        "type": "EkIncendiarySmall",
+        "zh": "燃烧地带",
+        "price": 3,
+        "hp": 1,
+        "movement": "AIR",
+        "tier": "常备"
+      },
+      {
+        "type": "EkMineCluster",
+        "zh": "地雷簇",
+        "price": 3,
+        "hp": 1,
+        "movement": "AIR",
+        "tier": "常备"
+      },
+      {
+        "type": "Ek_S_AOE_fire",
+        "zh": "燃烧地带 M",
+        "price": 3,
+        "hp": 1,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkDebugSpawnerChemical",
+        "zh": "化学弹头",
+        "price": 4,
+        "hp": 1,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkOrbitalDropLanded",
+        "zh": "轨道空降舱",
+        "price": 8,
+        "hp": 1500,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "A.S_module_attachment",
+        "zh": "内部装备",
+        "price": 10,
+        "hp": 3000,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkConcreteblock",
+        "zh": "混凝土封锁器",
+        "price": 50,
+        "hp": 500,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_Gladiator_missime",
+        "zh": "导弹系统",
+        "price": 90,
+        "hp": 2500,
+        "movement": "NONE",
+        "tier": "常备"
+      },
+      {
+        "type": "Ek_Gladiator_RailGun",
+        "zh": "轨道炮",
+        "price": 90,
+        "hp": 2500,
+        "movement": "NONE",
+        "tier": "常备"
+      },
+      {
+        "type": "Ek_Gladiator_twinRailGun",
+        "zh": "TwinRailGun",
+        "price": 90,
+        "hp": 2500,
+        "movement": "NONE",
+        "tier": "常备"
+      },
+      {
+        "type": "Ek_Zeppelin_dropBomb",
+        "zh": "投放区",
+        "price": 90,
+        "hp": 3000,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkBarricade1Y",
+        "zh": "路障 [1x3]",
+        "price": 150,
+        "hp": 800,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkBarricade1X",
+        "zh": "路障 [3x1]",
+        "price": 150,
+        "hp": 800,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkTanktrap",
+        "zh": "反坦克拒马",
+        "price": 200,
+        "hp": 1000,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkBarricade2Y",
+        "zh": "路障 [1x6]",
+        "price": 300,
+        "hp": 1600,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkBarricade2X",
+        "zh": "路障 [6x1]",
+        "price": 300,
+        "hp": 1600,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkBrickwall1Y",
+        "zh": "砖墙 [1x3]",
+        "price": 300,
+        "hp": 1500,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkBrickwall1X",
+        "zh": "砖墙 [3x1]",
+        "price": 300,
+        "hp": 1500,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkInfantryFactoryT1",
+        "zh": "步兵兵营 T1",
+        "price": 400,
+        "hp": 800,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkTowerRifleman",
+        "zh": "周边塔 [步枪兵]",
+        "price": 500,
+        "hp": 800,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkBrickwall2Y",
+        "zh": "砖墙 [1x6]",
+        "price": 600,
+        "hp": 3000,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkBrickwall2X",
+        "zh": "砖墙 [6x1]",
+        "price": 600,
+        "hp": 3000,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "HorizontalWall",
+        "zh": "横向墙",
+        "price": 800,
+        "hp": 3000,
+        "movement": "WATER",
+        "tier": "未入池"
+      },
+      {
+        "type": "VerticalWall",
+        "zh": "垂直墙",
+        "price": 800,
+        "hp": 3000,
+        "movement": "WATER",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkbugGenerator",
+        "zh": "昆虫库",
+        "price": 1000,
+        "hp": 800,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkbugTurret",
+        "zh": "Bug炮塔",
+        "price": 1000,
+        "hp": 800,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkMineSmall",
+        "zh": "小型地雷",
+        "price": 1000,
+        "hp": 5,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkcreditsCrate",
+        "zh": "信用箱",
+        "price": 1000,
+        "hp": 1000,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkTowerHmg",
+        "zh": "周边防御塔 [HMG]",
+        "price": 1000,
+        "hp": 800,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkTowerRiflemanUpgraded",
+        "zh": "强化塔 [步枪兵]",
+        "price": 1000,
+        "hp": 1200,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkTurretEmpty",
+        "zh": "炮塔基座",
+        "price": 1000,
+        "hp": 800,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_crazy_air_factory",
+        "zh": "疯狂空军工厂",
+        "price": 1000,
+        "hp": 5000,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_crazy_land_factory",
+        "zh": "疯狂之地工厂",
+        "price": 1000,
+        "hp": 5000,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_crazy_sea_factory",
+        "zh": "疯狂海上工厂",
+        "price": 1000,
+        "hp": 5000,
+        "movement": "WATER",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkMauzerStatic",
+        "zh": "莫策[已部署]",
+        "price": 1000,
+        "hp": 200,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkInfantryFactoryT2",
+        "zh": "步兵兵营 T2",
+        "price": 1000,
+        "hp": 1600,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_balloonbarrage",
+        "zh": "气球弹幕",
+        "price": 1200,
+        "hp": 300,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkMineMedium",
+        "zh": "中型地雷",
+        "price": 1500,
+        "hp": 10,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkSeaMineMedium",
+        "zh": "海雷",
+        "price": 1500,
+        "hp": 10,
+        "movement": "WATER",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkHarvesterSolar",
+        "zh": "太阳能发电厂",
+        "price": 1500,
+        "hp": 400,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkSupportFactory",
+        "zh": "支援工厂 T1",
+        "price": 1500,
+        "hp": 1000,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkTowerHmgUpgraded",
+        "zh": "加固塔 [HMG]",
+        "price": 1500,
+        "hp": 1200,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkTowerSniper",
+        "zh": "周界塔 [狙击]",
+        "price": 1500,
+        "hp": 800,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkTurretHmg",
+        "zh": "炮塔 [HMG]",
+        "price": 1500,
+        "hp": 1000,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkTurretLaserDefence",
+        "zh": "炮塔 [激光防御]",
+        "price": 1500,
+        "hp": 800,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkAteStatic",
+        "zh": "ATE-400 [展开]",
+        "price": 1500,
+        "hp": 300,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkInfantryFactoryT3",
+        "zh": "步兵兵营 T3",
+        "price": 1800,
+        "hp": 2400,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkMineHeavy",
+        "zh": "重型地雷",
+        "price": 2000,
+        "hp": 15,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "Eksupplydepot",
+        "zh": "供应站 T1",
+        "price": 2000,
+        "hp": 1000,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkTowerSniperUpgraded",
+        "zh": "加固塔 [狙击型]",
+        "price": 2000,
+        "hp": 1200,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkTurretMortar",
+        "zh": "炮塔 [迫击炮]",
+        "price": 2000,
+        "hp": 1200,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkTurretRepair",
+        "zh": "炮塔 [Repair]",
+        "price": 2000,
+        "hp": 1200,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkTurretSam",
+        "zh": "炮塔 [SAM]",
+        "price": 2000,
+        "hp": 1100,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_modular_bunker_gunturret",
+        "zh": "机枪",
+        "price": 2000,
+        "hp": 2000,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkHelipad",
+        "zh": "停靠港",
+        "price": 2500,
+        "hp": 1000,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_modular_bunker_AA_A",
+        "zh": "防空导弹",
+        "price": 2500,
+        "hp": 2000,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkbugGeneratorT2",
+        "zh": "Bug仓库 T2",
+        "price": 3000,
+        "hp": 1600,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkHarvesterTanks",
+        "zh": "石油罐",
+        "price": 3000,
+        "hp": 600,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkTurretGmg",
+        "zh": "炮塔 [GMG]",
+        "price": 3000,
+        "hp": 1500,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkApwsStatic",
+        "zh": "APWS-450 [已部署]",
+        "price": 3000,
+        "hp": 300,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkFlakStatic",
+        "zh": "高射炮 [已部署]",
+        "price": 3000,
+        "hp": 600,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkInfantryFactoryT3SPBase",
+        "zh": "步兵基地",
+        "price": 3000,
+        "hp": 3600,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "A.S_module_Regen_bot",
+        "zh": "维修机器人",
+        "price": 4000,
+        "hp": 2000,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkTurretSamHeavy",
+        "zh": "炮塔 [SAM T2]",
+        "price": 4000,
+        "hp": 1500,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_modular_bunker_artyturret",
+        "zh": "火炮",
+        "price": 4000,
+        "hp": 2000,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkBunkerTinySam",
+        "zh": "掩体 [S.A.M.]",
+        "price": 4500,
+        "hp": 1800,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkHarvesterWarehouse",
+        "zh": "武器商店",
+        "price": 4500,
+        "hp": 800,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "EksupplydepotT2",
+        "zh": "补给站 T2",
+        "price": 5000,
+        "hp": 1500,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkBunkerAa",
+        "zh": "Bunker [防空]",
+        "price": 5500,
+        "hp": 3200,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkNebelwerferStatic",
+        "zh": "烟雾发射器 [已部署]",
+        "price": 5500,
+        "hp": 300,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkNebelwerferTowed",
+        "zh": "烟雾发射器",
+        "price": 5500,
+        "hp": 300,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkBunkerMg",
+        "zh": "地堡 [机枪]",
+        "price": 6000,
+        "hp": 3200,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkHarvesterFactory",
+        "zh": "军事工厂",
+        "price": 6000,
+        "hp": 1000,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "A.S_module_Shield",
+        "zh": "护盾发生器",
+        "price": 6500,
+        "hp": 2000,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkSeabunkerRepair",
+        "zh": "海上平台 [Repair]",
+        "price": 7500,
+        "hp": 3600,
+        "movement": "WATER",
+        "tier": "未入池"
+      },
+      {
+        "type": "A.S_module_generator",
+        "zh": "能量发生器",
+        "price": 8000,
+        "hp": 2000,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkRunway",
+        "zh": "机场",
+        "price": 8000,
+        "hp": 2000,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_modular_bunker_AA_B",
+        "zh": "AA弹幕",
+        "price": 8000,
+        "hp": 2000,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkSupportFactoryT2",
+        "zh": "支援工厂 T2",
+        "price": 8500,
+        "hp": 3000,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_Gladiator_shieldDefense",
+        "zh": "皇家护盾",
+        "price": 9000,
+        "hp": 2000,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkSeabunkerAa",
+        "zh": "海上平台 [防空]",
+        "price": 9000,
+        "hp": 3600,
+        "movement": "WATER",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_shieldDefense",
+        "zh": "护盾防御",
+        "price": 9000,
+        "hp": 2000,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ekcommercial",
+        "zh": "商业中心",
+        "price": 10000,
+        "hp": 1200,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkBunkerTinyInterceptor",
+        "zh": "掩体 [反导]",
+        "price": 10000,
+        "hp": 2500,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkGroundRefinery",
+        "zh": "抽油机 [提取器]",
+        "price": 10000,
+        "hp": 1000,
+        "movement": "BUILDING",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkSeabunkerRefinery",
+        "zh": "海洋平台 [抽取器]",
+        "price": 10000,
+        "hp": 1000,
+        "movement": "WATER",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkUnderwaterFactory",
+        "zh": "水下工厂",
+        "price": 10000,
+        "hp": 2000,
+        "movement": "WATER",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_modular_bunker_railturret",
+        "zh": "等离子炮",
+        "price": 10000,
+        "hp": 2000,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_radarturret",
+        "zh": "地堡 [雷达]",
+        "price": 11000,
+        "hp": 5000,
+        "movement": "NONE",
+        "tier": "进阶"
+      },
+      {
+        "type": "EkResourceDrill",
+        "zh": "深层矿物钻机",
+        "price": 11100,
+        "hp": 2200,
+        "movement": "NONE",
+        "tier": "进阶"
+      },
+      {
+        "type": "EkSeabunkerCannon",
+        "zh": "海上平台 [火炮]",
+        "price": 11100,
+        "hp": 1800,
+        "movement": "WATER",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkBunkerFlak",
+        "zh": "地堡 [Flak Cannon]",
+        "price": 11500,
+        "hp": 3200,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkSeabunkerTorpedo",
+        "zh": "海上平台 [Torpedo]",
+        "price": 11500,
+        "hp": 3600,
+        "movement": "WATER",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkSeabunkerTorpedoUnderwater",
+        "zh": "海上平台 [鱼雷]",
+        "price": 11500,
+        "hp": 3600,
+        "movement": "WATER",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkBunkerArtillary",
+        "zh": "地堡 [火炮]",
+        "price": 12000,
+        "hp": 3200,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkSeabunkerMinigun",
+        "zh": "海上平台 [加特林]",
+        "price": 12500,
+        "hp": 3600,
+        "movement": "WATER",
+        "tier": "未入池"
+      },
+      {
+        "type": "bugColony",
+        "zh": "突破",
+        "price": 13000,
+        "hp": 1500,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkChronoChargeTest",
+        "zh": "Chronocharge",
+        "price": 16000,
+        "hp": 800,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkSeabunkerMissile",
+        "zh": "海上平台 [导弹]",
+        "price": 17000,
+        "hp": 3600,
+        "movement": "WATER",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkBunkerFlakHeavy",
+        "zh": "Bunker [重型防空炮]",
+        "price": 19500,
+        "hp": 4800,
+        "movement": "NONE",
+        "tier": "进阶"
+      },
+      {
+        "type": "EkBunkerHeavyArtillary",
+        "zh": "Bunker [重型火炮]",
+        "price": 20000,
+        "hp": 4800,
+        "movement": "NONE",
+        "tier": "进阶"
+      },
+      {
+        "type": "Ek_railgunturret",
+        "zh": "轨道炮炮塔",
+        "price": 20000,
+        "hp": 1600,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkResourceRefinery",
+        "zh": "实验精炼厂",
+        "price": 21100,
+        "hp": 3000,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkHeavyDawnStatic",
+        "zh": "Dawn [已部署]",
+        "price": 24000,
+        "hp": 600,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "Eklaboratory",
+        "zh": "实验室 T1",
+        "price": 25000,
+        "hp": 2000,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkUnderwaterHangar",
+        "zh": "潜艇机库",
+        "price": 27000,
+        "hp": 2500,
+        "movement": "WATER",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ekstranglerdeploy",
+        "zh": "扼杀者",
+        "price": 27000,
+        "hp": 1000,
+        "movement": "LAND",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkBunkerInterceptor",
+        "zh": "地堡 [Airframe Interceptor]",
+        "price": 29500,
+        "hp": 4800,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "bugExtractorT3",
+        "zh": "生物实验室",
+        "price": 30000,
+        "hp": 2000,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkBunkerRocket",
+        "zh": "地堡 [Rocket Barrage]",
+        "price": 30000,
+        "hp": 4800,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkBunkerRocketAlt",
+        "zh": "地堡 [火箭波纹]",
+        "price": 30000,
+        "hp": 4800,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkDugout",
+        "zh": "装甲掩体",
+        "price": 30000,
+        "hp": 10000,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkCruiseMissileSiloChemical",
+        "zh": "轻型导弹发射井[化学]",
+        "price": 30000,
+        "hp": 5000,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkCruiseMissileSiloEmp",
+        "zh": "轻型导弹发射井[EMP]",
+        "price": 30000,
+        "hp": 5000,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkCruiseMissileSiloIncendiary",
+        "zh": "轻型导弹发射井 [Incendiary]",
+        "price": 30000,
+        "hp": 5000,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkCruiseMissileSiloMinelayer",
+        "zh": "轻型导弹发射井 [集束雷]",
+        "price": 30000,
+        "hp": 5000,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_crazy_base",
+        "zh": "疯狂指挥中心",
+        "price": 30000,
+        "hp": 20000,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkLargeArtillary",
+        "zh": "大型碉堡 [自动炮]",
+        "price": 35000,
+        "hp": 7000,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkAirshipHangar1",
+        "zh": "飞艇机库 T1",
+        "price": 36000,
+        "hp": 2400,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkSeaExperimentalHangar",
+        "zh": "实验船坞",
+        "price": 37000,
+        "hp": 4500,
+        "movement": "WATER",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkCruiseMissileSilo",
+        "zh": "轻型导弹发射井",
+        "price": 37500,
+        "hp": 5000,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkSentinelSilo",
+        "zh": "战略防御综合体",
+        "price": 40000,
+        "hp": 9000,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkLargeRockets",
+        "zh": "大型碉堡 [火箭弹幕]",
+        "price": 50000,
+        "hp": 6000,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "Eklaboratoryt2",
+        "zh": "实验室 T2",
+        "price": 50000,
+        "hp": 2000,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_large_modular",
+        "zh": "大型掩体 [模块化]",
+        "price": 50000,
+        "hp": 10000,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkLaunchpad",
+        "zh": "发射中心",
+        "price": 60000,
+        "hp": 2500,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_solarFarmSation",
+        "zh": "轨道合成设施",
+        "price": 65000,
+        "hp": 1000,
+        "movement": "AIR",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkExperimentalairFactory",
+        "zh": "实验空军工厂",
+        "price": 69000,
+        "hp": 5000,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkbugMeleeKing",
+        "zh": "毁灭者西格玛",
+        "price": 70000,
+        "hp": 9000,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek_EXP_flak_mech",
+        "zh": "Arrakis",
+        "price": 70000,
+        "hp": 5000,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "Eklaboratoryt3",
+        "zh": "三级实验室",
+        "price": 75000,
+        "hp": 2000,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkLargeExperimentalHangar",
+        "zh": "重型实验机库",
+        "price": 80000,
+        "hp": 5000,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkBastion",
+        "zh": "堡垒",
+        "price": 80000,
+        "hp": 4000,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkChimeraMech",
+        "zh": "奇美拉",
+        "price": 85000,
+        "hp": 6000,
+        "movement": "OVER_CLIFF_WATER",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkLargeChaingun",
+        "zh": "大型碉堡 [链炮]",
+        "price": 95000,
+        "hp": 9000,
+        "movement": "OVER_CLIFF",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkAirshipHangar2",
+        "zh": "飞艇机库 T2",
+        "price": 100000,
+        "hp": 4800,
+        "movement": "OVER_CLIFF",
+        "tier": "王牌"
+      },
+      {
+        "type": "largeNukeLauncher",
+        "zh": "大型核弹发射器",
+        "price": 100000,
+        "hp": 2500,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek中型导弹舱",
+        "zh": "导弹吊舱",
+        "price": 100000,
+        "hp": null,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek中型火炮",
+        "zh": "炮兵",
+        "price": 100000,
+        "hp": null,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek模块化星舰空槽",
+        "zh": "空槽",
+        "price": 100000,
+        "hp": 3000,
+        "movement": "OVER_CLIFF_WATER",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkSmallSpaceElevator",
+        "zh": "太空电梯",
+        "price": 101100,
+        "hp": 5000,
+        "movement": "NONE",
+        "tier": "王牌"
+      },
+      {
+        "type": "EkTitanMech",
+        "zh": "泰坦",
+        "price": 120000,
+        "hp": 8000,
+        "movement": "OVER_CLIFF_WATER",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkVelarus",
+        "zh": "Velarus",
+        "price": 150000,
+        "hp": 8000,
+        "movement": "OVER_CLIFF_WATER",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkVelarus_deploy",
+        "zh": "维拉鲁斯 [已部署]",
+        "price": 150000,
+        "hp": null,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkExcelsiorCombatmode",
+        "zh": "精进号",
+        "price": 250000,
+        "hp": 12000,
+        "movement": "OVER_CLIFF_WATER",
+        "tier": "未入池"
+      },
+      {
+        "type": "EkExcelsior",
+        "zh": "Excelsior",
+        "price": 250000,
+        "hp": 12000,
+        "movement": "OVER_CLIFF_WATER",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek星舰动能炮",
+        "zh": "\"震撼者\"动能炮",
+        "price": 1000000,
+        "hp": 2000000000,
+        "movement": "NONE",
+        "tier": "未入池"
+      },
+      {
+        "type": "Ek星舰射线炮",
+        "zh": "\"伽马穿甲器\"射线炮",
+        "price": 1000000,
+        "hp": 2000000000,
+        "movement": "NONE",
+        "tier": "王牌"
+      },
+      {
+        "type": "Ek星舰激光炮",
+        "zh": "\"仲裁者\"激光炮",
+        "price": 1000000,
+        "hp": 2000000000,
+        "movement": "NONE",
+        "tier": "王牌"
+      }
+    ]
+  },
+  "experimental": [
+    "Ek_Brutus",
+    "Ek_Caesarius",
+    "Ek_Airshiptransport",
+    "EkChisel",
+    "Ek_Gladiator",
+    "Ek_Hyperion",
+    "Ek_CarrierFlying",
+    "EkKestrel",
+    "EkOlivia",
+    "EkPterosaur",
+    "EkTigermouth",
+    "Ek_Valkyrie",
+    "EkbugMeleeKing",
+    "Ek_experimentalGunships",
+    "EkKadiak",
+    "EkExcelsiorCombatmode",
+    "EkExcelsior",
+    "EkVelarus",
+    "EkVelarus_deploy",
+    "EkBastion",
+    "EkChimeraMech",
+    "Ek_EXP_flak_mech",
+    "EkTitanMech",
+    "experimentalWormHead",
+    "EkCarrierMedium",
+    "EkCarrierSmall",
+    "EkSeadragon",
+    "EkSeadragonDived",
+    "EkEternityTank",
+    "Ek_heavyTankHog"
+  ]
+}

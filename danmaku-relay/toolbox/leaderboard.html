@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>弹幕对战 · 榜单</title>
+<style>
+  /* ★ 设计前提：**背景是纯黑**、直播画面 200(宽)×400(高)、源画质不高。
+     所以：纯黑底 + 高对比实心色；**不用**半透明面板 / 渐变 / text-shadow —— 那些在
+     黑底上只会显灰、且经视频压缩后发糊。字体加粗、行高压紧、数字用等宽对齐。
+     改尺寸：改 --w/--h，或 URL 加 ?w=240&h=420。 */
+  :root { --w:200px; --h:400px; --red:#ff4a4a; --blue:#4aa0ff; --gold:#ffd400; }
+  * { box-sizing:border-box; }
+  html, body { width:var(--w); height:var(--h); margin:0; overflow:hidden; background:#000; }
+  body { font-family:"Microsoft YaHei",system-ui,sans-serif; color:#fff; font-size:12px; line-height:15px; }
+  .wrap { width:var(--w); height:var(--h); padding:4px 6px; display:flex; flex-direction:column; }
+  /* 余额（两行） */
+  .bal { display:flex; align-items:center; height:17px; }
+  .dot { width:9px; height:9px; border-radius:2px; flex:0 0 auto; margin-right:4px; }
+  .dot.r { background:var(--red); } .dot.b { background:var(--blue); }
+  .bal .m { flex:1 1 auto; text-align:right; font-weight:700; font-variant-numeric:tabular-nums; }
+  .bal .m.r { color:var(--red); } .bal .m.b { color:var(--blue); }
+  .bal .s { width:44px; flex:0 0 auto; text-align:right; font-variant-numeric:tabular-nums; color:#fff; }
+  .hr { height:1px; background:#333; margin:4px 0; flex:0 0 auto; }
+  /* 列表 */
+  .ttl { font-size:11px; font-weight:700; color:#fff; margin-bottom:1px; }
+  .ttl em { font-style:normal; color:#b0b0b0; font-weight:400; }
+  .row { display:flex; align-items:center; height:15px; }
+  .bar { width:3px; height:11px; flex:0 0 auto; background:transparent; border-radius:1px; margin-right:3px; }
+  .rk { width:12px; flex:0 0 auto; text-align:right; color:#b0b0b0; font-variant-numeric:tabular-nums; }
+  .nm { flex:1 1 auto; min-width:0; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;
+        font-weight:700; color:#fff; padding:0 4px; }
+  .v  { width:44px; flex:0 0 auto; text-align:right; font-weight:700; font-variant-numeric:tabular-nums; color:#fff; }
+  .vs { width:34px; flex:0 0 auto; text-align:right; font-variant-numeric:tabular-nums; color:#d0d0d0; }
+  /* 荣誉：实心色条 + 名字换色（无渐变/无阴影） */
+  .r1 .bar { background:var(--gold); } .r1 .nm { color:var(--gold); }
+  .r2 .bar { background:#d8d8d8; } .r2 .nm { color:#eaeaea; }
+  .r3 .bar { background:#d08040; } .r3 .nm { color:#e8ac68; }
+  .empty { color:#b0b0b0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div id="bal"></div>
+  <div class="hr"></div>
+  <div class="ttl">本轮榜 <em>召唤 / 花费</em></div>
+  <div id="rows"></div>
+  <div class="hr"></div>
+  <div class="ttl">累计榜 <em>夺冠 / 累计召唤</em></div>
+  <div id="rows-se"></div>
+</div>
+<script>
+// 两榜各行最多显示多少条（200×400、15px/行 放得下）
+const ROUND_TOP = 5, SEASON_TOP = 11;
+// URL 可覆盖尺寸：?w=240&h=420
+(function () {
+  const q = new URLSearchParams(location.search)
+  const s = document.documentElement.style
+  if (q.get('w')) s.setProperty('--w', q.get('w') + 'px')
+  if (q.get('h')) s.setProperty('--h', q.get('h') + 'px')
+})()
+async function tick () {
+  try {
+    const r = await fetch('/api/leaderboard', { cache: 'no-store' })
+    render(await r.json())
+  } catch (e) { /* 中继未起时静默 */ }
+}
+function esc (s) { return String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])) }
+function cls (i) { return i === 0 ? ' r1' : i === 1 ? ' r2' : i === 2 ? ' r3' : '' }
+// 金额缩写：12345 → 12.3k（省位、低分辨率下更好读）
+function abbr (n) {
+  n = Number(n) || 0
+  if (n >= 1000000) return (n / 1000000).toFixed(1) + 'M'
+  if (n >= 1000) return (n / 1000).toFixed(1) + 'k'
+  return String(n)
+}
+function render (d) {
+  d = d || {}
+  const f = d.factions || {}
+  const bal = (k, cl) => {
+    const x = f[k] || {}
+    return '<div class="bal"><span class="dot ' + cl + '"></span>' +
+      '<span class="m ' + cl + '">$' + abbr(x.balance != null ? x.balance : 0) + '</span>' +
+      '<span class="s">兵' + (x.spawns || 0) + '</span></div>'
+  }
+  document.getElementById('bal').innerHTML = bal('red', 'r') + bal('blue', 'b')
+
+  const vs = (d.viewers || []).slice(0, ROUND_TOP)
+  document.getElementById('rows').innerHTML = vs.length ? vs.map((v, i) =>
+    '<div class="row' + cls(i) + '"><span class="bar"></span><span class="rk">' + (i + 1) + '</span>' +
+    '<span class="nm">' + esc(v.name) + '</span>' +
+    '<span class="v">' + (v.spawns || 0) + '</span>' +
+    '<span class="vs">' + abbr(v.spent) + '</span></div>'
+  ).join('') : '<div class="empty">—</div>'
+
+  const se = (d.season || []).slice(0, SEASON_TOP)
+  document.getElementById('rows-se').innerHTML = se.length ? se.map((v, i) =>
+    '<div class="row' + ((v.wins > 0) ? cls(i) : '') + '"><span class="bar"></span><span class="rk">' + (i + 1) + '</span>' +
+    '<span class="nm">' + esc(v.name) + '</span>' +
+    '<span class="v">' + (v.wins || 0) + '胜</span>' +
+    '<span class="vs">' + abbr(v.spawns) + '</span></div>'
+  ).join('') : '<div class="empty">—</div>'
+}
+tick(); setInterval(tick, 2000)
+</script>
+</body>
+</html>

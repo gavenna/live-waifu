@@ -1,0 +1,9 @@
+name: waifu-tts
+version: 1.0.0
+description: "桌面角色 TTS 语音合成 — Hermes Agent 响应自动转为语音，推送给 waifu-agent 桌面端播放"
+author: Kevin
+kind: standalone
+provides_hooks:
+  - pre_llm_call
+  - post_llm_call
+  - on_session_end

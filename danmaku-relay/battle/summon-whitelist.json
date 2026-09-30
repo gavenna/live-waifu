@@ -1,0 +1,60 @@
+{
+  "note": "观众可召唤范围（land/sea/air/building，主播指定）。改此文件=改召唤范围；删此文件=回到旧行为（UNIT_MAP 原版 + mod-unit-pool 白名单）。type=引擎类型名；word/aliases=弹幕词；giftOnly=true 的只走礼物、不进弹幕召唤。building 类的单位**就地建造**（不下巡逻令，塔没有脚）；其余类别落地后自动向敌方基地推进。",
+  "categories": {
+    "land": [
+      { "type": "EkInfantryGrunt", "word": "步枪兵", "aliases": ["grunt", "步枪"] },
+      { "type": "Ek_miniTank", "word": "迷你坦克", "aliases": ["mini tank", "minitank"] },
+      { "type": "EkInfantryGrenade", "word": "榴弹兵", "aliases": ["grenadier"] },
+      { "type": "EkInfantryHmg", "word": "机枪手", "aliases": ["mg", "hmg"] },
+      { "type": "EkInfantrySniper", "word": "狙击手", "aliases": ["sniper"] },
+      { "type": "EkPatriot", "word": "爱国者", "aliases": ["patriot"] },
+      { "type": "EkWardenMechX", "word": "狂暴者", "aliases": ["berserker"] },
+      { "type": "EkSamuraiMech_mk2", "word": "浪人", "aliases": ["ronin"] },
+      { "type": "EkTitanMech", "word": "泰坦", "aliases": ["titan"] },
+      { "type": "EkWardenMech_mk2", "word": "典狱长", "aliases": ["warden", "warden mk.ii", "warden mk2"] }
+    ],
+    "sea": [],
+    "air": [
+      { "type": "EkBiplaneFighter1", "word": "侦察机", "aliases": ["scout plane", "biplane"] },
+      { "type": "EkBiplaneBomber", "word": "轰炸机", "aliases": ["bomber"] },
+      { "type": "EkLargeDrone", "word": "复仇者", "aliases": ["avenger", "large drone"] },
+      { "type": "EkBuzzard", "word": "秃鹰", "aliases": ["buzzard"] },
+      { "type": "Ek_beamGunshipA_5", "word": "百夫长", "aliases": ["centurion", "cewnturion"] },
+      { "type": "Ek星舰", "word": "执行者", "aliases": ["executor"], "giftOnly": true },
+      { "type": "Ek_mutli_laser_ship", "word": "凤凰", "aliases": ["phoenix"] }
+    ],
+    "building": [
+      { "type": "EkTowerRifleman", "word": "步枪塔", "aliases": ["rifle tower"] },
+      { "type": "EkTowerHmg", "word": "机枪塔", "aliases": ["hmg tower"] },
+      { "type": "EkTowerSniper", "word": "狙击塔", "aliases": ["sniper tower"] },
+      { "type": "c_antiAirTurretT3", "word": "防空T3", "aliases": ["anti-air t3", "防空炮塔"] },
+      { "type": "EkInfBunker", "word": "轻型地堡", "aliases": ["light bunker", "bunker"] },
+      { "type": "EkBunkerInterceptor", "word": "空防地堡", "aliases": ["bunker airframe"] },
+      { "type": "EkLargeArtillary", "word": "大型碉堡", "aliases": ["large bunker"] },
+      { "type": "c_turret_t2_lightning", "word": "闪电炮塔", "aliases": ["lightning t2"] },
+      { "type": "c_turret_t3_gun", "word": "顶级炮塔", "aliases": ["turret t3"] }
+    ]
+  },
+
+  "summon": {
+    "note": "弹幕召唤的机制参数。basicUnit=光发「红」「蓝」（不带兵种）时的默认兵，零门槛入口。",
+    "basicUnit": "EkBuzzard",
+    "cooldownMs": 3000,
+    "teamCapPerRound": 300,
+    "tierCaps": [
+      { "maxPrice": 20000, "cap": 10 },
+      { "maxPrice": 80000, "cap": 5 },
+      { "maxPrice": null, "cap": 2 }
+    ]
+  },
+
+  "pusher": {
+    "note": "收局推手：低强度、持续（不再是开局 4 分钟打满就停）。每 intervalMs 两边各 perSide 兵，两边共用同一批 typesPerSide 个兵种。",
+    "intervalMs": 30000,
+    "perSide": 3,
+    "typesPerSide": 3,
+    "pool": ["land", "air"],
+    "exclude": ["Ek星舰"],
+    "maxPerSide": 400
+  }
+}

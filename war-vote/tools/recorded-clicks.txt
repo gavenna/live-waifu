@@ -1,0 +1,15 @@
+; 录制的点击坐标
+; 格式: x, y (相对窗口百分比)
+
+steps := [
+    {action: 'click', x: 0.4091, y: 0.3537, label: '步骤1'},
+    {action: 'click', x: 0.4042, y: 0.4446, label: '步骤2'},
+    {action: 'click', x: 0.4524, y: 0.1510, label: '步骤3'},
+    {action: 'click', x: 0.4468, y: 0.2408, label: '步骤4'},
+    {action: 'click', x: 0.4326, y: 0.1763, label: '步骤5'},
+    {action: 'click', x: 0.4574, y: 0.5195, label: '步骤6'},
+    {action: 'click', x: 0.3943, y: 0.2830, label: '步骤7'},
+    {action: 'click', x: 0.3993, y: 0.3865, label: '步骤8'},
+    {action: 'click', x: 0.3993, y: 0.3865, label: '步骤9'},
+    {action: 'click', x: 0.3807, y: 0.5185, label: '步骤10'},
+]

@@ -1,0 +1,10 @@
+import socket, time
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.settimeout(10)
+s.connect(('127.0.0.1', 9999))
+s.send(b"script root.open('sandboxOptions.rml', 'maps/skirmish/live_battle.tmx')\n")
+time.sleep(2)
+s.send(b"script root.loadConfigAndStartNewSandbox('maps/skirmish/live_battle.tmx')\n")
+time.sleep(3)
+s.close()
+print('命令已发送')

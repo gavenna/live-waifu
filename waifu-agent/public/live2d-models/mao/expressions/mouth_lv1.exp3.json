@@ -1,0 +1,9 @@
+{
+  "Type": "Live2D Expression",
+  "FadeInTime": 0.05,
+  "FadeOutTime": 0.05,
+  "Parameters": [
+    { "Id": "ParamMouthUp", "Value": -0.25, "Blend": "Add" },
+    { "Id": "ParamMouthDown", "Value": 0.25, "Blend": "Add" }
+  ]
+}

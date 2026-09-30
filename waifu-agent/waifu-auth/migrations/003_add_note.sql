@@ -1,0 +1,2 @@
+-- 给激活码表加备注字段
+ALTER TABLE reg_keys ADD COLUMN IF NOT EXISTS note VARCHAR(255) DEFAULT '';

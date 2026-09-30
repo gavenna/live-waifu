@@ -1,0 +1,58 @@
+{
+  "note": "直播可召唤的 mod 兵种白名单（由 tools/gen_mod_units.js 生成，可手改）。tiers 里的 type 才可召唤；删除本文件 = 恢复全部可召唤。",
+  "generatedFrom": "Rusted Warfare1.15",
+  "tiers": {
+    "进阶": [
+      "EkChisel",
+      "EkEris",
+      "EkBunkerFlakHeavy",
+      "EkBunkerHeavyArtillary",
+      "EkResourceDrill",
+      "Ek_radarturret",
+      "EkArachnidMech",
+      "EklemurX",
+      "EkCarrierSmall",
+      "EkSaber",
+      "EkSelenium",
+      "EkNowosibirsk",
+      "EkParaship",
+      "Ekheavycraft2"
+    ],
+    "王牌": [
+      "Ek_Gladiator",
+      "EkAirshipHangar2",
+      "Ek_Hyperion",
+      "EkLandshipLarge",
+      "EkLandshipLargeWater",
+      "EkPrototype01",
+      "EkWardenMech_sniper_x",
+      "Ek_Cordelia",
+      "Ek_derya",
+      "Ek星舰射线炮",
+      "Ek星舰",
+      "Ek星舰激光炮",
+      "EkSmallSpaceElevator",
+      "Ek_spaceStation"
+    ],
+    "常备": [
+      "Ek_Gladiator_missime",
+      "Ek_Gladiator_RailGun",
+      "Ek_Gladiator_twinRailGun",
+      "EkbugWasp",
+      "EkChemicalCloudSmall",
+      "EkIncendiarySmall",
+      "EkMineCluster",
+      "Ek_crazy_builder",
+      "EkBiplaneFighter1",
+      "EkInfantryDiver",
+      "EkInfantryGrunt",
+      "EkConvergence",
+      "EkHermes",
+      "EkStewart",
+      "Ek_miniTank",
+      "Ek_miniTankOld",
+      "EkRib",
+      "EkRibCarrying"
+    ]
+  }
+}

@@ -1,0 +1,730 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>弹幕对接文档.md</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; }
+        h1, h2, h3, h4, h5, h6 { color: #333; }
+        code { background: #f4f4f4; padding: 2px 4px; border-radius: 3px; }
+        pre { background: #f4f4f4; padding: 10px; border-radius: 5px; overflow-x: auto; }
+        blockquote { border-left: 4px solid #ddd; margin: 0; padding-left: 20px; color: #666; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <h1>可遇AI弹幕工具 - API对接文档</h1>
+<h2>📖 概述</h2>
+<p>可遇AI弹幕工具是一个基于Electron开发的跨平台直播弹幕抓取工具，通过WebSocket技术提供实时弹幕数据接口。本文档详细介绍如何连接WebSocket服务、数据传输格式以及各平台数据结构。</p>
+<h2>🔌 WebSocket连接</h2>
+<h3>连接信息</h3>
+<ul>
+<li><strong>服务地址</strong>: <code>ws://localhost:12011</code> 或 <code>ws://127.0.0.1:12011</code></li>
+<li><strong>协议</strong>: WebSocket</li>
+<li><strong>端口</strong>: 12011（固定端口）</li>
+<li><strong>连接方式</strong>: 标准WebSocket连接，无需认证</li>
+</ul>
+<h3>连接示例</h3>
+<h4>JavaScript连接示例</h4>
+<pre><code class="language-javascript">// 创建WebSocket连接
+const ws = new WebSocket(&#39;ws://localhost:12011&#39;);
+
+// 连接成功
+ws.onopen = function(event) {
+    console.log(&#39;WebSocket连接已建立&#39;);
+};
+
+// 接收消息
+ws.onmessage = function(event) {
+    try {
+        const data = JSON.parse(event.data);
+        console.log(&#39;收到弹幕数据:&#39;, data);
+        // 处理弹幕数据
+        handleBarrageData(data);
+    } catch (error) {
+        console.error(&#39;数据解析失败:&#39;, error);
+    }
+};
+
+// 连接关闭
+ws.onclose = function(event) {
+    console.log(&#39;WebSocket连接已关闭&#39;);
+};
+
+// 连接错误
+ws.onerror = function(error) {
+    console.error(&#39;WebSocket错误:&#39;, error);
+};
+</code></pre>
+<h4>Python连接示例</h4>
+<pre><code class="language-python">import websocket
+import json
+
+def on_message(ws, message):
+    try:
+        data = json.loads(message)
+        print(f&quot;收到弹幕数据: {data}&quot;)
+        # 处理弹幕数据
+        handle_barrage_data(data)
+    except json.JSONDecodeError as e:
+        print(f&quot;数据解析失败: {e}&quot;)
+
+def on_error(ws, error):
+    print(f&quot;WebSocket错误: {error}&quot;)
+
+def on_close(ws, close_status_code, close_msg):
+    print(&quot;WebSocket连接已关闭&quot;)
+
+def on_open(ws):
+    print(&quot;WebSocket连接已建立&quot;)
+
+# 创建WebSocket连接
+ws = websocket.WebSocketApp(&quot;ws://localhost:12011&quot;,
+                          on_open=on_open,
+                          on_message=on_message,
+                          on_error=on_error,
+                          on_close=on_close)
+
+# 开始连接
+ws.run_forever()
+</code></pre>
+<h4>Node.js连接示例</h4>
+<pre><code class="language-javascript">const WebSocket = require(&#39;ws&#39;);
+
+// 创建WebSocket连接
+const ws = new WebSocket(&#39;ws://localhost:12011&#39;);
+
+// 连接成功
+ws.on(&#39;open&#39;, function open() {
+    console.log(&#39;WebSocket连接已建立&#39;);
+});
+
+// 接收消息
+ws.on(&#39;message&#39;, function message(data) {
+    try {
+        const jsonData = JSON.parse(data.toString());
+        console.log(&#39;收到弹幕数据:&#39;, jsonData);
+        // 处理弹幕数据
+        handleBarrageData(jsonData);
+    } catch (error) {
+        console.error(&#39;数据解析失败:&#39;, error);
+    }
+});
+
+// 连接关闭
+ws.on(&#39;close&#39;, function close() {
+    console.log(&#39;WebSocket连接已关闭&#39;);
+});
+
+// 连接错误
+ws.on(&#39;error&#39;, function error(err) {
+    console.error(&#39;WebSocket错误:&#39;, err);
+});
+</code></pre>
+<h2>📊 JSON数据传输格式</h2>
+<h3>数据传输协议</h3>
+<ul>
+<li><strong>数据格式</strong>: JSON字符串</li>
+<li><strong>编码</strong>: UTF-8</li>
+<li><strong>传输方向</strong>: 单向（服务器 → 客户端）</li>
+<li><strong>数据类型</strong>: 实时弹幕、礼物、点赞、关注等互动数据</li>
+</ul>
+<h3>通用数据结构</h3>
+<p>所有平台的数据都遵循以下基本结构：</p>
+<pre><code class="language-json">{
+    &quot;uid&quot;: &quot;用户唯一标识&quot;,
+    &quot;name&quot;: &quot;用户昵称&quot;,
+    &quot;msgType&quot;: &quot;消息类型&quot;,
+    &quot;msgId&quot;: &quot;消息ID&quot;,
+    &quot;timestamp&quot;: &quot;时间戳&quot;,
+    &quot;platform&quot;: &quot;平台标识&quot;
+}
+</code></pre>
+<h3>支持的消息类型</h3>
+<table>
+<thead>
+<tr>
+<th>消息类型</th>
+<th>描述</th>
+<th>图标</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>弹幕</code></td>
+<td>用户发送的文字消息</td>
+<td>💬</td>
+</tr>
+<tr>
+<td><code>礼物</code></td>
+<td>用户赠送的礼物</td>
+<td>🎁</td>
+</tr>
+<tr>
+<td><code>点赞</code></td>
+<td>用户点赞行为</td>
+<td>👍</td>
+</tr>
+<tr>
+<td><code>关注</code></td>
+<td>用户关注主播</td>
+<td>💗</td>
+</tr>
+<tr>
+<td><code>分享</code></td>
+<td>用户分享直播间</td>
+<td>✈️</td>
+</tr>
+<tr>
+<td><code>进房</code></td>
+<td>用户进入直播间</td>
+<td>🚪</td>
+</tr>
+<tr>
+<td><code>粉丝团</code></td>
+<td>粉丝团相关消息</td>
+<td>👥</td>
+</tr>
+</tbody></table>
+<h2>🌟 软件特色</h2>
+<h3>核心优势</h3>
+<ol>
+<li><p><strong>多平台支持</strong></p>
+<ul>
+<li>支持抖音、TikTok、微信视频号等主流直播平台</li>
+<li>统一的数据格式，便于跨平台数据处理</li>
+<li>持续更新，适配平台变化</li>
+</ul>
+</li>
+<li><p><strong>实时数据传输</strong></p>
+<ul>
+<li>基于WebSocket的实时通信</li>
+<li>低延迟数据推送（&lt; 100ms）</li>
+<li>支持多客户端同时连接</li>
+</ul>
+</li>
+<li><p><strong>数据格式标准化</strong></p>
+<ul>
+<li>自动解析Protobuf二进制数据</li>
+<li>统一的JSON格式输出</li>
+<li>完整的数据字段映射</li>
+</ul>
+</li>
+<li><p><strong>简单易用</strong></p>
+<ul>
+<li>零配置启动，自动开启WebSocket服务</li>
+<li>标准WebSocket协议，兼容性强</li>
+<li>详细的错误处理和日志记录</li>
+</ul>
+</li>
+<li><p><strong>高性能处理</strong></p>
+<ul>
+<li>高效的数据解析算法</li>
+<li>内存优化，支持长时间运行</li>
+<li>自动处理数据压缩和解压</li>
+</ul>
+</li>
+</ol>
+<h3>技术特点</h3>
+<ul>
+<li><strong>跨平台兼容</strong>: 基于Electron，支持Windows、macOS、Linux</li>
+<li><strong>协议解析</strong>: 内置Protobuf解析器，支持各平台私有协议</li>
+<li><strong>数据过滤</strong>: 智能过滤重复数据，确保数据准确性</li>
+<li><strong>错误恢复</strong>: 自动重连机制，保证服务稳定性</li>
+</ul>
+<h2>📋 不同平台数据格式示例</h2>
+<h3>抖音平台数据格式</h3>
+<h4>弹幕消息</h4>
+<pre><code class="language-json">{
+    &quot;uid&quot;: &quot;MS4wLjABAAAA...&quot;,
+    &quot;name&quot;: &quot;用户昵称&quot;,
+    &quot;sex&quot;: 1,
+    &quot;level&quot;: 15,
+    &quot;payGrade&quot;: 3,
+    &quot;avatar&quot;: &quot;https://p3-pc.douyinpic.com/...&quot;,
+    &quot;msgId&quot;: 1234567890,
+    &quot;msgType&quot;: &quot;弹幕&quot;,
+    &quot;newType&quot;: &quot;💬&quot;,
+    &quot;content&quot;: &quot;这是一条弹幕消息&quot;
+}
+</code></pre>
+<h4>礼物消息</h4>
+<pre><code class="language-json">{
+    &quot;uid&quot;: &quot;MS4wLjABAAAA...&quot;,
+    &quot;name&quot;: &quot;用户昵称&quot;,
+    &quot;sex&quot;: 2,
+    &quot;level&quot;: 20,
+    &quot;payGrade&quot;: 5,
+    &quot;avatar&quot;: &quot;https://p3-pc.douyinpic.com/...&quot;,
+    &quot;msgId&quot;: 1234567891,
+    &quot;msgType&quot;: &quot;礼物&quot;,
+    &quot;newType&quot;: &quot;🎁&quot;,
+    &quot;giftId&quot;: 5655,
+    &quot;giftName&quot;: &quot;玫瑰花&quot;,
+    &quot;comboCount&quot;: 1,
+    &quot;repeatCount&quot;: 5,
+    &quot;groupId&quot;: &quot;12345&quot;,
+    &quot;groupCount&quot;: 5,
+    &quot;diamondCount&quot;: 1,
+    &quot;giftCount&quot;: 5
+}
+</code></pre>
+<h4>点赞消息</h4>
+<pre><code class="language-json">{
+    &quot;uid&quot;: &quot;MS4wLjABAAAA...&quot;,
+    &quot;name&quot;: &quot;用户昵称&quot;,
+    &quot;sex&quot;: 1,
+    &quot;level&quot;: 8,
+    &quot;payGrade&quot;: 1,
+    &quot;avatar&quot;: &quot;https://p3-pc.douyinpic.com/...&quot;,
+    &quot;msgId&quot;: 1234567892,
+    &quot;msgType&quot;: &quot;点赞&quot;,
+    &quot;newType&quot;: &quot;👍&quot;,
+    &quot;count&quot;: 10
+}
+</code></pre>
+<h4>关注消息</h4>
+<pre><code class="language-json">{
+    &quot;uid&quot;: &quot;MS4wLjABAAAA...&quot;,
+    &quot;name&quot;: &quot;用户昵称&quot;,
+    &quot;sex&quot;: 2,
+    &quot;level&quot;: 12,
+    &quot;payGrade&quot;: 2,
+    &quot;avatar&quot;: &quot;https://p3-pc.douyinpic.com/...&quot;,
+    &quot;msgId&quot;: 1234567893,
+    &quot;msgType&quot;: &quot;关注&quot;,
+    &quot;newType&quot;: &quot;💗&quot;,
+    &quot;followCount&quot;: 1
+}
+</code></pre>
+<h4>进房消息</h4>
+<pre><code class="language-json">{
+    &quot;uid&quot;: &quot;MS4wLjABAAAA...&quot;,
+    &quot;name&quot;: &quot;用户昵称&quot;,
+    &quot;sex&quot;: 1,
+    &quot;level&quot;: 5,
+    &quot;payGrade&quot;: 0,
+    &quot;avatar&quot;: &quot;https://p3-pc.douyinpic.com/...&quot;,
+    &quot;msgId&quot;: 1234567894,
+    &quot;msgType&quot;: &quot;进房&quot;,
+    &quot;newType&quot;: &quot;🚪&quot;,
+    &quot;action&quot;: 1,
+    &quot;memberCount&quot;: 1256
+}
+</code></pre>
+<h3>TikTok平台数据格式</h3>
+<h4>弹幕消息</h4>
+<pre><code class="language-json">{
+    &quot;uid&quot;: &quot;6875432109876543210&quot;,
+    &quot;secUid&quot;: &quot;MS4wLjABAAAA...&quot;,
+    &quot;name&quot;: &quot;Username&quot;,
+    &quot;sex&quot;: 1,
+    &quot;level&quot;: 0,
+    &quot;payGrade&quot;: 0,
+    &quot;avatar&quot;: &quot;https://p16-sign-va.tiktokcdn.com/...&quot;,
+    &quot;msgId&quot;: 1234567895,
+    &quot;msgType&quot;: &quot;弹幕&quot;,
+    &quot;newType&quot;: &quot;💬&quot;,
+    &quot;content&quot;: &quot;Hello from TikTok!&quot;
+}
+</code></pre>
+<h4>礼物消息</h4>
+<pre><code class="language-json">{
+    &quot;uid&quot;: &quot;6875432109876543210&quot;,
+    &quot;secUid&quot;: &quot;MS4wLjABAAAA...&quot;,
+    &quot;name&quot;: &quot;Username&quot;,
+    &quot;sex&quot;: 1,
+    &quot;level&quot;: 0,
+    &quot;payGrade&quot;: 0,
+    &quot;avatar&quot;: &quot;https://p16-sign-va.tiktokcdn.com/...&quot;,
+    &quot;msgId&quot;: 1234567896,
+    &quot;msgType&quot;: &quot;礼物&quot;,
+    &quot;newType&quot;: &quot;🎁&quot;,
+    &quot;giftId&quot;: &quot;5655&quot;,
+    &quot;giftName&quot;: &quot;Rose&quot;,
+    &quot;comboCount&quot;: 1,
+    &quot;repeatCount&quot;: 3,
+    &quot;groupId&quot;: &quot;67890&quot;,
+    &quot;groupCount&quot;: 3,
+    &quot;diamondCount&quot;: 1,
+    &quot;giftCount&quot;: 3
+}
+</code></pre>
+<h3>微信视频号数据格式</h3>
+<h4>弹幕消息</h4>
+<pre><code class="language-json">{
+    &quot;uid&quot;: &quot;wxid_abc123def456&quot;,
+    &quot;name&quot;: &quot;微信用户&quot;,
+    &quot;sex&quot;: 1,
+    &quot;avatar&quot;: &quot;https://wx.qlogo.cn/...&quot;,
+    &quot;msgId&quot;: 1703123456789,
+    &quot;msgType&quot;: &quot;弹幕&quot;,
+    &quot;content&quot;: &quot;微信视频号弹幕内容&quot;
+}
+</code></pre>
+<h4>礼物消息</h4>
+<pre><code class="language-json">{
+    &quot;uid&quot;: &quot;wxid_abc123def456&quot;,
+    &quot;name&quot;: &quot;微信用户&quot;,
+    &quot;avatar&quot;: &quot;https://wx.qlogo.cn/...&quot;,
+    &quot;msgId&quot;: 1703123456790,
+    &quot;msgType&quot;: &quot;礼物&quot;,
+    &quot;giftId&quot;: &quot;爱心&quot;,
+    &quot;giftName&quot;: &quot;爱心&quot;,
+    &quot;giftCount&quot;: &quot;3&quot;
+}
+</code></pre>
+<h4>进房消息</h4>
+<pre><code class="language-json">{
+    &quot;uid&quot;: &quot;wxid_abc123def456&quot;,
+    &quot;name&quot;: &quot;微信用户&quot;,
+    &quot;sex&quot;: 2,
+    &quot;avatar&quot;: &quot;https://wx.qlogo.cn/...&quot;,
+    &quot;msgId&quot;: 1703123456791,
+    &quot;msgType&quot;: &quot;进房&quot;
+}
+</code></pre>
+<h2>🔧 数据字段说明</h2>
+<h3>通用字段</h3>
+<table>
+<thead>
+<tr>
+<th>字段名</th>
+<th>类型</th>
+<th>说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>uid</code></td>
+<td>String</td>
+<td>用户唯一标识</td>
+<td>&quot;MS4wLjABAAAA...&quot;</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>String</td>
+<td>用户昵称</td>
+<td>&quot;用户昵称&quot;</td>
+</tr>
+<tr>
+<td><code>msgId</code></td>
+<td>Number</td>
+<td>消息ID</td>
+<td>1234567890</td>
+</tr>
+<tr>
+<td><code>msgType</code></td>
+<td>String</td>
+<td>消息类型</td>
+<td>&quot;弹幕&quot;, &quot;礼物&quot;, &quot;点赞&quot;</td>
+</tr>
+<tr>
+<td><code>newType</code></td>
+<td>String</td>
+<td>消息类型图标</td>
+<td>&quot;💬&quot;, &quot;🎁&quot;, &quot;👍&quot;</td>
+</tr>
+</tbody></table>
+<h3>用户信息字段</h3>
+<table>
+<thead>
+<tr>
+<th>字段名</th>
+<th>类型</th>
+<th>说明</th>
+<th>平台支持</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>sex</code></td>
+<td>Number</td>
+<td>用户性别 (1:男, 2:女)</td>
+<td>抖音, 微信</td>
+</tr>
+<tr>
+<td><code>level</code></td>
+<td>Number</td>
+<td>用户等级</td>
+<td>抖音</td>
+</tr>
+<tr>
+<td><code>payGrade</code></td>
+<td>Number</td>
+<td>消费等级</td>
+<td>抖音, TikTok</td>
+</tr>
+<tr>
+<td><code>avatar</code></td>
+<td>String</td>
+<td>用户头像URL</td>
+<td>全平台</td>
+</tr>
+<tr>
+<td><code>secUid</code></td>
+<td>String</td>
+<td>安全用户ID</td>
+<td>TikTok</td>
+</tr>
+</tbody></table>
+<h3>弹幕消息字段</h3>
+<table>
+<thead>
+<tr>
+<th>字段名</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>content</code></td>
+<td>String</td>
+<td>弹幕内容</td>
+</tr>
+</tbody></table>
+<h3>礼物消息字段</h3>
+<table>
+<thead>
+<tr>
+<th>字段名</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>giftId</code></td>
+<td>String/Number</td>
+<td>礼物ID</td>
+</tr>
+<tr>
+<td><code>giftName</code></td>
+<td>String</td>
+<td>礼物名称</td>
+</tr>
+<tr>
+<td><code>giftCount</code></td>
+<td>Number</td>
+<td>实际礼物数量</td>
+</tr>
+<tr>
+<td><code>comboCount</code></td>
+<td>Number</td>
+<td>连击数量</td>
+</tr>
+<tr>
+<td><code>repeatCount</code></td>
+<td>Number</td>
+<td>重复次数</td>
+</tr>
+<tr>
+<td><code>groupId</code></td>
+<td>String</td>
+<td>组刷ID</td>
+</tr>
+<tr>
+<td><code>groupCount</code></td>
+<td>Number</td>
+<td>组刷数量</td>
+</tr>
+<tr>
+<td><code>diamondCount</code></td>
+<td>Number</td>
+<td>礼物单价</td>
+</tr>
+</tbody></table>
+<h3>点赞消息字段</h3>
+<table>
+<thead>
+<tr>
+<th>字段名</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>count</code></td>
+<td>Number</td>
+<td>点赞数量</td>
+</tr>
+</tbody></table>
+<h3>关注消息字段</h3>
+<table>
+<thead>
+<tr>
+<th>字段名</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>followCount</code></td>
+<td>Number</td>
+<td>关注数量</td>
+</tr>
+</tbody></table>
+<h3>进房消息字段</h3>
+<table>
+<thead>
+<tr>
+<th>字段名</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>action</code></td>
+<td>Number</td>
+<td>进房动作类型</td>
+</tr>
+<tr>
+<td><code>memberCount</code></td>
+<td>Number</td>
+<td>房间人数</td>
+</tr>
+</tbody></table>
+<h2>🚀 快速开始</h2>
+<h3>1. 启动弹幕工具</h3>
+<ol>
+<li>运行可遇AI弹幕工具应用</li>
+<li>应用会自动启动WebSocket服务器（端口12011）</li>
+<li>在应用中输入直播间链接并进入直播间</li>
+</ol>
+<h3>2. 连接WebSocket</h3>
+<pre><code class="language-javascript">// 简单的连接示例
+const ws = new WebSocket(&#39;ws://localhost:12011&#39;);
+
+ws.onmessage = function(event) {
+    const data = JSON.parse(event.data);
+    console.log(&#39;收到数据:&#39;, data);
+    
+    // 根据消息类型处理数据
+    switch(data.msgType) {
+        case &#39;弹幕&#39;:
+            console.log(`${data.name}: ${data.content}`);
+            break;
+        case &#39;礼物&#39;:
+            console.log(`${data.name} 送了 ${data.giftCount} 个 ${data.giftName}`);
+            break;
+        case &#39;点赞&#39;:
+            console.log(`${data.name} 点了 ${data.count} 个赞`);
+            break;
+        case &#39;关注&#39;:
+            console.log(`${data.name} 关注了主播`);
+            break;
+        case &#39;进房&#39;:
+            console.log(`${data.name} 进入了直播间`);
+            break;
+    }
+};
+</code></pre>
+<h3>3. 处理数据</h3>
+<pre><code class="language-javascript">function handleBarrageData(data) {
+    // 数据验证
+    if (!data.msgType || !data.name) {
+        console.warn(&#39;无效数据:&#39;, data);
+        return;
+    }
+    
+    // 根据平台和消息类型处理数据
+    const platform = detectPlatform(data);
+    
+    switch(data.msgType) {
+        case &#39;弹幕&#39;:
+            displayBarrage(data);
+            break;
+        case &#39;礼物&#39;:
+            displayGift(data);
+            break;
+        case &#39;点赞&#39;:
+            displayLike(data);
+            break;
+        // ... 其他消息类型
+    }
+}
+
+function detectPlatform(data) {
+    if (data.uid &amp;&amp; data.uid.startsWith(&#39;MS4wLjABAAAA&#39;)) {
+        return data.secUid ? &#39;tiktok&#39; : &#39;douyin&#39;;
+    } else if (data.uid &amp;&amp; data.uid.startsWith(&#39;wxid_&#39;)) {
+        return &#39;weixin&#39;;
+    }
+    return &#39;unknown&#39;;
+}
+</code></pre>
+<h2>⚠️ 注意事项</h2>
+<h3>连接注意事项</h3>
+<ol>
+<li><strong>端口占用</strong>: 确保12011端口未被其他程序占用</li>
+<li><strong>防火墙</strong>: 检查防火墙设置，允许12011端口通信</li>
+<li><strong>本地连接</strong>: 服务仅监听本地地址，外部无法直接访问</li>
+<li><strong>自动重连</strong>: 建议实现自动重连机制，处理网络异常</li>
+</ol>
+<h3>数据处理注意事项</h3>
+<ol>
+<li><strong>数据验证</strong>: 始终验证接收到的JSON数据格式</li>
+<li><strong>异常处理</strong>: 妥善处理数据解析异常和网络异常</li>
+<li><strong>内存管理</strong>: 长时间运行时注意内存使用情况</li>
+<li><strong>平台差异</strong>: 不同平台的数据字段可能有差异，需要兼容处理</li>
+</ol>
+<h3>性能优化建议</h3>
+<ol>
+<li><strong>批量处理</strong>: 对于高频数据，考虑批量处理以提高性能</li>
+<li><strong>数据过滤</strong>: 根据需求过滤不必要的数据类型</li>
+<li><strong>缓存机制</strong>: 对于用户信息等相对稳定的数据，可以实现缓存</li>
+<li><strong>异步处理</strong>: 使用异步方式处理数据，避免阻塞主线程</li>
+</ol>
+<h2>🔍 故障排除</h2>
+<h3>常见问题</h3>
+<ol>
+<li><p><strong>无法连接WebSocket</strong></p>
+<ul>
+<li>检查弹幕工具是否正常运行</li>
+<li>确认端口12011未被占用</li>
+<li>检查防火墙设置</li>
+</ul>
+</li>
+<li><p><strong>收不到数据</strong></p>
+<ul>
+<li>确认已在弹幕工具中进入直播间</li>
+<li>检查直播间是否有实际的弹幕互动</li>
+<li>验证WebSocket连接状态</li>
+</ul>
+</li>
+<li><p><strong>数据格式异常</strong></p>
+<ul>
+<li>检查JSON解析代码</li>
+<li>验证数据字段是否存在</li>
+<li>查看控制台错误信息</li>
+</ul>
+</li>
+<li><p><strong>连接频繁断开</strong></p>
+<ul>
+<li>实现心跳检测机制</li>
+<li>添加自动重连逻辑</li>
+<li>检查网络稳定性</li>
+</ul>
+</li>
+</ol>
+<h3>调试建议</h3>
+<ol>
+<li><strong>启用日志</strong>: 在代码中添加详细的日志输出</li>
+<li><strong>使用测试页面</strong>: 利用提供的websocket-test.html进行测试</li>
+<li><strong>监控连接状态</strong>: 实时监控WebSocket连接状态</li>
+<li><strong>数据验证</strong>: 对接收到的每条数据进行格式验证</li>
+</ol>
+<h2>📞 技术支持</h2>
+<p>如果在使用过程中遇到问题，可以通过以下方式获取支持：</p>
+<ul>
+<li><strong>QQ群1</strong>: 122517993</li>
+<li><strong>QQ群2</strong>: 145225093</li>
+<li><strong>客服微信</strong>: wujie88488</li>
+<li><strong>官方网站</strong>: <a href="http://www.keyu.live">www.keyu.live</a></li>
+</ul>
+<hr>
+<p><strong>文档版本</strong>: v1.0<br><strong>最后更新</strong>: 2024年12月<br><strong>适用版本</strong>: 可遇AI弹幕工具 v1.0+</p>
+
+</body>
+</html>

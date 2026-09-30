@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>開発部屋 — Cover</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 800px; height: 450px;
+    background: #0d0d1a;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Noto Sans CJK SC', 'WenQuanYi Micro Hei', sans-serif;
+    overflow: hidden;
+  }
+
+  .card {
+    width: 760px; height: 420px;
+    background: linear-gradient(145deg, #1a1a2e 0%, #16162a 40%, #0f0f23 100%);
+    border-radius: 20px;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.06);
+    box-shadow:
+      0 0 80px rgba(139,92,246,0.10),
+      0 0 40px rgba(6,182,212,0.05),
+      inset 0 1px 0 rgba(255,255,255,0.03);
+  }
+
+  .grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  .orb {
+    position: absolute; border-radius: 50%;
+    filter: blur(80px); opacity: 0.10;
+  }
+  .orb.purple { width: 280px; height: 280px; background: #8b5cf6; top: -100px; right: -60px; }
+  .orb.cyan   { width: 200px; height: 200px; background: #06b6d4; bottom: -60px; left: -40px; }
+  .orb.amber  { width: 160px; height: 160px; background: #f59e0b; top: 120px; left: 200px; opacity: 0.06; }
+  .orb.pink   { width: 120px; height: 120px; background: #ec4899; bottom: 40px; right: 250px; opacity: 0.05; }
+
+  .terminal {
+    position: absolute; top: 30px; left: 35px; right: 35px; bottom: 30px;
+    background: rgba(10,10,20,0.88);
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.07);
+    padding: 14px 18px;
+    display: flex; flex-direction: column;
+    gap: 3px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+    z-index: 2;
+  }
+
+  .dots {
+    display: flex; gap: 8px; margin-bottom: 10px;
+  }
+  .dots span { width: 11px; height: 11px; border-radius: 50%; }
+  .dots .r { background: #ff5f57; }
+  .dots .y { background: #febc2e; }
+  .dots .g { background: #28c840; }
+
+  .line {
+    font-family: 'Cascadia Code', 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 12px; line-height: 1.75; color: rgba(255,255,255,0.45);
+  }
+  .line .prompt  { color: #8b5cf6; }
+  .line .cmd     { color: #06b6d4; }
+  .line .output  { color: rgba(255,255,255,0.70); }
+  .line .accent  { color: #f59e0b; }
+  .line .comment { color: rgba(255,255,255,0.20); }
+
+  .title-overlay {
+    position: absolute; bottom: 25px; right: 30px;
+    font-size: 68px; font-weight: 900;
+    color: rgba(255,255,255,0.03);
+    letter-spacing: 8px;
+    z-index: 1; user-select: none; pointer-events: none;
+  }
+
+  .badge {
+    position: absolute; top: 18px; right: 25px;
+    font-size: 10px; color: rgba(139,92,246,0.30);
+    letter-spacing: 3px; z-index: 3;
+  }
+
+  .chibi {
+    position: absolute; bottom: 20px; right: 45px;
+    font-size: 56px; z-index: 3;
+    filter: drop-shadow(0 4px 20px rgba(139,92,246,0.25));
+    user-select: none;
+  }
+
+  .cursor {
+    display: inline-block; width: 7px; height: 13px;
+    background: #06b6d4; margin-left: 2px;
+    animation: blink 1s step-end infinite;
+    vertical-align: middle;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+</style>
+</head>
+<body>
+
+<div class="card">
+
+  <div class="grid"></div>
+  <div class="orb purple"></div>
+  <div class="orb cyan"></div>
+  <div class="orb amber"></div>
+  <div class="orb pink"></div>
+
+  <div class="title-overlay">開発部屋</div>
+
+  <div class="badge">WAIFU-AGENT</div>
+
+  <div class="terminal">
+    <div class="dots">
+      <span class="r"></span><span class="y"></span><span class="g"></span>
+    </div>
+
+    <div class="line"><span class="prompt">gaven@waifu</span>:<span class="cmd">~</span>$ cat MOTD</div>
+    <div class="line"><span class="output">ようこそ、開発部屋へ ✨</span></div>
+    <div class="line"><span class="comment">──────────────────────────────────────────</span></div>
+    <div class="line">&nbsp;</div>
+
+    <div class="line"><span class="comment">// 全員</span></div>
+    <div class="line"><span class="output">📁 新角色原画 & 设定草稿</span></div>
+    <div class="line"><span class="output">📸 开发中截图 & 废弃方案</span></div>
+    <div class="line"><span class="output">💬 吐槽 / 催更 / 闲聊</span></div>
+    <div class="line">&nbsp;</div>
+
+    <div class="line"><span class="comment">// 守护者</span></div>
+    <div class="line"><span class="accent">📝</span> <span class="output">每月独家开发日志</span></div>
+    <div class="line"><span class="accent">🔒</span> <span class="output">爱发电专属动态</span></div>
+    <div class="line">&nbsp;</div>
+
+    <div class="line"><span class="comment">// 造物神</span></div>
+    <div class="line"><span class="accent">🗳️</span>  <span class="output">功能优先级投票</span></div>
+    <div class="line"><span class="accent">🎨</span>  <span class="output">新角色设定参与</span></div>
+    <div class="line"><span class="accent">🧪</span>  <span class="output">内测版提前体验</span></div>
+    <div class="line">&nbsp;</div>
+
+    <div class="line"><span class="comment">──────────────────────────────────────────</span></div>
+    <div class="line"><span class="prompt">gaven@waifu</span>:<span class="cmd">~</span>$ <span class="cursor"></span></div>
+  </div>
+
+  <div class="chibi">🐱</div>
+
+</div>
+
+</body>
+</html>

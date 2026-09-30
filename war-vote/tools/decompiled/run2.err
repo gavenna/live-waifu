@@ -1,0 +1,10 @@
+Can't load the class specified:
+org.benf.cfr.reader.util.CannotLoadClassException: D:\game\tiexiuzhanzheng_zhengshi_v1/15_anfensi/com\Rusted.class - java.io.IOException: No such file D:\game\tiexiuzhanzheng_zhengshi_v1/15_anfensi/com\Rusted.class
+Processing Warfare1.15\game-lib.jar (use silent to silence)
+Exception analysing jar
+org.benf.cfr.reader.util.ConfusedCFRException: No such jar file Warfare1.15\game-lib.jar
+org.benf.cfr.reader.state.ClassFileSourceImpl.addJarContent(ClassFileSourceImpl.java:254)
+org.benf.cfr.reader.state.DCCommonState.explicitlyLoadJar(DCCommonState.java:141)
+org.benf.cfr.reader.Driver.doJar(Driver.java:127)
+org.benf.cfr.reader.CfrDriverImpl.analyse(CfrDriverImpl.java:76)
+org.benf.cfr.reader.Main.main(Main.java:54)

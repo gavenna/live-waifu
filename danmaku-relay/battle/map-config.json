@@ -1,0 +1,58 @@
+{
+  "map": "live_map_001.tmx",
+  "width": 230,
+  "height": 180,
+  "tile": 20,
+  "world": {
+    "w": 4600,
+    "h": 3600
+  },
+  "teams": {
+    "red": 1,
+    "blue": 2,
+    "redViewer": 3,
+    "blueViewer": 4
+  },
+  "spawnPad": 45,
+  "commandCenters": {
+    "red": {
+      "x": 3754,
+      "y": 1861
+    },
+    "blue": {
+      "x": 816,
+      "y": 1709
+    }
+  },
+  "patrolTargets": {
+    "red": {
+      "x": 816,
+      "y": 1709
+    },
+    "blue": {
+      "x": 3754,
+      "y": 1861
+    }
+  },
+  "viewerAnchors": {
+    "red": {
+      "x": 3860,
+      "y": 1640
+    },
+    "blue": {
+      "x": 740,
+      "y": 1540
+    }
+  },
+  "viewerAnchorSource": {
+    "red": "viewer_king",
+    "blue": "viewer_king"
+  },
+  "camera": {
+    "x": 2285,
+    "y": 1785,
+    "zoom": 0.399
+  },
+  "hasWater": true,
+  "waterTiles": 28598
+}

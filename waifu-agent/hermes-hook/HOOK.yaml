@@ -1,0 +1,7 @@
+name: agent-girl-status
+description: Push agent status events to waifu-agent desktop app via WebSocket
+events:
+  - gateway:startup
+  - agent:start
+  - agent:step
+  - agent:end

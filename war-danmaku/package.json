@@ -1,0 +1,27 @@
+{
+  "name": "war-danmaku",
+  "version": "0.1.0",
+  "description": "弹幕互动阵营对抗游戏 — 中世纪战争",
+  "private": true,
+  "scripts": {
+    "server": "node server/index.js",
+    "frontend": "npx http-server frontend -p 3000 -c-1",
+    "check": "node --check server/*.js",
+    "dev": "node server/index.js",
+    "restart": "node -e \"require('child_process').execSync('for pid in $(netstat -ano | grep :8765 | awk \\\"{print \\$5}\\\" | sort -u); do taskkill //F //PID $pid 2>/dev/null; done', {stdio:'inherit'}); require('child_process').spawn('node', ['server/index.js'], {stdio:'inherit'})\"",
+    "test:anim": "node server/quicktest-anim.js"
+  },
+  "dependencies": {
+    "pino": "^10.3.1",
+    "pino-pretty": "^13.1.3",
+    "sql.js": "^1.14.1",
+    "ws": "^8.16.0"
+  },
+  "devDependencies": {
+    "@neutralinojs/neu": "^11.7.2",
+    "bytenode": "^1.6.0",
+    "esbuild": "^0.28.1",
+    "http-server": "^14.1.1",
+    "nexe": "^5.0.0-beta.4"
+  }
+}

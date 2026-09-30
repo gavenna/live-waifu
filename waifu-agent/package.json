@@ -1,0 +1,43 @@
+{
+  "name": "waifu-agent",
+  "private": true,
+  "version": "0.9.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "tauri": "tauri",
+    "tauri:dev": "npx tauri dev",
+    "tauri:dev:user": "cross-env VITE_WAIFU_MODE=user npx tauri dev",
+    "tauri:dev:userdebug": "cross-env VITE_WAIFU_MODE=userdebug npx tauri dev",
+    "tauri:build": "cross-env VITE_WAIFU_MODE=user npx tauri build",
+    "tauri:build:userdebug": "cross-env VITE_WAIFU_MODE=userdebug npx tauri build"
+  },
+  "dependencies": {
+    "@pixi/core": "^7.4.3",
+    "@pixi/display": "^7.4.3",
+    "@pixi/math": "^7.4.3",
+    "@pixi/ticker": "^7.4.3",
+    "@pixi/unsafe-eval": "^7.4.3",
+    "@pixi/utils": "^7.4.3",
+    "@tauri-apps/api": "^2.11.0",
+    "@tauri-apps/plugin-autostart": "^2.5.1",
+    "live2dcubismcore": "^1.0.2",
+    "pinyin-pro": "^3.28.1",
+    "pixi-live2d-display": "^0.4.0",
+    "pixi.js": "^7.4.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@vitejs/plugin-react": "^4.2.0",
+    "cross-env": "^10.1.0",
+    "esbuild": "^0.28.0",
+    "typescript": "^5.2.0",
+    "vite": "^5.0.0"
+  }
+}

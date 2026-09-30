@@ -1,0 +1,9 @@
+Summary for D:\Projects\live-waifu\war-vote\tools\_gfdec\gf_only.jar
+Decompiled with CFR 0.152
+
+
+com.corrodinggames.rts.gameFramework.f.a
+----------------------------
+
+d(float )
+  Could not resolve type clashes

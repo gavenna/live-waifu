@@ -1,0 +1,190 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 960" width="720" height="960">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a1410"/>
+      <stop offset="100%" stop-color="#0d0a08"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#c8a44e"/>
+      <stop offset="50%" stop-color="#f0d68a"/>
+      <stop offset="100%" stop-color="#c8a44e"/>
+    </linearGradient>
+    <linearGradient id="red-grad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#8b0000"/>
+      <stop offset="100%" stop-color="#cc3333"/>
+    </linearGradient>
+    <linearGradient id="blue-grad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#003366"/>
+      <stop offset="100%" stop-color="#3366aa"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="720" height="960" fill="url(#bg)"/>
+  <rect x="0" y="0" width="720" height="960" fill="none" stroke="#c8a44e" stroke-width="2" opacity="0.3"/>
+
+  <!-- Title -->
+  <rect x="20" y="20" width="680" height="60" rx="4" fill="#1a1410" stroke="#c8a44e" stroke-width="1"/>
+  <text x="360" y="58" text-anchor="middle" font-family="serif" font-size="28" font-weight="bold" fill="url(#gold)" filter="url(#glow)">⚔ 战场召唤指南 ⚔</text>
+
+  <!-- ====== 一、阵营加入 ====== -->
+  <rect x="20" y="100" width="680" height="130" rx="4" fill="#1a1410" stroke="#c8a44e" stroke-width="1" opacity="0.9"/>
+  <rect x="20" y="100" width="680" height="34" rx="4" fill="#c8a44e" opacity="0.15"/>
+  <text x="40" y="123" font-family="sans-serif" font-size="16" font-weight="bold" fill="#f0d68a">一、加入阵营（选边站队）</text>
+
+  <!-- Red team -->
+  <rect x="40" y="148" width="300" height="36" rx="3" fill="#8b0000" opacity="0.3"/>
+  <text x="55" y="171" font-family="sans-serif" font-size="14" font-weight="bold" fill="#cc3333">炎龙帝国（红方）</text>
+  <text x="250" y="171" font-family="monospace" font-size="13" fill="#f0d68a">弹幕发送: 1 / 红 / 炎龙</text>
+
+  <!-- Blue team -->
+  <rect x="380" y="148" width="300" height="36" rx="3" fill="#003366" opacity="0.3"/>
+  <text x="395" y="171" font-family="sans-serif" font-size="14" font-weight="bold" fill="#6699cc">霜狼部落（蓝方）</text>
+  <text x="590" y="171" font-family="monospace" font-size="13" fill="#f0d68a">弹幕发送: 2 / 蓝 / 霜狼</text>
+
+  <text x="40" y="210" font-family="sans-serif" font-size="11" fill="#887766">阵营一旦选择不可更改。建议看一下双方人数再下手，人少的一方有劣势保护~</text>
+
+  <!-- ====== 二、免费弹幕指令 ====== -->
+  <rect x="20" y="248" width="680" height="118" rx="4" fill="#1a1410" stroke="#c8a44e" stroke-width="1" opacity="0.9"/>
+  <rect x="20" y="248" width="680" height="34" rx="4" fill="#c8a44e" opacity="0.15"/>
+  <text x="40" y="271" font-family="sans-serif" font-size="16" font-weight="bold" fill="#f0d68a">二、免费出兵（发弹幕即可，不花钱）</text>
+
+  <rect x="40" y="286" width="148" height="32" rx="3" fill="#2a2218"/>
+  <text x="55" y="306" font-family="monospace" font-size="13" fill="#c8a44e">弹幕 "杀" / "666"</text>
+  <text x="200" y="306" font-family="sans-serif" font-size="12" fill="#999">→ 民兵 ×3（基础步兵）</text>
+
+  <rect x="40" y="322" width="148" height="32" rx="3" fill="#2a2218"/>
+  <text x="55" y="342" font-family="monospace" font-size="13" fill="#c8a44e">弹幕 "枪"</text>
+  <text x="200" y="342" font-family="sans-serif" font-size="12" fill="#999">→ 矛兵 ×2（反民兵）</text>
+
+  <rect x="360" y="286" width="148" height="32" rx="3" fill="#2a2218"/>
+  <text x="375" y="306" font-family="monospace" font-size="13" fill="#c8a44e">弹幕 "射"</text>
+  <text x="520" y="306" font-family="sans-serif" font-size="12" fill="#999">→ 弓兵 ×2（远程）</text>
+
+  <rect x="360" y="322" width="148" height="32" rx="3" fill="#2a2218"/>
+  <text x="375" y="342" font-family="monospace" font-size="13" fill="#c8a44e">弹幕 "袭" / "冲"</text>
+  <text x="520" y="342" font-family="sans-serif" font-size="12" fill="#999">→ 突袭兵 ×2（反弓兵）</text>
+
+  <!-- ====== 三、礼物出兵 ====== -->
+  <rect x="20" y="384" width="680" height="504" rx="4" fill="#1a1410" stroke="#c8a44e" stroke-width="1" opacity="0.9"/>
+  <rect x="20" y="384" width="680" height="34" rx="4" fill="#c8a44e" opacity="0.15"/>
+  <text x="40" y="407" font-family="sans-serif" font-size="16" font-weight="bold" fill="#f0d68a">三、送礼出兵（抖音礼物 → 兵种）</text>
+
+  <!-- Table header -->
+  <rect x="40" y="426" width="640" height="28" rx="2" fill="#2a2218"/>
+  <text x="60" y="445" font-family="sans-serif" font-size="12" font-weight="bold" fill="#c8a44e">档位</text>
+  <text x="130" y="445" font-family="sans-serif" font-size="12" font-weight="bold" fill="#c8a44e">礼物 (约)</text>
+  <text x="240" y="445" font-family="sans-serif" font-size="12" font-weight="bold" fill="#c8a44e">召唤兵种</text>
+  <text x="400" y="445" font-family="sans-serif" font-size="12" font-weight="bold" fill="#c8a44e">伤害</text>
+  <text x="480" y="445" font-family="sans-serif" font-size="12" font-weight="bold" fill="#c8a44e">HP</text>
+  <text x="560" y="445" font-family="sans-serif" font-size="12" font-weight="bold" fill="#c8a44e">特点</text>
+
+  <!-- Rows -->
+  <!-- 入门 -->
+  <rect x="40" y="458" width="640" height="26" rx="0" fill="#1a1410"/>
+  <text x="60" y="476" font-family="sans-serif" font-size="11" fill="#887766">入门</text>
+  <text x="130" y="476" font-family="sans-serif" font-size="11" fill="#f0d68a">小心心 ~1 抖币</text>
+  <text x="240" y="476" font-family="sans-serif" font-size="11" fill="#ccaa66">剑士</text>
+  <text x="400" y="476" font-family="monospace" font-size="11" fill="#999">3</text>
+  <text x="480" y="476" font-family="monospace" font-size="11" fill="#999">150</text>
+  <text x="560" y="476" font-family="sans-serif" font-size="11" fill="#999">反民兵</text>
+
+  <rect x="40" y="484" width="640" height="26" rx="0" fill="#151210"/>
+  <text x="60" y="502" font-family="sans-serif" font-size="11" fill="#887766">入门</text>
+  <text x="130" y="502" font-family="sans-serif" font-size="11" fill="#f0d68a">棒棒糖 ~5 抖币</text>
+  <text x="240" y="502" font-family="sans-serif" font-size="11" fill="#ccaa66">骑士</text>
+  <text x="400" y="502" font-family="monospace" font-size="11" fill="#999">12</text>
+  <text x="480" y="502" font-family="monospace" font-size="11" fill="#999">400</text>
+  <text x="560" y="502" font-family="sans-serif" font-size="11" fill="#999">高速冲击</text>
+
+  <!-- 进阶 -->
+  <rect x="40" y="510" width="640" height="3" rx="0" fill="#2a2218"/>
+
+  <rect x="40" y="517" width="640" height="26" rx="0" fill="#1a1410"/>
+  <text x="60" y="535" font-family="sans-serif" font-size="11" fill="#887766">进阶</text>
+  <text x="130" y="535" font-family="sans-serif" font-size="11" fill="#f0d68a">鲜花 ~10 抖币</text>
+  <text x="240" y="535" font-family="sans-serif" font-size="11" fill="#ddaa44">弓手</text>
+  <text x="400" y="535" font-family="monospace" font-size="11" fill="#999">20</text>
+  <text x="480" y="535" font-family="monospace" font-size="11" fill="#999">125</text>
+  <text x="560" y="535" font-family="sans-serif" font-size="11" fill="#999">远程狙击</text>
+
+  <rect x="40" y="543" width="640" height="26" rx="0" fill="#151210"/>
+  <text x="60" y="561" font-family="sans-serif" font-size="11" fill="#887766">进阶</text>
+  <text x="130" y="561" font-family="sans-serif" font-size="11" fill="#f0d68a">铁锤 ~30 抖币</text>
+  <text x="240" y="561" font-family="sans-serif" font-size="11" fill="#ddaa44">投石车</text>
+  <text x="400" y="561" font-family="monospace" font-size="11" fill="#999">60</text>
+  <text x="480" y="561" font-family="monospace" font-size="11" fill="#999">250</text>
+  <text x="560" y="561" font-family="sans-serif" font-size="11" fill="#999">AOE 轰炸</text>
+
+  <!-- 核心 -->
+  <rect x="40" y="569" width="640" height="3" rx="0" fill="#2a2218"/>
+
+  <rect x="40" y="576" width="640" height="26" rx="0" fill="#1a1410"/>
+  <text x="60" y="594" font-family="sans-serif" font-size="11" fill="#cc8833">核心</text>
+  <text x="130" y="594" font-family="sans-serif" font-size="11" fill="#f0d68a">盾墙 ~99 抖币</text>
+  <text x="240" y="594" font-family="sans-serif" font-size="11" fill="#cc8833">皇家卫队</text>
+  <text x="400" y="594" font-family="monospace" font-size="11" fill="#cc8833">100</text>
+  <text x="480" y="594" font-family="monospace" font-size="11" fill="#cc8833">1000</text>
+  <text x="560" y="594" font-family="sans-serif" font-size="11" fill="#cc8833">带头像 肉盾</text>
+
+  <rect x="40" y="602" width="640" height="26" rx="0" fill="#151210"/>
+  <text x="60" y="620" font-family="sans-serif" font-size="11" fill="#cc8833">核心</text>
+  <text x="130" y="620" font-family="sans-serif" font-size="11" fill="#f0d68a">火矢齐射 ~199 抖币</text>
+  <text x="240" y="620" font-family="sans-serif" font-size="11" fill="#cc8833">火矢齐射 🔥</text>
+  <text x="400" y="620" font-family="monospace" font-size="11" fill="#cc8833">500</text>
+  <text x="480" y="620" font-family="monospace" font-size="11" fill="#cc8833">—</text>
+  <text x="560" y="620" font-family="sans-serif" font-size="11" fill="#cc8833">全屏减速 BUFF</text>
+
+  <rect x="40" y="628" width="640" height="26" rx="0" fill="#1a1410"/>
+  <text x="60" y="646" font-family="sans-serif" font-size="11" fill="#cc8833">核心</text>
+  <text x="130" y="646" font-family="sans-serif" font-size="11" fill="#f0d68a">攻城锤 ~299 抖币</text>
+  <text x="240" y="646" font-family="sans-serif" font-size="11" fill="#cc8833">攻城锤 🔨</text>
+  <text x="400" y="646" font-family="monospace" font-size="11" fill="#cc8833">1500</text>
+  <text x="480" y="646" font-family="monospace" font-size="11" fill="#cc8833">—</text>
+  <text x="560" y="646" font-family="sans-serif" font-size="11" fill="#cc8833">直接砸城堡！</text>
+
+  <!-- 宝箱 -->
+  <rect x="40" y="654" width="640" height="26" rx="0" fill="#151210"/>
+  <text x="60" y="672" font-family="sans-serif" font-size="11" fill="#cc8833">核心</text>
+  <text x="130" y="672" font-family="sans-serif" font-size="11" fill="#f0d68a">战争宝箱 ~99 抖币</text>
+  <text x="240" y="672" font-family="sans-serif" font-size="11" fill="#cc8833">战争宝箱 📦</text>
+  <text x="400" y="672" font-family="sans-serif" font-size="11" fill="#cc8833">随机</text>
+  <text x="480" y="672" font-family="sans-serif" font-size="11" fill="#cc8833">—</text>
+  <text x="560" y="672" font-family="sans-serif" font-size="11" fill="#cc8833">随机出兵种 搏一搏！</text>
+
+  <!-- 顶级 -->
+  <rect x="40" y="680" width="640" height="3" rx="0" fill="#2a2218"/>
+
+  <rect x="40" y="687" width="640" height="26" rx="0" fill="#1a1410"/>
+  <text x="60" y="705" font-family="sans-serif" font-size="11" fill="#cc4444">顶级</text>
+  <text x="130" y="705" font-family="sans-serif" font-size="11" fill="#ffaa44">城堡 ~520 抖币</text>
+  <text x="240" y="705" font-family="sans-serif" font-size="11" fill="#ff6644">岩石巨人 🪨</text>
+  <text x="400" y="705" font-family="monospace" font-size="11" fill="#cc4444">500</text>
+  <text x="480" y="705" font-family="monospace" font-size="11" fill="#cc4444">2500</text>
+  <text x="560" y="705" font-family="sans-serif" font-size="11" fill="#cc4444">带头像 BOSS 级</text>
+
+  <rect x="40" y="713" width="640" height="26" rx="0" fill="#151210"/>
+  <text x="60" y="731" font-family="sans-serif" font-size="11" fill="#cc4444">顶级</text>
+  <text x="130" y="731" font-family="sans-serif" font-size="11" fill="#ffaa44">龙骑士 ~1200 抖币</text>
+  <text x="240" y="731" font-family="sans-serif" font-size="11" fill="#ff6644">龙骑士 🐉</text>
+  <text x="400" y="731" font-family="monospace" font-size="11" fill="#cc4444">1000</text>
+  <text x="480" y="731" font-family="monospace" font-size="11" fill="#cc4444">5000</text>
+  <text x="560" y="731" font-family="sans-serif" font-size="11" fill="#cc4444">喷火+咆哮 以一敌百</text>
+
+  <rect x="40" y="739" width="640" height="26" rx="0" fill="#1a1410"/>
+  <text x="60" y="757" font-family="sans-serif" font-size="11" fill="#cc4444">顶级</text>
+  <text x="130" y="757" font-family="sans-serif" font-size="11" fill="#ffaa44">天神之怒 ~3000 抖币</text>
+  <text x="240" y="757" font-family="sans-serif" font-size="11" fill="#ff6644">天神之怒 ⚡</text>
+  <text x="400" y="757" font-family="monospace" font-size="11" fill="#cc4444">8000</text>
+  <text x="480" y="757" font-family="monospace" font-size="11" fill="#cc4444">—</text>
+  <text x="560" y="757" font-family="sans-serif" font-size="11" fill="#cc4444">终极技能 直接炸城 20%</text>
+
+  <!-- 克制链 -->
+  <rect x="20" y="906" width="680" height="42" rx="4" fill="#1a1410" stroke="#c8a44e" stroke-width="1" opacity="0.9"/>
+  <text x="40" y="927" font-family="sans-serif" font-size="12" fill="#887766">克制链：民兵 → 突袭兵 → 弓兵 → 矛兵 → 民兵 | 剑士 → 骑士 → 弓手 → 投石车 → 皇家卫队 → 岩石巨人 → 龙骑士</text>
+  <text x="40" y="942" font-family="sans-serif" font-size="11" fill="#666">不想被克制？送礼物出克制兵种就好！关注主播免费送民兵~</text>
+</svg>

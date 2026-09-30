@@ -1,0 +1,5 @@
+[mod]
+title: Viewer King Probe
+title_zh: 观众主公探针
+minVersion: v1.15
+description: probe: onTop decal over a unit + per-unit frame

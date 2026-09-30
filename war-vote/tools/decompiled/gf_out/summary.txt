@@ -1,0 +1,3 @@
+Summary for Warfare1.15\game-lib.jar
+Decompiled with CFR 0.152
+Exception analysing jar org.benf.cfr.reader.util.ConfusedCFRException: No such jar file Warfare1.15\game-lib.jar

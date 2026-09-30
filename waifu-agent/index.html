@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>waifu-agent</title>
+    <script src="/cubism/live2dcubismcore.min.js"></script>
+    <style>
+      * { margin:0; padding:0; box-sizing:border-box; }
+      body { background:transparent; overflow:hidden; }
+      #waifu-splash {
+        display:none; /* 默认隐藏, 仅主窗口脚本会显示 */
+        position:fixed; inset:0; z-index:9000;
+        flex-direction:column; align-items:center; justify-content:center;
+        background:#0a0a0f;
+        font-family:'Segoe UI','Microsoft YaHei',sans-serif;
+        user-select:none; cursor:default;
+      }
+      #waifu-splash.show {
+        display:flex;
+      }
+      #waifu-splash .title {
+        font-size:28px; font-weight:300; color:#c0c8d8;
+        letter-spacing:4px; margin-bottom:8px;
+      }
+      #waifu-splash .subtitle {
+        font-size:13px; color:#5a6070; margin-bottom:32px;
+      }
+      #waifu-splash .loader {
+        width:120px; height:2px; background:#1a1a2e; border-radius:1px; overflow:hidden;
+      }
+      #waifu-splash .loader-bar {
+        width:30%; height:100%; background:linear-gradient(90deg,#8b5cf6,#06b6d4);
+        border-radius:1px; animation:waifu-load 1.5s ease-in-out infinite;
+      }
+      @keyframes waifu-load {
+        0% { transform:translateX(-30%); }
+        100% { transform:translateX(330%); }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="waifu-splash">
+      <div class="title">waifu-agent</div>
+      <div class="subtitle">Live2D AI Companion</div>
+      <div class="loader"><div class="loader-bar"></div></div>
+    </div>
+    <div id="root"></div>
+    <script>
+      // 仅主窗口显示 splash (无 ?view= 参数), 设置/聊天等子页面不显示
+      if (!location.search.includes('view=')) {
+        document.getElementById('waifu-splash')?.classList.add('show');
+      }
+    </script>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

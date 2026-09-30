@@ -1,0 +1,6 @@
+OK
+OK
+OK
+OK
+OK
+{"status":"pass","pass":4,"fail":0,"warn":0,"checks":[{"name":"settings.json valid JSON","status":"pass","detail":""},{"name":"window_pos.json valid","status":"pass","detail":""},{"name":"history.json valid","status":"pass","detail":""},{"name":"portrait.json valid","status":"pass","detail":""}]}

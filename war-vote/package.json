@@ -1,0 +1,15 @@
+{
+  "name": "war-vote",
+  "version": "0.1.0",
+  "private": true,
+  "description": "直播间观众弹幕投票摆阵 → 生成 Rusted Warfare 地图",
+  "main": "server/index.js",
+  "scripts": {
+    "server": "node server/index.js",
+    "check": "node --check server/index.js",
+    "test": "node server/test-mapgen.js && node server/test-voteEngine.js"
+  },
+  "dependencies": {
+    "ws": "^8.16.0"
+  }
+}

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>弹幕对战控制台</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Microsoft YaHei',sans-serif; background:#1a1a2e; color:#eee; min-height:100vh; }
+.header { background:#16213e; padding:16px 24px; display:flex; align-items:center; justify-content:space-between; }
+.header h1 { font-size:20px; color:#e94560; }
+.status { display:flex; gap:16px; align-items:center; }
+.badge { padding:4px 12px; border-radius:12px; font-size:13px; font-weight:bold; }
+.badge.idle { background:#2d3436; color:#b2bec3; }
+.badge.fighting { background:#e94560; color:#fff; animation:pulse 1.5s infinite; }
+.badge.preparing { background:#f39c12; color:#fff; }
+.badge.ended { background:#27ae60; color:#fff; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.7} }
+
+.main { display:grid; grid-template-columns:1fr 1fr; gap:16px; padding:16px 24px; max-width:1200px; margin:0 auto; }
+.card { background:#16213e; border-radius:12px; padding:20px; }
+.card h2 { font-size:16px; color:#e94560; margin-bottom:12px; border-bottom:1px solid #2d3436; padding-bottom:8px; }
+.stat { display:flex; justify-content:space-between; padding:6px 0; font-size:14px; }
+.stat .label { color:#b2bec3; }
+.stat .value { font-weight:bold; color:#00cec9; }
+
+.controls { display:flex; gap:12px; margin-top:16px; }
+.btn { padding:10px 24px; border:none; border-radius:8px; font-size:14px; font-weight:bold; cursor:pointer; transition:all .2s; }
+.btn-start { background:#e94560; color:#fff; }
+.btn-start:hover { background:#c0392b; }
+.btn-end { background:#2d3436; color:#b2bec3; }
+.btn-end:hover { background:#636e72; }
+.btn:disabled { opacity:0.5; cursor:not-allowed; }
+
+.spawn-feed { max-height:300px; overflow-y:auto; }
+.feed-item { padding:6px 0; border-bottom:1px solid #2d3436; font-size:13px; display:flex; gap:8px; }
+.feed-item .team { font-weight:bold; }
+.feed-item .team.red { color:#e94560; }
+.feed-item .team.blue { color:#0984e3; }
+.feed-item .unit { color:#fdcb6e; }
+.feed-item .user { color:#b2bec3; font-size:12px; }
+
+.cfgSel, .cfgNum { background:#0f1628; color:#eee; border:1px solid #2d3436; border-radius:6px; padding:4px 8px; font-size:13px; min-width:120px; }
+.cfgNum { width:120px; }
+.teams { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.team-card { text-align:center; padding:16px; border-radius:8px; }
+.team-card.red { background:rgba(233,69,96,0.15); border:1px solid #e94560; }
+.team-card.blue { background:rgba(9,132,227,0.15); border:1px solid #0984e3; }
+.team-card h3 { font-size:18px; margin-bottom:8px; }
+.team-card .count { font-size:36px; font-weight:bold; }
+.team-card.red h3, .team-card.red .count { color:#e94560; }
+.team-card.blue h3, .team-card.blue .count { color:#0984e3; }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>⚔️ 弹幕对战控制台</h1>
+  <div class="status">
+    <span>状态:</span>
+    <span id="stateBadge" class="badge idle">IDLE</span>
+    <span id="roundInfo" style="color:#b2bec3;font-size:13px"></span>
+  </div>
+</div>
+
+<div class="main">
+  <div class="card">
+    <h2>🎮 轮次信息</h2>
+    <div class="stat"><span class="label">轮次</span><span class="value" id="roundNum">0</span></div>
+    <div class="stat"><span class="label">地图</span><span class="value" id="mapName">-</span></div>
+    <div class="stat"><span class="label">阵型</span><span class="value" id="formation">-</span></div>
+    <div class="stat"><span class="label">已进行</span><span class="value" id="elapsed">0s</span></div>
+    <div class="controls">
+      <button class="btn btn-start" id="btnStart" onclick="startRound()">开始新一轮</button>
+      <button class="btn btn-end" id="btnEnd" onclick="endRound()">结束本轮</button>
+    </div>
+  </div>
+
+  <div class="card" id="cfgCard">
+    <h2>⚙️ 开局配置 <span style="font-size:12px;color:#b2bec3;font-weight:normal">（每轮开局前生效）</span></h2>
+    <div class="stat"><span class="label">AI 数量</span><select id="cfgAIs" class="cfgSel"></select></div>
+    <div class="stat"><span class="label">AI 难度</span><select id="cfgDiff" class="cfgSel"></select></div>
+    <div class="stat"><span class="label">迷雾</span><select id="cfgFog" class="cfgSel" disabled title="单机沙盒下引擎拒绝运行时改迷雾（实测：applyChangedSetup but not server or proxy controller）。它是地图属性，要改只能动地图文件。"></select></div>
+    <div class="stat"><span class="label">初始资金</span><input id="cfgCredits" class="cfgNum" type="number" min="0" step="1000" title="0 = 不改，沿用地图默认。这是红/蓝 AI 主队（team1/2）的起始钱" /></div>
+    <div class="stat"><span class="label">观众钱包初始</span><input id="cfgViewerCredits" class="cfgNum" type="number" min="0" step="10000" title="红/蓝观众钱包（team3/4）开局余额。0 = 不改（引擎默认 4000）。观众召唤从这里扣钱，白名单兵常备价约 1.8 万，太小会买不起" /></div>
+    <div class="stat"><span class="label">皇冠上移</span><input id="cfgCrown" class="cfgNum" type="number" min="0" step="5" title="冠军皇冠贴在头像正上方；这里是与头像的屏幕间距（px），调大 = 皇冠更靠上、离头像更远" /><span style="font-size:12px;color:#b2bec3">px</span></div>
+    <div class="stat"><span class="label">点赞加余额</span><input id="cfgLike" class="cfgNum" type="number" min="0" step="100" title="观众每次点赞，给某队加多少余额（0 = 关闭）" /></div>
+    <div class="stat"><span class="label">关注加余额</span><input id="cfgFollow" class="cfgNum" type="number" min="0" step="1000" title="观众每次关注，给某队加多少余额（0 = 关闭）" /></div>
+    <div class="stat"><span class="label">关注间隔</span><input id="cfgFollowWin" class="cfgNum" type="number" min="0" step="5" title="同一观众 N 分钟内重复关注只算一次；超过就算新的一次（取关后再关注能再拿）。0 = 只算第一次（永不重复）" /><span style="font-size:12px;color:#b2bec3">分钟</span></div>
+    <div class="stat"><span class="label">每局时长</span><input id="cfgRound" class="cfgNum" type="number" min="0" step="1" title="单局最长时长（分钟）；到点还没分出胜负就按平局收场。0 = 用后端默认（RW_ROUND_MAX_MS，缺省 5 分钟）" /><span style="font-size:12px;color:#b2bec3">分钟</span></div>
+    <div class="stat"><span class="label">队伍模式</span><select id="cfgTeams" class="cfgSel" disabled title="改动会影响红蓝敌对结构，暂未开放"></select></div>
+    <div class="controls">
+      <button class="btn btn-start" onclick="saveCfg('next')">只改下一轮</button>
+      <button class="btn btn-end" onclick="saveCfg('default')">存为默认</button>
+    </div>
+    <div id="cfgMsg" style="font-size:12px;color:#00cec9;margin-top:8px"></div>
+  </div>
+
+  <div class="card">
+    <h2>📊 双方兵力</h2>
+    <div class="teams">
+      <div class="team-card red">
+        <h3>🔴 红方</h3>
+        <div class="count" id="redCount">0</div>
+      </div>
+      <div class="team-card blue">
+        <h3>🔵 蓝方</h3>
+        <div class="count" id="blueCount">0</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="grid-column:1/-1">
+    <h2>📜 实时生兵记录</h2>
+    <div class="spawn-feed" id="feed"></div>
+  </div>
+</div>
+
+<script>
+const API = window.location.origin;
+let pollTimer = null;
+
+async function fetchState() {
+  try {
+    const r = await fetch(API + '/api/battle/state');
+    const d = await r.json();
+    updateUI(d);
+  } catch(e) {}
+}
+
+function updateUI(d) {
+  const badge = document.getElementById('stateBadge');
+  badge.textContent = d.state;
+  badge.className = 'badge ' + d.state.toLowerCase();
+  document.getElementById('roundNum').textContent = d.round;
+  document.getElementById('mapName').textContent = d.map?.name || '-';
+  document.getElementById('formation').textContent = d.map?.formation || '-';
+  document.getElementById('elapsed').textContent = Math.round(d.elapsed / 1000) + 's';
+  document.getElementById('redCount').textContent = d.spawns?.red || 0;
+  document.getElementById('blueCount').textContent = d.spawns?.blue || 0;
+  document.getElementById('roundInfo').textContent = d.round > 0 ? `第${d.round}轮` : '';
+  document.getElementById('btnStart').disabled = d.state === 'FIGHTING';
+}
+
+async function startRound() {
+  const btn = document.getElementById('btnStart');
+  btn.disabled = true; btn.textContent = '启动中...';
+  try {
+    await fetch(API + '/api/battle/start', { method: 'POST' });
+  } catch(e) {}
+  btn.textContent = '开始新一轮';
+}
+
+async function endRound() {
+  await fetch(API + '/api/battle/end', { method: 'POST' });
+}
+
+// ===== 开局配置 =====
+// 下拉选项**从后端 limits 渲染**，不写死 —— 取值范围的唯一真相在后端
+//（例如「AI 数量 ≥ 4」这条硬约束，改后端即改前端，不会两边漂移）。
+const CFG_FIELDS = [
+  { key: 'numberOfAIs', el: 'cfgAIs', labels: null },
+  { key: 'aiDifficulty', el: 'cfgDiff', labels: { '-2': '最简单', '-1': '简单', '0': '普通', '1': '困难', '2': '很难', '3': '不可能' } },
+  { key: 'fogMode', el: 'cfgFog', labels: { '0': '无迷雾', '1': '基础迷雾', '2': '默认' } },
+  { key: 'aiTeams', el: 'cfgTeams', labels: { '1': 'vs all', '2': '1 ally vs all', '3': '2 ally vs all', '4': '3 ally vs all', '5': 'Free for all' } }
+];
+
+function fillSelect (el, limit, labels, cur) {
+  el.innerHTML = '';
+  for (let v = limit.min; v <= limit.max; v++) {
+    const o = document.createElement('option');
+    o.value = String(v);
+    const lab = labels && labels[String(v)];
+    o.textContent = lab ? (lab + ' (' + v + ')') : String(v);
+    el.appendChild(o);
+  }
+  el.value = String(cur);
+}
+
+async function loadConfig () {
+  try {
+    const r = await fetch(API + '/api/battle/config');
+    const d = await r.json();
+    for (const f of CFG_FIELDS) {
+      fillSelect(document.getElementById(f.el), d.limits[f.key], f.labels, d.effective[f.key]);
+    }
+    document.getElementById('cfgCredits').value = d.effective.startingCredits || 0;
+    document.getElementById('cfgViewerCredits').value = d.effective.viewerStartingCredits || 0;
+    document.getElementById('cfgCrown').value = d.effective.crownOffset || 0;
+    document.getElementById('cfgLike').value = d.effective.likeCredits || 0;
+    document.getElementById('cfgFollow').value = d.effective.followCredits || 0;
+    document.getElementById('cfgFollowWin').value = (d.effective.followWindowMin != null ? d.effective.followWindowMin : 0);
+    // 面板用「分钟」输入，后端存毫秒（与 RW_ROUND_MAX_MS 同口径）；0 = 未设置
+    document.getElementById('cfgRound').value = d.effective.roundMaxMs ? Math.round(d.effective.roundMaxMs / 60000) : 0;
+    // ⚠️ 只在有"单轮覆盖"时改写提示：否则 saveCfg 刚写进去的"已存为默认"会被这行清成空。
+    //    （2026-09-21 实测：点「存为默认」后提示框空白，根因就是这里无条件赋 ''。）
+    if (d.next) document.getElementById('cfgMsg').textContent = '（已设单轮覆盖，生效一轮后自动清除）';
+  } catch (e) { /* 后端没起来时静默 */ }
+}
+
+async function saveCfg (scope) {
+  const body = {
+    scope: scope,
+    startingCredits: Number(document.getElementById('cfgCredits').value) || 0,
+    viewerStartingCredits: Number(document.getElementById('cfgViewerCredits').value) || 0,
+    crownOffset: Number(document.getElementById('cfgCrown').value) || 0,
+    likeCredits: Number(document.getElementById('cfgLike').value) || 0,
+    followCredits: Number(document.getElementById('cfgFollow').value) || 0,
+    followWindowMin: Number(document.getElementById('cfgFollowWin').value) || 0,
+    roundMaxMs: Math.round((Number(document.getElementById('cfgRound').value) || 0) * 60000)
+  };
+  for (const f of CFG_FIELDS) {
+    const el = document.getElementById(f.el);
+    if (el.disabled) continue;               // 队伍模式暂未开放：不提交它
+    body[f.key] = Number(el.value);
+  }
+  try {
+    const r = await fetch(API + '/api/battle/config', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body)
+    });
+    const d = await r.json();
+    const eff = d.effective || {};
+    document.getElementById('cfgMsg').textContent =
+      (scope === 'next' ? '已设「只改下一轮」' : '已存为默认') +
+      '：AI数=' + eff.numberOfAIs + ' 难度=' + eff.aiDifficulty +
+      ' 迷雾=' + eff.fogMode + ' 资金=' + eff.startingCredits +
+      ' 观众资金=' + (eff.viewerStartingCredits != null ? eff.viewerStartingCredits : '-') +
+      ' 点赞+=' + eff.likeCredits + ' 关注+=' + eff.followCredits +
+      ' 每局=' + (eff.roundMaxMs ? Math.round(eff.roundMaxMs / 60000) + '分钟' : '默认');
+    loadConfig();
+  } catch (e) {
+    document.getElementById('cfgMsg').textContent = '保存失败：' + e.message;
+  }
+}
+
+function addFeed(team, unitType, user) {
+  const feed = document.getElementById('feed');
+  const div = document.createElement('div');
+  div.className = 'feed-item';
+  div.innerHTML = `<span class="team ${team===0?'red':'blue'}">${team===0?'红方':'蓝方'}</span><span class="unit">${unitType}</span><span class="user">${user||'观众'}</span>`;
+  feed.insertBefore(div, feed.firstChild);
+  if (feed.children.length > 100) feed.removeChild(feed.lastChild);
+}
+
+// 连接 WebSocket 接收实时事件
+const ws = new WebSocket(`ws://${location.hostname}:8766`);
+ws.onmessage = (e) => {
+  try {
+    const msg = JSON.parse(e.data);
+    if (msg.type === 'spawn') addFeed(msg.team, msg.unitType, msg.user);
+  } catch(err) {}
+};
+
+fetchState();
+pollTimer = setInterval(fetchState, 2000);
+loadConfig();   // 开局配置：拉 limits + 当前生效值
+</script>
+</body>
+</html>

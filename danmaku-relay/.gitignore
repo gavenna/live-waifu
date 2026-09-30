@@ -1,0 +1,21 @@
+node_modules/
+dist/
+vendor/
+server/logs/
+*.log
+secrets.json
+tools/douyinLive.exe
+tools/douyinLive.yaml
+__pycache__/
+*.pyc
+logs/bat-test*.txt
+
+# --- 2026-09-19 固化成果：运行时数据 / 下载物 / 含 cookie 备份一律不入库 ---
+logs/
+data/
+tools/douyinLive*.zip
+tools/douyinLive.yaml.bak
+
+# 历史备份文件（.bak / .bak-<tag>）不入库
+*.bak
+*.bak-*

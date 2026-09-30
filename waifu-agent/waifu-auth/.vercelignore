@@ -1,0 +1,6 @@
+api-src/
+netlify/
+build.mjs
+server.ts
+tsconfig.json
+api/**/*.ts

@@ -1,0 +1,59 @@
+{
+  "$schema": "https://raw.githubusercontent.com/nicohman/tauri/dev/crates/tauri-cli/schema.json",
+  "productName": "waifu-agent",
+  "version": "0.9.0",
+  "identifier": "com.waifu-agent.app",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://localhost:1420",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "waifu-agent",
+        "label": "main",
+        "width": 400,
+        "height": 550,
+        "resizable": true,
+        "decorations": false,
+        "transparent": true,
+        "alwaysOnTop": true,
+        "skipTaskbar": true,
+        "center": false,
+        "visible": false,
+        "x": null,
+        "y": null
+      }
+    ],
+    "security": {
+      "csp": null,
+      "assetProtocol": {
+        "enable": true,
+        "scope": ["**"]
+      }
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.ico",
+      "icons/icon.png"
+    ],
+    "resources": {
+      "python-embed": "./python-embed",
+      "tools/ffmpeg.exe": "./tools/ffmpeg.exe",
+      "scripts": "./scripts",
+      "waifu-memory": "./waifu-memory"
+    },
+    "windows": {
+      "wix": null,
+      "nsis": null
+    }
+  }
+}

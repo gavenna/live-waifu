@@ -1,0 +1,9 @@
+node_modules/
+src-tauri/target/
+dist/
+__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+.DS_Store
+Thumbs.db

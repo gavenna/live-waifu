@@ -1,0 +1,52 @@
+{
+  "name": "danmaku-relay",
+  "version": "1.0.0",
+  "description": "B站/抖音弹幕中继工具 — 连接直播间，把弹幕/礼物/进房翻译成统一消息，广播给所有订阅方",
+  "private": true,
+  "scripts": {
+    "start": "node index.js",
+    "build": "node build.js",
+    "check": "node -e \"const g=require('fs');const f=['index.js','relay.js','config.js',...g.readdirSync('danmaku').map(x=>'danmaku/'+x),...g.readdirSync('battle').map(x=>'battle/'+x)].filter(x=>x.endsWith('.js'));f.forEach(x=>{try{require('child_process').execFileSync(process.execPath,['--check',x],{stdio:'ignore'})}catch(e){console.error(x+': FAIL');process.exit(1)}});console.log('check: OK ('+f.length+' files)')\"",
+    "verify:announce": "node tools/verify_announce.js",
+    "verify:watchdog": "node tools/verify_game_loss_watchdog.js",
+    "verify:endpanel": "node tools/verify_endpanel.js",
+    "verify:endwatch": "node tools/verify_endwatch.js",
+    "verify:economy": "node tools/verify_economy.js",
+    "verify:config": "node tools/verify_battle_config.js",
+    "verify:credits": "node tools/verify_interaction_credits.js",
+    "verify:viewer": "node tools/verify_viewer_team.js",
+    "verify:wallet": "node tools/verify_viewer_wallet.js",
+    "verify:follow": "node tools/verify_follow_dedup.js",
+    "verify:roundtop": "node tools/verify_round_end_top.js",
+    "verify:champion": "node tools/verify_champion_award.js",
+    "verify:likechat": "node tools/verify_like_chat_once.js",
+    "verify:logsilent": "node tools/verify_log_silent.js",
+    "verify:wall": "node tools/verify_viewer_wall.js",
+    "verify:name": "node tools/verify_viewer_name.js",
+    "verify:parse": "node tools/verify_danmaku_parse.js",
+    "verify:hint": "node tools/verify_danmaku_hint.js",
+    "verify:guide": "node tools/verify_viewer_guide.js",
+    "gen:guide": "node tools/gen_viewer_guide.js",
+    "verify:automation": "node tools/verify_automation.js",
+    "verify:gift": "node tools/verify_gift_summon.js",
+    "verify:difficulty": "node tools/verify_difficulty.js",
+    "verify:waifu": "node tools/verify_waifu_bridge.js",
+    "verify:director": "node tools/verify_director.js",
+    "verify:audience": "node tools/verify_audience.js",
+    "verify:knowledge": "node tools/verify_waifu_knowledge.js",
+    "gen:knowledge": "node tools/gen_waifu_knowledge.js",
+    "verify:unitprices": "node tools/verify_unit_prices.js",
+    "verify:mapcontract": "node tools/verify_map_contract.js",
+    "verify:unitcategories": "node tools/verify_unit_categories.js",
+    "verify:leaderboard": "node tools/verify_leaderboard.js",
+    "gen:table": "node tools/gen_mod_units.js && node tools/gen_unit_table.js",
+    "gen:modunits": "node tools/gen_mod_units.js",
+    "verify": "npm run check && npm run verify:announce && npm run verify:watchdog && npm run verify:endpanel && npm run verify:endwatch && npm run verify:economy && npm run verify:config && npm run verify:credits && npm run verify:viewer && npm run verify:wallet && npm run verify:follow && npm run verify:roundtop && npm run verify:champion && npm run verify:likechat && npm run verify:logsilent && npm run verify:wall && npm run verify:name && npm run verify:parse && npm run verify:automation && npm run verify:gift && npm run verify:difficulty && npm run verify:waifu && npm run verify:director && npm run verify:audience && npm run verify:knowledge && npm run verify:unitprices && npm run verify:mapcontract && npm run verify:unitcategories && npm run verify:leaderboard && npm run verify:hint && npm run verify:guide"
+  },
+  "dependencies": {
+    "ws": "^8.16.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.1"
+  }
+}

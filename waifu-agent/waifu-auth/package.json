@@ -1,0 +1,24 @@
+{
+  "name": "waifu-auth",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "description": "waifu-agent 许可验证后端",
+  "scripts": {
+    "start": "npx tsx server.ts",
+    "build": "node build.mjs",
+    "vercel-build": "echo 'Using pre-compiled api/*.js'"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^1.1.0",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "@vercel/node": "^5.0.0",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.7",
+    "esbuild": "^0.25.0",
+    "typescript": "^5.7.0"
+  }
+}

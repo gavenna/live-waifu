@@ -1,0 +1,22 @@
+{
+  "identifier": "default",
+  "description": "Capability for all windows",
+  "windows": ["main", "settings", "chat", "lab", "ops"],
+  "permissions": [
+    "core:default",
+    "core:window:allow-start-dragging",
+    "core:window:allow-set-position",
+    "core:window:allow-outer-position",
+    "core:window:allow-set-always-on-top",
+    "core:window:allow-set-skip-taskbar",
+    "core:window:allow-set-shadow",
+    "core:window:allow-hide",
+    "core:window:allow-show",
+    "core:window:allow-close",
+    "core:webview:allow-create-webview-window",
+    "core:event:allow-emit",
+    "core:event:allow-listen",
+    "opener:default",
+    "autostart:default"
+  ]
+}

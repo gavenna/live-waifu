@@ -1,0 +1,31 @@
+; Godot project configuration file.
+; Edit through the Godot editor when possible.
+config_version=5
+
+[application]
+config/name="Danmaku Frontline MVP"
+run/main_scene="res://main.tscn"
+
+[display]
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/size/window_width_override=1280
+window/size/window_height_override=720
+window/stretch/mode="canvas_items"
+window/handheld/orientation=1
+
+[rendering]
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+textures/default_filters/use_nearest_mipmap_filter=false
+
+[gui]
+theme/default_font_multichannel_signed_distance_field=true
+
+[input]
+spawn_red_squad={"deadzone":0.5,"events":[Object(InputEventKey,"physical_keycode":81)]}
+spawn_blue_squad={"deadzone":0.5,"events":[Object(InputEventKey,"physical_keycode":80)]}
+red_skill={"deadzone":0.5,"events":[Object(InputEventKey,"physical_keycode":87)]}
+blue_skill={"deadzone":0.5,"events":[Object(InputEventKey,"physical_keycode":79)]}
+toggle_demo={"deadzone":0.5,"events":[Object(InputEventKey,"physical_keycode":32)]}
+restart_round={"deadzone":0.5,"events":[Object(InputEventKey,"physical_keycode":82)]}

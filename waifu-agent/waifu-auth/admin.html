@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>waifu-auth 许可管理</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', 'WenQuanYi Micro Hei', sans-serif;
+    background: #12121f; color: #ccc; padding: 24px;
+    max-width: 700px; margin: 0 auto;
+  }
+  h1 { font-size: 20px; color: #e0e0e0; margin-bottom: 4px; }
+  .sub { font-size: 12px; color: #888; margin-bottom: 16px; }
+  h3 { font-size: 14px; margin: 24px 0 12px; }
+  input, select, button {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 6px; padding: 8px 12px;
+    color: #e0e0e0; font-size: 13px; outline: none;
+  }
+  button { cursor: pointer; font-weight: 600; border: none; padding: 8px 16px; }
+  button:hover { opacity: 0.85; }
+  .row { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; flex-wrap: wrap; }
+  .error { color: #f87171; font-size: 12px; margin-top: 8px; }
+  .success { color: #4ade80; font-size: 12px; margin-top: 8px; }
+  .key-list { background: rgba(0,0,0,0.3); border-radius: 8px; padding: 8px 12px; max-height: 300px; overflow-y: auto; margin-top: 12px; }
+  .key-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+  .key-row:last-child { border-bottom: none; }
+  .key-code { font-family: monospace; font-size: 14px; letter-spacing: 1px; color: #e0e0e0; }
+  .copy-btn { background: rgba(255,255,255,0.08); color: #888; font-size: 11px; padding: 3px 10px; border-radius: 4px; cursor: pointer; }
+  .copy-btn:hover { background: rgba(255,255,255,0.15); color: #ccc; }
+  .copy-all { background: rgba(74,222,128,0.15); color: #4ade80; font-size: 11px; padding: 4px 10px; border-radius: 4px; margin-bottom: 6px; }
+  hr { border: none; border-top: 1px solid rgba(255,255,255,0.06); margin: 20px 0; }
+  .status-bar { font-size: 11px; color: #888; margin-bottom: 16px; padding: 6px 10px; background: rgba(0,0,0,0.2); border-radius: 6px; }
+
+  /* Dashboard cards */
+  .cards { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+  .card {
+    flex: 1; min-width: 90px;
+    background: rgba(0,0,0,0.25); border-radius: 8px;
+    padding: 12px 14px; text-align: center;
+    border: 1px solid rgba(255,255,255,0.04);
+  }
+  .card .num { font-size: 24px; font-weight: 700; color: #e0e0e0; }
+  .card .lbl { font-size: 10px; color: #888; margin-top: 2px; }
+  .card.green .num { color: #4ade80; }
+  .card.yellow .num { color: #fbbf24; }
+  .card.red .num { color: #f87171; }
+  .card.purple .num { color: #a78bfa; }
+
+  /* Filter bar */
+  .filter-bar { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; }
+  .filter-bar select, .filter-bar input { font-size: 12px; padding: 5px 8px; }
+  .filter-bar select { min-width: 80px; }
+  .filter-bar .count-badge { font-size: 11px; color: #888; margin-left: auto; }
+
+  /* Pagination */
+  .pagination { display: flex; gap: 8px; align-items: center; justify-content: center; margin-top: 8px; font-size: 12px; }
+  .pagination button { font-size: 11px; padding: 4px 12px; background: rgba(255,255,255,0.08); color: #ccc; }
+  .pagination button:disabled { opacity: 0.3; cursor: not-allowed; }
+  .pagination .page-info { color: #888; }
+
+  /* Batch bar */
+  .batch-bar { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; font-size: 12px; }
+  .batch-bar .selected-count { color: #a78bfa; }
+  .btn-danger { background: rgba(239,68,68,0.7); color: #fff; font-size: 11px; padding: 4px 12px; border-radius: 4px; cursor: pointer; border: none; }
+  .btn-danger:hover { background: rgba(239,68,68,0.9); }
+  .btn-danger:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn-export { background: rgba(96,165,250,0.2); color: #60a5fa; font-size: 11px; padding: 4px 12px; border-radius: 4px; cursor: pointer; border: none; }
+  .btn-export:hover { background: rgba(96,165,250,0.35); }
+
+  /* Table */
+  .tbl { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 8px; }
+  .tbl th { text-align: left; color: #888; font-weight: 400; padding: 6px 8px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .tbl td { padding: 6px 8px; border-bottom: 1px solid rgba(255,255,255,0.03); }
+  .tbl tr:hover td { background: rgba(255,255,255,0.02); }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 600; }
+  .badge.unused { background: rgba(74,222,128,0.15); color: #4ade80; }
+  .badge.used { background: rgba(139,92,246,0.15); color: #a78bfa; }
+  .badge.expired { background: rgba(239,68,68,0.15); color: #f87171; }
+  .badge.trial { background: rgba(100,150,200,0.15); color: #60a5fa; }
+  .badge.pro { background: rgba(139,92,246,0.15); color: #a78bfa; }
+  .badge.dev { background: rgba(250,204,21,0.15); color: #facc15; }
+  .muted { color: #666; font-size: 11px; }
+  .refresh { color: #888; font-size: 11px; cursor: pointer; background: none; border: none; padding: 0; margin-left: 8px; }
+  .refresh:hover { color: #ccc; }
+</style>
+</head>
+<body>
+
+<h1>🔐 许可管理</h1>
+<div class="sub">waifu-auth Admin Console</div>
+
+<div class="status-bar" id="status">API: 检测中...</div>
+
+<!-- ── 登录 ── -->
+<div class="row">
+  <input id="username" placeholder="管理员账号" value="admin" style="width:120px">
+  <input id="password" type="password" placeholder="管理员密码" style="width:140px">
+  <button id="loginBtn" onclick="doLogin()" style="background:rgba(100,116,200,0.8);color:#fff">登录</button>
+  <span id="loginMsg" style="font-size:12px"></span>
+</div>
+
+<!-- ══════════ 数据看板 ══════════ -->
+<div id="dashboard" style="display:none">
+
+<h3 style="color:#60a5fa">📊 总览 <button class="refresh" onclick="loadDashboard()">刷新</button></h3>
+
+<div class="cards" id="statsCards"></div>
+
+<!-- 激活码列表 -->
+<h3 style="color:#a78bfa">🎫 激活码管理</h3>
+
+<div class="filter-bar">
+  <select id="filterStatus" onchange="applyFilter()">
+    <option value="">全部状态</option>
+    <option value="1">可用</option>
+    <option value="2">已用</option>
+    <option value="3">过期</option>
+  </select>
+  <select id="filterTier" onchange="applyFilter()">
+    <option value="">全部 Tier</option>
+    <option value="trial">trial</option>
+    <option value="pro">pro</option>
+    <option value="dev">dev</option>
+  </select>
+  <input id="keySearch" placeholder="搜索码或备注..." style="width:160px" onkeydown="if(event.key==='Enter')applyFilter()">
+  <button onclick="applyFilter()" style="background:rgba(139,92,246,0.3);color:#a78bfa;font-size:11px;padding:5px 10px">搜索</button>
+  <button onclick="clearKeyFilter()" style="background:transparent;color:#888;font-size:11px;padding:5px 8px;display:none" id="clearFilterBtn">清除</button>
+  <span class="count-badge" id="keyCountBadge"></span>
+</div>
+
+<div class="batch-bar" id="batchBar" style="display:none">
+  <label style="cursor:pointer;color:#aaa"><input type="checkbox" id="selectAll" onchange="toggleSelectAll()" style="margin-right:4px">全选</label>
+  <span class="selected-count" id="selectedCount">已选 0 个</span>
+  <button class="btn-danger" id="batchDeleteBtn" onclick="batchDelete()" disabled>批量删除</button>
+  <button class="btn-export" onclick="exportCSV()">📋 导出 CSV</button>
+</div>
+
+<div class="key-list" style="max-height:500px">
+  <table class="tbl" id="keyTable">
+    <thead><tr><th style="width:30px"><input type="checkbox" id="headerCheck" onchange="toggleSelectAll()"></th><th>激活码</th><th>Tier</th><th>状态</th><th>备注</th><th>过期日</th><th>使用者</th><th>操作</th></tr></thead>
+    <tbody></tbody>
+  </table>
+</div>
+<div class="pagination" id="keyPagination"></div>
+
+<!-- 用户列表 -->
+<h3 style="color:#4ade80">👤 已激活用户</h3>
+<div class="row" style="margin-bottom:8px">
+  <input id="userSearch" placeholder="搜索 ID / 展示 ID / 机器码" style="width:240px;font-size:12px" onkeydown="if(event.key==='Enter')searchUsers()">
+  <button onclick="searchUsers()" style="background:rgba(96,165,250,0.2);color:#60a5fa;font-size:12px">搜索</button>
+  <button onclick="clearSearch()" id="clearSearchBtn" style="background:transparent;color:#888;font-size:11px;display:none">清除</button>
+</div>
+<div id="searchMsg" style="font-size:11px;color:#888;margin-bottom:6px"></div>
+<div class="key-list" style="max-height:300px">
+  <table class="tbl" id="userTable">
+    <thead><tr><th>用户 ID</th><th>Tier</th><th>激活码</th><th>设备</th><th>操作</th></tr></thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+</div>
+
+<hr>
+
+<!-- ── 生成激活码 ── -->
+<h3>生成激活码</h3>
+<div class="row">
+  <select id="tier">
+    <option value="trial">尝鲜 ¥9.9 — 1 设备</option>
+    <option value="pro" selected>Pro ¥19.9 — 3 设备</option>
+    <option value="dev">开发者 ¥49.9 — 5 设备</option>
+  </select>
+  <input id="count" type="number" value="1" min="1" max="50" style="width:55px" title="数量">
+  <span style="font-size:12px;color:#888">个</span>
+  <input id="expires" type="number" value="30" min="1" max="365" style="width:55px" title="有效天数">
+  <span style="font-size:12px;color:#888">天</span>
+  <span id="noteToggle" onclick="document.getElementById('keyNote').style.display='inline-block';this.style.display='none'" style="font-size:11px;color:#888;cursor:pointer;user-select:none">+ 备注</span>
+  <input id="keyNote" placeholder="备注 (谁赞助的)" style="width:140px;font-size:12px;display:none">
+  <button onclick="genKeys()" id="genBtn" style="background:rgba(139,92,246,0.8);color:#fff">生成激活码</button>
+</div>
+<div id="genMsg"></div>
+<div id="keyList"></div>
+
+<hr>
+
+<!-- ── 修改密码 ── -->
+<h3>修改管理员密码</h3>
+<div class="row">
+  <input id="oldPass" type="password" placeholder="旧密码" style="width:130px">
+  <input id="newPass" type="password" placeholder="新密码 (6位以上)" style="width:150px">
+  <button onclick="changePassword()" style="background:rgba(239,68,68,0.7);color:#fff">修改密码</button>
+</div>
+<div id="pwdMsg"></div>
+
+<script>
+const API = (() => {
+  const host = location.hostname === 'localhost' ? 'localhost:3456' : location.host;
+  return `${location.protocol}//${host}/api`;
+})();
+document.getElementById('status').textContent = `API: ${API}`;
+
+let token = '';
+
+async function apiPost(path, body) {
+  const headers = { 'Content-Type': 'application/json' };
+  if (token) headers['Authorization'] = `Bearer ${token}`;
+  const resp = await fetch(`${API}/${path}`, {
+    method: 'POST', headers,
+    body: JSON.stringify(body || {}),
+  });
+  const data = await resp.json();
+  if (data.code !== 0) throw new Error(data.message || '未知错误');
+  return data.data;
+}
+
+async function apiGet(path) {
+  const headers = {};
+  if (token) headers['Authorization'] = `Bearer ${token}`;
+  const resp = await fetch(`${API}/${path}`, { headers });
+  const data = await resp.json();
+  if (data.code !== 0) throw new Error(data.message || '未知错误');
+  return data.data;
+}
+
+async function apiDelete(path, body) {
+  const headers = { 'Content-Type': 'application/json' };
+  if (token) headers['Authorization'] = `Bearer ${token}`;
+  const resp = await fetch(`${API}/${path}`, {
+    method: 'DELETE', headers,
+    body: JSON.stringify(body || {}),
+  });
+  const data = await resp.json();
+  if (data.code !== 0) throw new Error(data.message || '未知错误');
+  return data;
+}
+
+// ── 登录 ──
+
+async function doLogin() {
+  const msg = document.getElementById('loginMsg');
+  msg.className = ''; msg.textContent = '';
+  try {
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value;
+    if (!username || !password) {
+      msg.className = 'error'; msg.textContent = '请输入用户名和密码';
+      return;
+    }
+    const data = await apiPost('admin-login', { username, password });
+    token = data.access_token;
+    msg.className = 'success'; msg.textContent = '已登录';
+    document.getElementById('dashboard').style.display = 'block';
+    loadDashboard();
+  } catch(e) {
+    msg.className = 'error'; msg.textContent = e.message;
+  }
+}
+
+// ── 激活码筛选/分页状态 ──
+let keyPage = 1;
+const keyLimit = 50;
+let keyTotal = 0;
+let currentKeys = []; // 当前页数据，用于导出
+
+// ── 数据看板 ──
+
+async function loadDashboard() {
+  if (!token) return;
+  try {
+    // 构建激活码查询参数
+    const params = new URLSearchParams();
+    params.set('page', String(keyPage));
+    params.set('limit', String(keyLimit));
+    const fs = document.getElementById('filterStatus').value;
+    const ft = document.getElementById('filterTier').value;
+    const fk = document.getElementById('keySearch').value.trim();
+    if (fs) params.set('status', fs);
+    if (ft) params.set('tier', ft);
+    if (fk) params.set('search', fk);
+
+    const [stats, regKeys] = await Promise.all([
+      apiGet('admin-stats'),
+      apiGet(`admin-reg-keys?${params.toString()}`),
+    ]);
+
+    // Stats cards
+    document.getElementById('statsCards').innerHTML = `
+      <div class="card green"><div class="num">${stats.total_users||0}</div><div class="lbl">已激活用户</div></div>
+      <div class="card purple"><div class="num">${regKeys.unused||0}</div><div class="lbl">可用激活码</div></div>
+      <div class="card yellow"><div class="num">${regKeys.used||0}</div><div class="lbl">已使用</div></div>
+      <div class="card"><div class="num">${stats.active_sessions||0}</div><div class="lbl">活跃会话</div></div>
+      ${stats.banned_users > 0 ? `<div class="card red"><div class="num">${stats.banned_users}</div><div class="lbl">已封禁</div></div>` : ''}
+    `;
+
+    // Key table
+    keyTotal = regKeys.total || 0;
+    currentKeys = regKeys.recent || [];
+    const keys = currentKeys;
+
+    // 更新计数 badge
+    const hasFilter = fs || ft || fk;
+    document.getElementById('keyCountBadge').textContent = hasFilter
+      ? `筛选结果: ${keyTotal} 条`
+      : `共 ${keyTotal} 条`;
+    document.getElementById('clearFilterBtn').style.display = hasFilter ? 'inline-block' : 'none';
+
+    // 显示/隐藏批量操作栏
+    document.getElementById('batchBar').style.display = keys.length > 0 ? 'flex' : 'none';
+    document.getElementById('selectAll').checked = false;
+    document.getElementById('headerCheck').checked = false;
+    updateSelectedCount();
+
+    const keyTbody = document.getElementById('keyTable').querySelector('tbody');
+    keyTbody.innerHTML = keys.map(k => {
+      let statusHtml, statusClass;
+      if (k.status === 2) { statusHtml = '已用'; statusClass = 'used'; }
+      else if (k.expires_at && new Date(k.expires_at) < new Date()) { statusHtml = '过期'; statusClass = 'expired'; }
+      else { statusHtml = '可用'; statusClass = 'unused'; }
+
+      const tierClass = k.tier || 'trial';
+      const expires = k.expires_at ? k.expires_at.slice(0,10) : '-';
+      const usedBy = k.used_by ? `用户#${k.used_by}` : '-';
+
+      return `<tr>
+        <td><input type="checkbox" class="key-check" data-id="${k.id}" onchange="updateSelectedCount()"></td>
+        <td style="font-family:monospace;font-size:13px">${k.key}</td>
+        <td><span class="badge ${tierClass}">${k.tier||'trial'}</span></td>
+        <td><span class="badge ${statusClass}">${statusHtml}</span></td>
+        <td class="muted" style="max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${k.note||''}">${k.note||'-'}</td>
+        <td class="muted">${expires}</td>
+        <td class="muted">${usedBy}</td>
+        <td><button onclick="event.stopPropagation();deleteKey(${k.id})" class="copy-btn" style="color:#f87171">删除</button></td>
+      </tr>`;
+    }).join('');
+    if (keys.length === 0) keyTbody.innerHTML = '<tr><td colspan="8" class="muted">暂无数据</td></tr>';
+
+    // 分页控件
+    renderPagination();
+
+    // Users table
+    let searchQuery = document.getElementById('userSearch').value.trim();
+    const usersData = await apiGet(searchQuery ? `admin-users?search=${encodeURIComponent(searchQuery)}` : 'admin-users?limit=20');
+    const users = usersData.users || [];
+    if (searchQuery) {
+      document.getElementById('searchMsg').textContent = `找到 ${usersData.total || users.length} 个用户 (搜索: "${searchQuery}")`;
+      document.getElementById('clearSearchBtn').style.display = 'inline-block';
+    } else {
+      document.getElementById('searchMsg').textContent = '';
+      document.getElementById('clearSearchBtn').style.display = 'none';
+    }
+    const userTbody = document.getElementById('userTable').querySelector('tbody');
+    userTbody.innerHTML = users.map(u => {
+      const keyDisplay = u.activation_key
+        ? `<span style="font-family:monospace;font-size:11px;color:#a78bfa">${u.activation_key}</span>`
+        : '<span class="muted" style="font-size:10px">-</span>';
+      return `<tr style="cursor:pointer" onclick="toggleUserDetail(${u.id})" title="点击查看设备详情">
+        <td style="font-family:monospace;font-size:12px">${u.display_id || '...'}</td>
+        <td><span class="badge ${u.tier||'trial'}">${u.tier||'trial'}</span></td>
+        <td>${keyDisplay}</td>
+        <td class="muted">${u.device_limit||1} 台</td>
+        <td>
+          ${u.status === 2
+            ? `<button onclick="event.stopPropagation();toggleBan(${u.id},false)" class="copy-btn" style="color:#4ade80">解封</button>`
+            : `<button onclick="event.stopPropagation();toggleBan(${u.id},true)" class="copy-btn" style="color:#f87171">封禁</button>`
+          }
+          <button onclick="event.stopPropagation();unbindUser(${u.id})" class="copy-btn">解绑</button>
+          <button onclick="event.stopPropagation();deleteUser(${u.id})" class="copy-btn" style="color:#f87171">删除</button>
+        </td>
+      </tr>
+      <tr id="userDetail-${u.id}" style="display:none;background:rgba(0,0,0,0.2)">
+        <td colspan="5"><div style="padding:8px 12px;font-size:11px;color:#aaa" id="userDetailContent-${u.id}">加载中...</div></td>
+      </tr>`;
+    }).join('');
+    if (users.length === 0) userTbody.innerHTML = '<tr><td colspan="5" class="muted">暂无用户</td></tr>';
+
+  } catch(e) {
+    document.getElementById('statsCards').innerHTML = `<div class="error">加载失败: ${e.message}</div>`;
+  }
+}
+
+// ── 分页 ──
+
+function renderPagination() {
+  const totalPages = Math.max(1, Math.ceil(keyTotal / keyLimit));
+  const el = document.getElementById('keyPagination');
+  if (keyTotal <= keyLimit) { el.innerHTML = ''; return; }
+  el.innerHTML = `
+    <button onclick="goPage(-1)" ${keyPage <= 1 ? 'disabled' : ''}>上一页</button>
+    <span class="page-info">第 ${keyPage}/${totalPages} 页，共 ${keyTotal} 条</span>
+    <button onclick="goPage(1)" ${keyPage >= totalPages ? 'disabled' : ''}>下一页</button>
+  `;
+}
+
+function goPage(delta) {
+  keyPage += delta;
+  loadDashboard();
+}
+
+// ── 筛选 ──
+
+function applyFilter() {
+  keyPage = 1;
+  loadDashboard();
+}
+
+function clearKeyFilter() {
+  document.getElementById('filterStatus').value = '';
+  document.getElementById('filterTier').value = '';
+  document.getElementById('keySearch').value = '';
+  keyPage = 1;
+  loadDashboard();
+}
+
+// ── 批量选择 ──
+
+function toggleSelectAll() {
+  const checked = document.getElementById('selectAll').checked || document.getElementById('headerCheck').checked;
+  document.getElementById('selectAll').checked = checked;
+  document.getElementById('headerCheck').checked = checked;
+  document.querySelectorAll('.key-check').forEach(cb => cb.checked = checked);
+  updateSelectedCount();
+}
+
+function updateSelectedCount() {
+  const checked = document.querySelectorAll('.key-check:checked');
+  const n = checked.length;
+  document.getElementById('selectedCount').textContent = `已选 ${n} 个`;
+  document.getElementById('batchDeleteBtn').disabled = n === 0;
+}
+
+function getSelectedIds() {
+  return Array.from(document.querySelectorAll('.key-check:checked')).map(cb => parseInt(cb.dataset.id));
+}
+
+// ── 批量删除 ──
+
+async function batchDelete() {
+  const ids = getSelectedIds();
+  if (ids.length === 0) return;
+  if (!confirm(`确定删除选中的 ${ids.length} 个激活码？此操作不可恢复。`)) return;
+  const btn = document.getElementById('batchDeleteBtn');
+  btn.disabled = true; btn.textContent = '删除中...';
+  let ok = 0, fail = 0;
+  for (const id of ids) {
+    try { await apiDelete('admin-reg-keys', { id }); ok++; } catch { fail++; }
+  }
+  btn.textContent = '批量删除';
+  if (fail > 0) alert(`完成: ${ok} 个删除成功, ${fail} 个失败`);
+  loadDashboard();
+}
+
+// ── 导出 CSV ──
+
+function exportCSV() {
+  if (currentKeys.length === 0) { alert('没有可导出的数据'); return; }
+  const header = '激活码,Tier,状态,备注,过期日,使用者,创建时间';
+  const rows = currentKeys.map(k => {
+    let status = '可用';
+    if (k.status === 2) status = '已用';
+    else if (k.expires_at && new Date(k.expires_at) < new Date()) status = '过期';
+    const usedBy = k.used_by ? `用户#${k.used_by}` : '';
+    return `${k.key},${k.tier||'trial'},${status},"${(k.note||'').replace(/"/g,'""')}",${(k.expires_at||'').slice(0,10)},${usedBy},${(k.created_at||'').slice(0,16)}`;
+  });
+  const csv = header + '\n' + rows.join('\n');
+  navigator.clipboard.writeText(csv).then(() => {
+    alert(`已复制 ${currentKeys.length} 条记录到剪贴板 (CSV 格式)`);
+  }).catch(() => {
+    // 降级：创建临时 textarea
+    const ta = document.createElement('textarea');
+    ta.value = csv; document.body.appendChild(ta);
+    ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+    alert(`已复制 ${currentKeys.length} 条记录到剪贴板`);
+  });
+}
+
+async function toggleBan(userId, ban) {
+  try {
+    await apiPost(`admin-users/${userId}/ban`, { ban: ban });
+    alert(ban ? '已封禁' : '已解封');
+    loadDashboard();
+  } catch(e) { alert(e.message); }
+}
+
+async function unbindUser(userId) {
+  if (!confirm('确定解绑该用户的所有设备？')) return;
+  try {
+    await apiPost(`admin-users/${userId}/unbind-all`);
+    alert('已解绑该用户的所有设备');
+    loadDashboard();
+  } catch(e) { alert(e.message); }
+}
+
+async function deleteUser(userId) {
+  if (!confirm(`确定删除用户 #${userId}？\n\n该操作将同时清除：\n- 所有绑定设备\n- 所有 refresh token\n- 激活码关联\n\n此操作不可恢复。`)) return;
+  try {
+    await apiDelete(`admin-users/${userId}`);
+    alert('已删除用户');
+    loadDashboard();
+  } catch(e) { alert(e.message); }
+}
+
+// ── 删除激活码 ──
+
+async function deleteKey(keyId) {
+  if (!confirm('确定删除该激活码？此操作不可恢复。')) return;
+  try {
+    await apiDelete('admin-reg-keys', { id: keyId });
+    loadDashboard();
+  } catch(e) { alert(e.message); }
+}
+
+// ── 生成激活码 ──
+
+async function genKeys() {
+  const msg = document.getElementById('genMsg');
+  const btn = document.getElementById('genBtn');
+  const list = document.getElementById('keyList');
+  msg.className = ''; msg.textContent = ''; list.innerHTML = '';
+  btn.disabled = true; btn.textContent = '生成中...';
+
+  try {
+    if (!token) { await doLogin(); if (!token) throw new Error('请先登录'); }
+    const data = await apiPost('admin-reg-keys', {
+      tier: document.getElementById('tier').value,
+      count: parseInt(document.getElementById('count').value) || 1,
+      expires_days: parseInt(document.getElementById('expires').value) || 30,
+      note: document.getElementById('keyNote').value.trim(),
+    });
+    const keys = data.keys;
+    msg.className = 'success';
+    msg.textContent = `已生成 ${keys.length} 个激活码 (tier: ${data.tier}, 至 ${data.expires_at?.slice(0,10)})`;
+
+    let html = `<button class="copy-all" onclick="copyAll(${JSON.stringify(keys).replace(/"/g, '&quot;')})">📋 复制全部</button>`;
+    keys.forEach(k => {
+      html += `<div class="key-row">
+        <span class="key-code">${k}</span>
+        <button class="copy-btn" onclick="copyOne('${k}')">复制</button>
+      </div>`;
+    });
+    list.innerHTML = html;
+    document.getElementById('keyNote').value = '';
+    document.getElementById('keyNote').style.display = 'none';
+    document.getElementById('noteToggle').style.display = 'inline';
+    loadDashboard(); // 刷新看板
+  } catch(e) {
+    msg.className = 'error'; msg.textContent = e.message;
+    if (e.message.includes('401') || e.message.includes('未授权')) token = '';
+  } finally {
+    btn.disabled = false; btn.textContent = '生成激活码';
+  }
+}
+
+// ── 修改密码 ──
+
+async function changePassword() {
+  const msg = document.getElementById('pwdMsg');
+  msg.className = ''; msg.textContent = '';
+  try {
+    if (!token) { await doLogin(); if (!token) throw new Error('请先登录'); }
+    await apiPost('admin-change-password', {
+      old_password: document.getElementById('oldPass').value,
+      new_password: document.getElementById('newPass').value,
+    });
+    msg.className = 'success'; msg.textContent = '密码已修改';
+    document.getElementById('oldPass').value = '';
+    document.getElementById('newPass').value = '';
+  } catch(e) {
+    msg.className = 'error'; msg.textContent = e.message;
+  }
+}
+
+// ── 用户搜索 ──
+
+function searchUsers() {
+  loadDashboard(); // re-fetches with search query from input
+}
+
+function clearSearch() {
+  document.getElementById('userSearch').value = '';
+  document.getElementById('searchMsg').textContent = '';
+  document.getElementById('clearSearchBtn').style.display = 'none';
+  loadDashboard();
+}
+
+// ── 用户详情展开 ──
+
+async function toggleUserDetail(userId) {
+  const row = document.getElementById('userDetail-' + userId);
+  const content = document.getElementById('userDetailContent-' + userId);
+  if (!row) return;
+  if (row.style.display === 'table-row') {
+    row.style.display = 'none'; return;
+  }
+  row.style.display = 'table-row';
+  try {
+    const data = await apiGet('admin-users/' + userId);
+    const devs = data.devices || [];
+    let html = `<div style="margin-bottom:4px">激活码: <span style="font-family:monospace;color:#a78bfa">${data.activation_key || '-'}</span></div>`;
+    if (devs.length === 0) {
+      html += '<div class="muted">无绑定设备</div>';
+    } else {
+      html += devs.map(d => `<div style="margin:2px 0">
+        <span style="font-family:monospace;font-size:10px;color:#888" title="${d.machine_code}">${d.machine_code.substring(0,16)}...</span>
+        <span style="margin-left:8px;font-size:10px">${d.device_name||'未命名'} · 最后上线 ${(d.last_seen||'').slice(0,16)}</span>
+      </div>`).join('');
+    }
+    content.innerHTML = html;
+  } catch(e) {
+    content.innerHTML = '<span class="error">加载失败: ' + e.message + '</span>';
+  }
+}
+
+function copyOne(k) { navigator.clipboard.writeText(k); }
+function copyAll(keys) { navigator.clipboard.writeText(keys.join('\n')); }
+
+// 需要手动登录（安全要求）
+</script>
+
+</body>
+</html>

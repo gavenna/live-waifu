@@ -1,0 +1,35 @@
+[package]
+name = "waifu-agent"
+version = "0.9.0"
+edition = "2021"
+
+[lib]
+name = "waifu_agent_lib"
+crate-type = ["lib", "cdylib", "staticlib"]
+
+[profile.release]
+opt-level = 3
+lto = false         # 关 LTO，编译速度杀手
+codegen-units = 32  # 16→32，更多并行，桌面应用性能差异可忽略
+strip = true        # 剥符号，减 ~30% 体积
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = ["protocol-asset", "tray-icon"] }
+tauri-plugin-opener = "2"
+tauri-plugin-autostart = "2.5.1"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+base64 = "0.22"
+tokio = { version = "1", features = ["process", "time", "sync", "net", "macros"] }
+tokio-tungstenite = "0.24"
+reqwest = { version = "0.12", features = ["json", "stream"] }
+futures-util = "0.3"
+chrono = "0.4"
+sha2 = "0.10"
+sysinfo = "0.33"
+arboard = "3"
+xcap = "0.5"
+image = { version = "0.25", default-features = false, features = ["png", "jpeg"] }

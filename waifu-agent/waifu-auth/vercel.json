@@ -1,0 +1,9 @@
+{
+  "buildCommand": "echo 'Skipping build — using pre-compiled api/*.js'",
+  "outputDirectory": "public",
+  "routes": [
+    { "src": "/admin", "dest": "/admin.html" },
+    { "src": "/admin/", "dest": "/admin.html" },
+    { "src": "/api/admin-users/(.*)", "dest": "/api/admin-users" }
+  ]
+}
